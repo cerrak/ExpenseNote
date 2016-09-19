@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.elmoumene.expense.note.view.ExpenseOverviewController">
+   <children>
+      <SplitPane dividerPositions="0.22055137844611528" layoutY="165.0" prefHeight="435.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="165.0">
+         <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="173.0">
+               <children>
+                  <VBox layoutX="1.0" layoutY="3.0" prefHeight="435.0" prefWidth="187.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="918.0" text="Dashbard" />
+                        <Button disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="705.0" text="Expenses" underline="true" />
+                        <Button mnemonicParsing="false" onAction="#handelShowExpenseNote" prefHeight="25.0" prefWidth="724.0" text="Expense notes" />
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="658.0" text="Settlements" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="475.0" prefWidth="575.0">
+               <children>
+                  <SplitPane dividerPositions="0.7819025522041764" orientation="VERTICAL" prefHeight="519.0" prefWidth="619.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <items>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="303.0" prefWidth="617.0">
+                           <children>
+                              <TableView fx:id="expenseTable" layoutX="-96.0" layoutY="17.0" prefHeight="334.0" prefWidth="669.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
+                                 <columns>
+                                    <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Date" />
+                                    <TableColumn fx:id="categoryColumn" prefWidth="56.0" text="Category" />
+                                    <TableColumn fx:id="countryColumn" prefWidth="75.0" text="Country" />
+                                    <TableColumn fx:id="amountColumn" prefWidth="75.0" text="Amount" />
+                                    <TableColumn fx:id="currencyColumn" prefWidth="75.0" text="Currency" />
+                                    <TableColumn fx:id="receiptColumn" prefWidth="75.0" text="Receipt" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="expenseDetails" minHeight="0.0" minWidth="0.0" prefHeight="91.0" prefWidth="569.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="6.0" prefHeight="17.0" prefWidth="88.0" text="Expense details" AnchorPane.leftAnchor="14.0" />
+                              <Label layoutX="14.0" layoutY="32.0" prefHeight="17.0" prefWidth="88.0" text="Supplier" AnchorPane.leftAnchor="14.0" />
+                              <Label layoutX="14.0" layoutY="49.0" prefHeight="17.0" prefWidth="88.0" text="City" AnchorPane.leftAnchor="14.0" />
+                              <Label layoutX="14.0" layoutY="66.0" prefHeight="17.0" prefWidth="88.0" text="Comments" />
+                              <Label fx:id="commentLabel" alignment="TOP_LEFT" contentDisplay="RIGHT" layoutX="102.0" layoutY="71.0" prefHeight="25.0" prefWidth="288.0" text="Some comments">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor></Label>
+                              <Label fx:id="supplierLabel" layoutX="106.0" layoutY="32.0" prefHeight="17.0" prefWidth="117.0" text="Some supplier" />
+                              <Label fx:id="cityLabel" layoutX="106.0" layoutY="49.0" prefHeight="17.0" prefWidth="117.0" text="Some city" />
+                           </children></AnchorPane>
+                     </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+      <Button layoutX="698.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleNewExpense" prefHeight="25.0" prefWidth="101.0" text="Add expense" AnchorPane.rightAnchor="14.0" />
+      <Button layoutX="572.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleEditExpense" prefHeight="25.0" prefWidth="101.0" text="Modify expense" />
+   </children>
+</AnchorPane>

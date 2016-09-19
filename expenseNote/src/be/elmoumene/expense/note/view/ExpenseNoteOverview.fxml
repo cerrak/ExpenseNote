@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.elmoumene.expense.note.view.ExpenseNoteOverviewController">
+   <children>
+      <SplitPane dividerPositions="0.29797979797979796" layoutY="165.0" prefHeight="435.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="165.0">
+         <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="173.0">
+               <children>
+                  <VBox layoutX="1.0" layoutY="3.0" prefHeight="435.0" prefWidth="187.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="317.0" text="Dashbard" />
+                        <Button mnemonicParsing="false" onAction="#handelShowExpense" prefHeight="25.0" prefWidth="261.0" text="Expenses" />
+                        <Button disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="705.0" text="Expense notes" underline="true" />
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="299.0" text="Settlements" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="514.0" prefWidth="621.0">
+               <children>
+                  <TableView fx:id="expenseNoteTable" layoutX="-96.0" layoutY="17.0" prefHeight="334.0" prefWidth="669.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn fx:id="nameColumn" prefWidth="142.0" text="Expense note name" />
+                      <TableColumn fx:id="nbrTransationsColumn" minWidth="8.0" prefWidth="139.0" text="N° of transactions" />
+                        <TableColumn fx:id="totalColumn" prefWidth="92.0" text="Total amount" />
+                        <TableColumn fx:id="dateColumn" prefWidth="116.0" text="Date" />
+                        <TableColumn fx:id="statusColumn" prefWidth="67.0" text="Status" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+      <Button layoutX="507.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleNewExpenseNote" prefHeight="25.0" prefWidth="138.0" text="Create expense note" AnchorPane.rightAnchor="155.0" />
+      <Button layoutX="662.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleEditExpenseNote" prefHeight="25.0" prefWidth="138.0" text="Edit" AnchorPane.rightAnchor="0.0" />
+   </children>
+</AnchorPane>
