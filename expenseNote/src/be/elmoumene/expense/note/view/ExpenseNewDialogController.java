@@ -11,6 +11,7 @@ import be.elmoumene.expense.note.util.DateUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -39,6 +40,10 @@ import javafx.stage.Stage;
     private TextField cityField;
     @FXML
     private TextField dateField;
+    @FXML
+    private ButtonBar saveNextBtnBar;
+    @FXML
+    private ButtonBar saveBtnBar;
 
 
     // SERVICES
@@ -80,22 +85,23 @@ import javafx.stage.Stage;
     }
 
     /**
-     * Sets the person to be edited in the dialog.
+     * Sets the expense to be edited in the dialog.
      *
      * @param person
      */
 	public void setExpense(ExpenseDTO expense) {
 		this.expense = expense;
 
-		if(amountField==null) //rajout d'une condition pour permettre l'init de la variable amount
+		if(expense.getId() != null)
+
 		amountField.setText(expense.getAmount().toString());
 		commentField.setText(expense.getComment());
 		supplierField.setText(expense.getSupplier());
 		cityField.setText(expense.getCity());
 		supplierField.setText(expense.getSupplier());
 		commentField.setText(expense.getComment());
-		
-		
+
+
 		if (expense.getDateExpense() != null)
 		dateField.setText(DateUtil.format(expense.getDateExpense()));
 
@@ -103,7 +109,12 @@ import javafx.stage.Stage;
 			categoryComboBox.setValue(expense.getExpenseCategory().toString());
 
 		if (expense.getCountry() != null)
-			categoryComboBox.setValue(expense.getCountry().toString());
+			countryComboBox.setValue(expense.getCountry().toString());
+
+		if (expense.getId() != null)
+			saveNextBtnBar.setVisible(false);
+		if (expense.getId() == null)
+			saveBtnBar.setVisible(false);
 
 	}
 
@@ -189,6 +200,36 @@ import javafx.stage.Stage;
             receipt.setSelected(false);
             commentField.setText("");
             supplierField.setText("");
+
+        }
+    }
+
+    @FXML
+    private void handelEdit() {
+        if (isInputValid()) {
+
+        	expense.setPerson(mainApp.getUser());
+            expense.setAmount(Float.parseFloat(amountField.getText()));
+            expense.setDateExpense(DateUtil.parse(dateField.getText()));
+            expense.setExpenseCategory(ExpenseCategory.fromString(categoryComboBox.getSelectionModel().getSelectedItem()));
+            expense.setCity(cityField.getText());
+            expense.setCountry(Country.fromString(countryComboBox.getSelectionModel().getSelectedItem()));
+            expense.setReceipt(receipt.isSelected());
+            expense.setComment(commentField.getText());
+            expense.setSupplier(supplierField.getText());
+
+            try {
+            	expense = expenseService.update(expense);
+
+	            okClicked = true;
+	            FactoryController.getExpenseOverviewController().loadData();
+	            dialogStage.close();
+
+            } catch (ExpenseNoteException e) {
+				// TODO fill the exception on screen
+				e.printStackTrace();
+
+			}
 
         }
     }

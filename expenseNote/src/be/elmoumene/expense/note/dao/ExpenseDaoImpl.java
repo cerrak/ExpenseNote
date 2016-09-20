@@ -83,8 +83,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
 		// UPDATE
 		StringBuilder sql = new StringBuilder();
 		sql.append("Update expense ");
-		//sql.append("("+COLUMNS+") ");
-		sql.append("set city=?, comment=?, country=?, currency=?, expensecategory_id=?, "
+		sql.append("set city=?, comment=?, country=?, expensecategory_id=?, "
 					+ "expense_date=?, supplier=?, amount=?, receipt=? ");
 		sql.append("where id = "+ e.getId());
 
@@ -93,12 +92,12 @@ public class ExpenseDaoImpl implements ExpenseDao {
             stm.setString(1, e.getCity());
             stm.setString(2, e.getComment());
             stm.setString(3, e.getCountry().toString());
-            stm.setString(4, e.getCurrency());
-            stm.setString(5, e.getExpenseCategory().toString());
-            stm.setTimestamp(6, new Timestamp(e.getDate().getTimeInMillis()));
-            stm.setString(7, e.getSupplier());
-            stm.setFloat(8, e.getAmount());
-            stm.setBoolean(9, e.getReceipt());
+            //stm.setString(4, e.getCurrency());
+            stm.setString(4, e.getExpenseCategory().toString());
+            stm.setTimestamp(5, new Timestamp(e.getDate().getTimeInMillis()));
+            stm.setString(6, e.getSupplier());
+            stm.setFloat(7, e.getAmount());
+            stm.setBoolean(8, e.getReceipt());
 
             stm.executeUpdate();
            return getExpenseById(e.getId());

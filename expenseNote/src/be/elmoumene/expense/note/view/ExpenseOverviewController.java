@@ -111,6 +111,7 @@ public class ExpenseOverviewController {
     		supplierLabel.setText(dto.getSupplier());
     		cityLabel.setText(dto.getCity());
     		commentLabel.setText(dto.getComment());
+
 		}
 		else{
 			supplierLabel.setText("");
@@ -163,6 +164,38 @@ public class ExpenseOverviewController {
 	    }
 	}
 
+	public boolean showExpenseEditDialog(ExpenseDTO expense){
+		try {
+	        // Load the fxml file and create a new stage for the popup dialog.
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(MainApp.class.getResource("view/ExpenseNewDialog.fxml"));
+	        AnchorPane page = (AnchorPane) loader.load();
+
+	        // Create the dialog Stage.
+	        Stage dialogStage = new Stage();
+	        dialogStage.setTitle("Edit Expense");
+	        dialogStage.initModality(Modality.WINDOW_MODAL);
+	        dialogStage.initOwner(mainApp.getPrimaryStage());
+	        Scene scene = new Scene(page);
+	        dialogStage.setScene(scene);
+
+	        // Set the person into the controller.
+	        ExpenseNewDialogController controller = loader.getController();
+	        controller.setDialogStage(dialogStage);
+	        controller.setExpense(expense);
+	        controller.setMainApp(mainApp);
+
+	        // Show the dialog and wait until the user closes it
+	        dialogStage.showAndWait();
+	        
+
+	        return controller.isOkClicked();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 	public void handleNewExpense(){
 		ExpenseDTO tempExpense = new ExpenseDTO();
 		boolean okClicked = showExpenseNewDialog(tempExpense);
@@ -171,7 +204,7 @@ public class ExpenseOverviewController {
 	public void handleEditExpense(){
 		ExpenseDTO selectedExpense = expenseTable.getSelectionModel().getSelectedItem();
     	if (selectedExpense != null) {
-        boolean okClicked = showExpenseNewDialog(selectedExpense);
+        boolean okClicked = showExpenseEditDialog(selectedExpense);
         if (okClicked) {
             showExpenseDetails(selectedExpense);
         }
