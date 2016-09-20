@@ -31,11 +31,12 @@ public class ExpenseNoteOverviewController {
     @FXML
     private TableColumn<ExpenseNoteDTO, String> nameColumn;
     @FXML
-    private TableColumn<ExpenseNoteDTO, String> nbrTransationsColumn;
+    private TableColumn<ExpenseNoteDTO, Integer> nbrTransationsColumn;
     @FXML
-    private TableColumn<ExpenseNoteDTO, String> totalColumn;
+    private TableColumn<ExpenseNoteDTO, Float> totalColumn;
     @FXML
     private TableColumn<ExpenseNoteDTO, Status> statusColumn;
+    
 
  // SERVICES
 

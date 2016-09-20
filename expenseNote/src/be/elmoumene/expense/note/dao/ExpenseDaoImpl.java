@@ -192,7 +192,8 @@ public class ExpenseDaoImpl implements ExpenseDao {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select " + COLUMNS_WITH_ID + " ");
 		sql.append("from expense ");
-		sql.append("where person_id = ?");
+		sql.append("where person_id = ? ");
+		sql.append("and expense_note_id is null");
 
 		try {
             stm = con.prepareStatement(sql.toString());

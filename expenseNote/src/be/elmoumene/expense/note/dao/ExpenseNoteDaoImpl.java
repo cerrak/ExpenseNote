@@ -156,6 +156,7 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select " + COLUMNS_WITH_ID + " ");
 		sql.append("from expense_note ");
+		sql.append("where person_id = ? ");
 
 		try {
             stm = con.prepareStatement(sql.toString());
@@ -198,11 +199,13 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select " + COLUMNS_WITH_ID + " ");
 		sql.append("from expense_note ");
-		sql.append("where person_id = ?");
+		sql.append("where person_id = ? ");
+
 
 		try {
             stm = con.prepareStatement(sql.toString());
             stm.setLong(1, id);
+
             ResultSet res = stm.executeQuery();
 
             while(res.next() ){
