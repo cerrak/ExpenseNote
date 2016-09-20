@@ -301,7 +301,7 @@ public class PersonDTO {
 		model.setCity(entity.getCity());
 		model.setTitle(entity.getTitle());
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String formattedDate = sdf.format(entity.getBirthday().getTime());
 
 		model.setBirthday(DateUtil.parse(formattedDate));
