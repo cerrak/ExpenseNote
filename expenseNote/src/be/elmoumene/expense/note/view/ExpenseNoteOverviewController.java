@@ -88,20 +88,15 @@ public class ExpenseNoteOverviewController {
 
 
     	nameColumn.setCellValueFactory(row ->
-    		row.getValue().nameProperty());
+    									row.getValue().nameProperty());
+    	nbrTransationsColumn.setCellValueFactory(row ->
+    												new SimpleObjectProperty<Integer>(totalTransactionByExpenseNote(row.getValue().getExpenses())));
 
-    	//nbrTransationsColumn.setCellValueFactory(cellData ->  récupérer le nbr de transations et le montant total contenu dans une note de frais
-    	//	cellData.getValue().currencyProperty());
-
-    	totalColumn.setCellValueFactory(row -> new SimpleObjectProperty<Float>(totalAmountCalculation(row.getValue().getExpenses())
-    			//row.getValue().
-    			)
-    		//row.getValue()
-
-    			);
+    	totalColumn.setCellValueFactory(row ->
+    										new SimpleObjectProperty<Float>(totalAmountCalculation(row.getValue().getExpenses())));
 
     	statusColumn.setCellValueFactory(cellData ->
-    		new SimpleObjectProperty<Status>(cellData.getValue().getStatus()));
+    										new SimpleObjectProperty<Status>(cellData.getValue().getStatus()));
 
     	expenseNoteTable.setOnMousePressed(new EventHandler<MouseEvent>() {
     	    @Override
@@ -124,6 +119,16 @@ public class ExpenseNoteOverviewController {
 		}
 
     	return totalAmount;
+
+    }
+
+    public Integer totalTransactionByExpenseNote(List<ExpenseDTO> expenses){
+    	Integer totalTransaction = 0;
+
+    	for(int i=0; i<expenses.size(); i++){
+    		totalTransaction += 1;
+    	}
+    	return totalTransaction;
 
     }
 
