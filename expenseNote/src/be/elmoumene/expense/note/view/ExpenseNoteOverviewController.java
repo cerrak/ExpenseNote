@@ -3,9 +3,11 @@ package be.elmoumene.expense.note.view;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.List;
 
 import be.elmoumene.expense.note.MainApp;
 import be.elmoumene.expense.note.entity.Status;
+import be.elmoumene.expense.note.model.ExpenseDTO;
 import be.elmoumene.expense.note.model.ExpenseNoteDTO;
 import be.elmoumene.expense.note.service.ExpenseNoteService;
 import be.elmoumene.expense.note.service.FactoryService;
@@ -36,7 +38,7 @@ public class ExpenseNoteOverviewController {
     private TableColumn<ExpenseNoteDTO, Float> totalColumn;
     @FXML
     private TableColumn<ExpenseNoteDTO, Status> statusColumn;
-    
+
 
  // SERVICES
 
@@ -69,6 +71,7 @@ public class ExpenseNoteOverviewController {
      */
     @FXML
     private void initialize() {
+
         // Initialize the expense table with the columns.
     	dateColumn.setCellValueFactory(cellData ->
 
@@ -84,12 +87,19 @@ public class ExpenseNoteOverviewController {
     	);
 
 
-    	nameColumn.setCellValueFactory(cellData ->
-    		cellData.getValue().nameProperty());
-    	//nbrTransationsColumn.setCellValueFactory(cellData ->  Me débrouiller pour récupérer le nbr de transations
+    	nameColumn.setCellValueFactory(row ->
+    		row.getValue().nameProperty());
+
+    	//nbrTransationsColumn.setCellValueFactory(cellData ->  récupérer le nbr de transations et le montant total contenu dans une note de frais
     	//	cellData.getValue().currencyProperty());
-    	//totalColumn.setCellValueFactory(cellData ->
-    		//cellData.getValue().totalAmountProperty().asString());
+
+    	totalColumn.setCellValueFactory(row -> new SimpleObjectProperty<Float>(totalAmountCalculation(row.getValue().getExpenses())
+    			//row.getValue().
+    			)
+    		//row.getValue()
+
+    			);
+
     	statusColumn.setCellValueFactory(cellData ->
     		new SimpleObjectProperty<Status>(cellData.getValue().getStatus()));
 
@@ -102,8 +112,18 @@ public class ExpenseNoteOverviewController {
     	        }
     	    }
     	});
-//    	expenseNoteTable.getSelectionModel().selectedItemProperty().addListener(
-//				(observable, oldValue, newValue) -> showExpenseNoteDetails(newValue));
+
+
+    }
+
+    public Float totalAmountCalculation(List<ExpenseDTO> expenses){
+    	Float totalAmount = 0f;
+
+    	for (ExpenseDTO dto : expenses) {
+			totalAmount += dto.getAmount();
+		}
+
+    	return totalAmount;
 
     }
 

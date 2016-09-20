@@ -3,6 +3,7 @@ package be.elmoumene.expense.note.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.elmoumene.expense.note.dao.ExpenseDao;
 import be.elmoumene.expense.note.dao.ExpenseNoteDao;
 import be.elmoumene.expense.note.dao.FactoryDao;
 import be.elmoumene.expense.note.entity.ExpenseNote;
@@ -14,7 +15,8 @@ public class ExpenseNoteServiceImpl implements ExpenseNoteService {
 
 	private static ExpenseNoteService uniqueInstance = new ExpenseNoteServiceImpl();
 
-	private ExpenseNoteDao ExpenseNoteDao = FactoryDao.getExpenseNoteDao();
+	private ExpenseNoteDao expenseNoteDao = FactoryDao.getExpenseNoteDao();
+	private ExpenseDao expenseDao = FactoryDao.getExpenseDao();
 
 	public static ExpenseNoteService getInstance() {
 		return uniqueInstance;
@@ -24,7 +26,7 @@ public class ExpenseNoteServiceImpl implements ExpenseNoteService {
 	public ExpenseNoteDTO create(ExpenseNoteDTO dto) throws ExpenseNoteException {
 		// Business logic
 
-		ExpenseNote entity = ExpenseNoteDao.create(ExpenseNoteDTO.toEntity(dto));
+		ExpenseNote entity = expenseNoteDao.create(ExpenseNoteDTO.toEntity(dto));
 
 		return ExpenseNoteDTO.toDto(entity);
 	}
@@ -33,7 +35,7 @@ public class ExpenseNoteServiceImpl implements ExpenseNoteService {
 	public ExpenseNoteDTO update(ExpenseNoteDTO en) throws ExpenseNoteException {
 		// Business Logic
 
-		ExpenseNote entity = ExpenseNoteDao.update(ExpenseNoteDTO.toEntity(en));
+		ExpenseNote entity = expenseNoteDao.update(ExpenseNoteDTO.toEntity(en));
 
 		return ExpenseNoteDTO.toDto(entity);
 	}
@@ -55,18 +57,23 @@ public class ExpenseNoteServiceImpl implements ExpenseNoteService {
 
 		List<ExpenseNoteDTO> ExpenseNotesDto = new ArrayList<ExpenseNoteDTO>();
 
-		List<ExpenseNote> entities = ExpenseNoteDao.getExpenseNotesFromPerson(personDto.getId());
+		List<ExpenseNote> entities = expenseNoteDao.getExpenseNotesFromPerson(personDto.getId());
 
-		entities.forEach(entity -> ExpenseNotesDto.add(ExpenseNoteDTO.toDto(entity)));
+		entities.forEach(entity -> {
+				entity.setExpenses(expenseDao.getExpensesFromExpenseNoteId(entity.getId()));
+				ExpenseNotesDto.add(ExpenseNoteDTO.toDto(entity));
+			}
+		);
 
 		return ExpenseNotesDto;
 	}
+
 
 	@Override
 	public List<ExpenseNoteDTO> getExpenseNotes() {
 		List<ExpenseNoteDTO> expenseNotesDto = new ArrayList<ExpenseNoteDTO>();
 
-		List<ExpenseNote> entities = ExpenseNoteDao.getExpenseNotes();
+		List<ExpenseNote> entities = expenseNoteDao.getExpenseNotes();
 
 		entities.forEach(entity -> expenseNotesDto.add(ExpenseNoteDTO.toDto(entity)));
 
