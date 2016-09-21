@@ -23,4 +23,13 @@ public interface ExpenseDao {
 
 	public List<Expense> getExpensesFromExpenseNoteId(Long id);
 
+
+	/**
+	 *  Supprime l'id de la note de frais contenu dans la/les dépense/s.
+	 *
+	 * @param expenseNoteId
+	 * @author Mouaad
+	 */
+	public void detacheExpenseNote(Long expenseNoteId);
+
 }

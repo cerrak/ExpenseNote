@@ -119,11 +119,7 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
         }
 	}
 
-	@Override
-	public void delete(ExpenseNote en) {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public ExpenseNote getExpenseNoteById(Long id) {
@@ -217,6 +213,26 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
             System.out.println(e.toString());
         }
         return null;
+	}
+
+	@Override
+	public void delete(Long id) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("delete ");
+		sql.append("from expense_note ");
+		sql.append("where id = ?");
+
+		try {
+            stm = con.prepareStatement(sql.toString());
+            stm.setLong(1, id);
+
+            stm.executeUpdate();
+
+
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+
 	}
 
 }

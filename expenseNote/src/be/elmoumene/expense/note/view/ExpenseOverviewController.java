@@ -218,7 +218,7 @@ public class ExpenseOverviewController {
         alert.setContentText("Please select an expense in the table.");
 
         alert.showAndWait();
-    }
+    	}
 	}
 
 	public void handleCreateExpenseNote(){
@@ -231,5 +231,6 @@ public class ExpenseOverviewController {
 		mainApp.showExpenseNoteOverview();
 
 	}
+	
 
 }

@@ -238,5 +238,25 @@ public class ExpenseDaoImpl implements ExpenseDao {
 
 	}
 
+	@Override
+	public void detacheExpenseNote(Long id) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("update expense ");
+		sql.append("set expense_note_id = null ");
+		sql.append("where expense_note_id = ? ");
+
+
+		try {
+            stm = con.prepareStatement(sql.toString());
+            stm.setLong(1, id);
+            stm.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+
+	}
+
 
 }

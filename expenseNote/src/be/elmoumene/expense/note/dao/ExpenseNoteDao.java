@@ -12,7 +12,7 @@ public interface ExpenseNoteDao {
 
 	public ExpenseNote update(ExpenseNote en) throws ExpenseNoteException;
 
-	public void delete(ExpenseNote en);
+	public void delete(Long id);
 
 	public ExpenseNote getExpenseNoteById(Long id);
 

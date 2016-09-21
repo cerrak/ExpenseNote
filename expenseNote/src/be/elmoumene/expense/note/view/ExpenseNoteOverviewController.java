@@ -18,6 +18,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
@@ -60,10 +62,6 @@ public class ExpenseNoteOverviewController {
     }
 
 
-//    SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
-//	String formattedDate = sdf.format(entity.getDate().getTime());
-//
-//	model.setDateExpense(DateUtil.parse(formattedDate));
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -226,7 +224,24 @@ public class ExpenseNoteOverviewController {
 		mainApp.showExpenseOverview();
 
 	}
+
+	public void handelDelete() {
 
+		ExpenseNoteDTO dto = expenseNoteTable.getSelectionModel().getSelectedItem();
+
+		if (dto == null) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Expense Note Selected");
+			alert.setContentText("Please select an Expense Note in the table.");
+			alert.showAndWait();
+		} else {
+			expenseNoteService.delete(dto);
+			loadData();
+		}
+
+	}
 
 
 }

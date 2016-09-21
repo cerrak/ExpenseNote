@@ -168,29 +168,29 @@ public class PersonOverviewController {
 
     /**
      * Called when the user clicks on the delete button.
-     * @throws ExpenseNoteException 
+     * @throws ExpenseNoteException
      */
     @FXML
     private void handleDeletePerson() throws ExpenseNoteException {
         int selectedIndex = personTable.getSelectionModel().getSelectedIndex();
-        
+
         PersonDTO p = personTable.getSelectionModel().getSelectedItem();
-                
+
         if (selectedIndex >= 0){
-            
-        	if(p.getUserRole().equals(UserRole.ADMIN)){       	
+
+        	if(p.getUserRole().equals(UserRole.ADMIN)){
             	Alert alert = new Alert(AlertType.ERROR);
                 alert.initOwner(mainApp.getPrimaryStage());
                 alert.setTitle("Error");
                 alert.setHeaderText("Bad user selected");
-                alert.setContentText("This user can't be deleted");
+                alert.setContentText("This user cannot be deleted");
                 alert.showAndWait();
             	return;
             }
-        	
+
         	personTable.getItems().remove(selectedIndex);
         	personService.delete(p);
-        
+
         }else{
           //nothing selected
         	Alert alert = new Alert(AlertType.WARNING);

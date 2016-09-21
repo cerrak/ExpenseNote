@@ -42,8 +42,11 @@ public class ExpenseNoteServiceImpl implements ExpenseNoteService {
 
 	@Override
 	public void delete(ExpenseNoteDTO en) {
-		// TODO Auto-generated method stub
+		// 1)  supprime l'id de la note de frais contenu dans la/les dépense/s.
+		expenseDao.detacheExpenseNote(en.getId());
 
+		// 2)
+		expenseNoteDao.delete(en.getId());
 	}
 
 	@Override
