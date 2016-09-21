@@ -58,7 +58,8 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 		List<Expense> entities = expenseDao.getAvailableExpense(personDto.getId());
 
-		entities.forEach(entity -> expensesDto.add(ExpenseDTO.expenseToModel(entity)));
+		if(entities!=null)
+			entities.forEach(entity -> expensesDto.add(ExpenseDTO.expenseToModel(entity)));
 
 		return expensesDto;
 	}
@@ -68,8 +69,9 @@ public class ExpenseServiceImpl implements ExpenseService {
 		List<ExpenseDTO> expensesDto = new ArrayList<ExpenseDTO>();
 
 		List<Expense> entities = expenseDao.getExpenses();
-
-		entities.forEach(entity -> expensesDto.add(ExpenseDTO.expenseToModel(entity)));
+		
+		if(entities!=null)
+			entities.forEach(entity -> expensesDto.add(ExpenseDTO.expenseToModel(entity)));
 
 		return expensesDto;
 	}
@@ -79,8 +81,9 @@ public class ExpenseServiceImpl implements ExpenseService {
 		List<ExpenseDTO> expensesDto = new ArrayList<ExpenseDTO>();
 
 		List<Expense> entities = expenseDao.getExpensesFromExpenseNoteId(id);
-
-		entities.forEach(entity -> expensesDto.add(ExpenseDTO.expenseToModel(entity)));
+		
+		if(entities!=null)
+			entities.forEach(entity -> expensesDto.add(ExpenseDTO.expenseToModel(entity)));
 
 		return expensesDto;
 	}
