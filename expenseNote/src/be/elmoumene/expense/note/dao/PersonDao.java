@@ -11,7 +11,7 @@ public interface PersonDao {
 
 	public Person update(Person p)throws ExpenseNoteException;
 
-	public void delete(Person p);
+	public void delete(Person p) throws ExpenseNoteException;
 
 	public Person getPersonById(Long id);
 

@@ -114,8 +114,20 @@ public class PersonDaoImpl implements PersonDao {
 	}
 
 	@Override
-	public void delete(Person p) {
-		// TODO Auto-generated method stub
+	public void delete(Person p) throws ExpenseNoteException {
+		StringBuilder sql = new StringBuilder();
+		sql.append("Update person ");
+		sql.append("set deleted = ? ");
+		sql.append("where id = "+ p.getId());
+
+        try {
+            stm = con.prepareStatement(sql.toString());
+            stm.setBoolean(1, true);
+            stm.executeUpdate();
+
+        } catch (Exception e) {
+        	throw new ExpenseNoteException("User delete in error", e);
+        }
 
 	}
 
@@ -199,6 +211,7 @@ public class PersonDaoImpl implements PersonDao {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select " + COLUMNS_WITH_ID + " ");
 		sql.append("from person ");
+		sql.append("where deleted is false ");
 
 		try {
             stm = con.prepareStatement(sql.toString());
