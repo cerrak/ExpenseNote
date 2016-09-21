@@ -3,6 +3,8 @@ package be.elmoumene.expense.note.view;
 import java.io.IOException;
 
 import be.elmoumene.expense.note.MainApp;
+import be.elmoumene.expense.note.entity.UserRole;
+import be.elmoumene.expense.note.exception.ExpenseNoteException;
 import be.elmoumene.expense.note.model.PersonDTO;
 import be.elmoumene.expense.note.service.FactoryService;
 import be.elmoumene.expense.note.service.PersonService;
@@ -166,21 +168,36 @@ public class PersonOverviewController {
 
     /**
      * Called when the user clicks on the delete button.
+     * @throws ExpenseNoteException 
      */
     @FXML
-    private void handleDeletePerson() {
+    private void handleDeletePerson() throws ExpenseNoteException {
         int selectedIndex = personTable.getSelectionModel().getSelectedIndex();
+        
+        PersonDTO p = personTable.getSelectionModel().getSelectedItem();
+                
         if (selectedIndex >= 0){
+            
+        	if(p.getUserRole().equals(UserRole.ADMIN)){       	
+            	Alert alert = new Alert(AlertType.ERROR);
+                alert.initOwner(mainApp.getPrimaryStage());
+                alert.setTitle("Error");
+                alert.setHeaderText("Bad user selected");
+                alert.setContentText("This user can't be deleted");
+                alert.showAndWait();
+            	return;
+            }
+        	
         	personTable.getItems().remove(selectedIndex);
-        }
-        else{
+        	personService.delete(p);
+        
+        }else{
           //nothing selected
         	Alert alert = new Alert(AlertType.WARNING);
             alert.initOwner(mainApp.getPrimaryStage());
             alert.setTitle("No Selection");
             alert.setHeaderText("No Person Selected");
             alert.setContentText("Please select a person in the table.");
-
             alert.showAndWait();
         }
     }

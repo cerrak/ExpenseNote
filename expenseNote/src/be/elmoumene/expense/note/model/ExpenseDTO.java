@@ -218,7 +218,7 @@ public class ExpenseDTO {
 		model.setCurrency(entity.getCurrency());
 		model.setExpenseCategory(entity.getExpenseCategory());
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		String formattedDate = sdf.format(entity.getDate().getTime());
 
 		model.setDateExpense(DateUtil.parse(formattedDate));

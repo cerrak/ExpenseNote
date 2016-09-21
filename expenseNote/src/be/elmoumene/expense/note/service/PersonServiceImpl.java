@@ -45,9 +45,8 @@ public class PersonServiceImpl  implements PersonService{
 	}
 
 	@Override
-	public void delete(PersonDTO p) {
-		// TODO Auto-generated method stub
-
+	public void delete(PersonDTO p) throws ExpenseNoteException {
+		personDao.delete(PersonDTO.personToEntity(p));
 	}
 
 	@Override

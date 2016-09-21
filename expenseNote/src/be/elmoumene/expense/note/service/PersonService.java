@@ -12,7 +12,7 @@ public interface PersonService {
 
 	public PersonDTO update(PersonDTO p) throws ExpenseNoteException;
 
-	public void delete(PersonDTO p);
+	public void delete(PersonDTO p) throws ExpenseNoteException;
 
 	public PersonDTO getPersonById(Long id);
 
