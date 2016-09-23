@@ -19,6 +19,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -85,11 +86,13 @@ public class ExpenseOverviewController {
     		cellData.getValue().currencyProperty());
     	amountColumn.setCellValueFactory(cellData ->
     		cellData.getValue().amountProperty().asObject());
-    	receiptColumn.setCellValueFactory(cellData ->
-    		cellData.getValue().receiptProperty());
     	categoryColumn.setCellValueFactory(cellData ->
     		cellData.getValue().categoryProperty().asString());
 
+
+    	receiptColumn.setCellValueFactory(cellData ->cellData.getValue().receiptProperty());
+
+    	receiptColumn.setCellFactory(CheckBoxTableCell.forTableColumn(receiptColumn));
 
     	showExpenseDetails(null);
     	expenseTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -129,7 +132,7 @@ public class ExpenseOverviewController {
 
 	public void loadData() {
         // Add observable list data to the table
-        expenseTable.setItems(FXCollections.observableArrayList(expenseService.getAvailableExpense(mainApp.getUser())));
+        expenseTable.setItems(FXCollections.observableArrayList(expenseService.getAvailableExpenses(mainApp.getUser())));
 
 	}
 
@@ -187,7 +190,7 @@ public class ExpenseOverviewController {
 
 	        // Show the dialog and wait until the user closes it
 	        dialogStage.showAndWait();
-	        
+
 
 	        return controller.isOkClicked();
 	    } catch (IOException e) {
@@ -231,6 +234,6 @@ public class ExpenseOverviewController {
 		mainApp.showExpenseNoteOverview();
 
 	}
-	
+
 
 }

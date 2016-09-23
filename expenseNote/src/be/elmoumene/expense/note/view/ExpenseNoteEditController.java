@@ -155,7 +155,7 @@ public class ExpenseNoteEditController {
 	}
 
 	 public void load(){
-	    	List<ExpenseDTO> expenses = expenseService.getAvailableExpense(mainApp.getUser());
+	    	List<ExpenseDTO> expenses = expenseService.getAvailableExpenses(mainApp.getUser());
 	    	availableExpenses.getItems().addAll(expenses);
 	    }
 

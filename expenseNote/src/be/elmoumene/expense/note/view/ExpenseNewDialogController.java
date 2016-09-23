@@ -101,6 +101,8 @@ import javafx.stage.Stage;
 		supplierField.setText(expense.getSupplier());
 		commentField.setText(expense.getComment());
 
+		receipt.setSelected(expense.getReceipt() == null ? false : true);
+
 
 		if (expense.getDateExpense() != null)
 		dateField.setText(DateUtil.format(expense.getDateExpense()));

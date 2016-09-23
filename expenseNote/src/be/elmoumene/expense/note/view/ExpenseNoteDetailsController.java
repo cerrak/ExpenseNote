@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -98,6 +99,7 @@ public class ExpenseNoteDetailsController {
     		cellData.getValue().receiptProperty());
     	categoryColumn.setCellValueFactory(cellData ->
     		cellData.getValue().categoryProperty().asString());
+    	receiptColumn.setCellFactory(CheckBoxTableCell.forTableColumn(receiptColumn));
 
 
 

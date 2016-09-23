@@ -224,6 +224,7 @@ public class ExpenseDTO {
 		model.setDateExpense(DateUtil.parse(formattedDate));
 		model.setSupplier(entity.getSupplier());
 		model.setAmount(entity.getAmount());
+		model.setReceipt(entity.getReceipt());
 		model.setPerson(PersonDTO.personToModel(entity.getPerson()));
 
 		return model;

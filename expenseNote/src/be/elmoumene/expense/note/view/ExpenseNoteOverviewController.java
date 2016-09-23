@@ -40,6 +40,8 @@ public class ExpenseNoteOverviewController {
     private TableColumn<ExpenseNoteDTO, Float> totalColumn;
     @FXML
     private TableColumn<ExpenseNoteDTO, Status> statusColumn;
+    @FXML
+    private TableColumn<ExpenseNoteDTO, Status> currencyColumn;
 
 
  // SERVICES
@@ -73,26 +75,14 @@ public class ExpenseNoteOverviewController {
         // Initialize the expense table with the columns.
     	dateColumn.setCellValueFactory(cellData ->
 
-	    	new SimpleObjectProperty<LocalDate>(
-	    			DateUtil.parse(
-	    					new SimpleDateFormat("dd.MM.yyyy").format(
-	    							cellData.getValue().getCeationDate().getTime()
-	    							)
-	    					)
-	    	)
-
-
-    	);
-
-
-    	nameColumn.setCellValueFactory(row ->
-    									row.getValue().nameProperty());
-    	nbrTransationsColumn.setCellValueFactory(row ->
-    												new SimpleObjectProperty<Integer>(totalTransactionByExpenseNote(row.getValue().getExpenses())));
-
-    	totalColumn.setCellValueFactory(row ->
-    										new SimpleObjectProperty<Float>(totalAmountCalculation(row.getValue().getExpenses())));
-
+	    	new SimpleObjectProperty<LocalDate>(DateUtil.parse(new SimpleDateFormat("dd.MM.yyyy").format(
+	    									cellData.getValue().getCeationDate().getTime()))));
+    	nameColumn.setCellValueFactory(cellData ->
+    										cellData.getValue().nameProperty());
+    	nbrTransationsColumn.setCellValueFactory(cellData ->
+    												new SimpleObjectProperty<Integer>(totalTransactionByExpenseNote(cellData.getValue().getExpenses())));
+    	totalColumn.setCellValueFactory(cellData ->
+    										new SimpleObjectProperty<Float>(totalAmountCalculation(cellData.getValue().getExpenses())));
     	statusColumn.setCellValueFactory(cellData ->
     										new SimpleObjectProperty<Status>(cellData.getValue().getStatus()));
 

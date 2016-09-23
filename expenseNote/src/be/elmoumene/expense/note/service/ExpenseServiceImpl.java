@@ -52,7 +52,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 	}
 
 	@Override
-	public List<ExpenseDTO> getAvailableExpense(PersonDTO personDto) { //question 4
+	public List<ExpenseDTO> getAvailableExpenses(PersonDTO personDto) { //question 4
 
 		List<ExpenseDTO> expensesDto = new ArrayList<ExpenseDTO>();
 

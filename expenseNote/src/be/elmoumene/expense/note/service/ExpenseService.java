@@ -18,7 +18,7 @@ public interface ExpenseService {
 
 	public List<ExpenseDTO> getExpenses();
 
-	public List<ExpenseDTO> getAvailableExpense(PersonDTO personDto);
+	public List<ExpenseDTO> getAvailableExpenses(PersonDTO personDto);
 
 	public List<ExpenseDTO> getExpensesFromExpenseNoteId(Long id);
 
