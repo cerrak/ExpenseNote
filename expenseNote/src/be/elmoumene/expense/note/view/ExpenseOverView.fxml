@@ -70,6 +70,6 @@
          </items>
       </SplitPane>
       <Button layoutX="698.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleNewExpense" prefHeight="25.0" prefWidth="101.0" text="Add expense" AnchorPane.rightAnchor="14.0" />
-      <Button layoutX="572.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleEditExpense" prefHeight="25.0" prefWidth="101.0" text="Modify expense" />
+      <Button layoutX="572.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleEditExpense" prefHeight="25.0" prefWidth="101.0" text="Edit expense" />
    </children>
 </AnchorPane>

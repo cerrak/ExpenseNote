@@ -100,7 +100,6 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 		// UPDATE
 		StringBuilder sql = new StringBuilder();
 		sql.append("Update expense_note ");
-		//sql.append("("+COLUMNS+") ");
 		sql.append("set en_name=?, comment=?, en_status=? ");
 		sql.append("where id = "+ en.getId());
 

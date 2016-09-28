@@ -117,8 +117,6 @@ public class ExpenseNoteEditController {
 
     }
 
-
-
 	public ExpenseNoteDTO getExpenseNote() {
 		return expenseNote;
 	}

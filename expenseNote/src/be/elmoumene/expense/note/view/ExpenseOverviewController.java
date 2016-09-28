@@ -182,7 +182,7 @@ public class ExpenseOverviewController {
 	        Scene scene = new Scene(page);
 	        dialogStage.setScene(scene);
 
-	        // Set the person into the controller.
+	        // Set the expense into the controller.
 	        ExpenseNewDialogController controller = loader.getController();
 	        controller.setDialogStage(dialogStage);
 	        controller.setExpense(expense);

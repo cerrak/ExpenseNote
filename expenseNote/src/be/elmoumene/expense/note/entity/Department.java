@@ -2,14 +2,14 @@ package be.elmoumene.expense.note.entity;
 
 public class Department {
 
-	private Float id;
+	private Long id;
 	private String name;
 
 
-	public Float getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Float id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
