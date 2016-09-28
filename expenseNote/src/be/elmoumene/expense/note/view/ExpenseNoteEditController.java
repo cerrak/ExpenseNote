@@ -113,6 +113,7 @@ public class ExpenseNoteEditController {
     public void cancelExpenseNote(){
     	//business logic
     	//showExpenseNoteOverview();
+    	dialogStage.close();
 
     }
 
@@ -124,6 +125,20 @@ public class ExpenseNoteEditController {
 
 	public void setExpenseNote(ExpenseNoteDTO expenseNote) {
 		this.expenseNote = expenseNote;
+
+		if(expenseNote.getId() != null)
+			commentField.setText(expenseNote.getComment());
+			nameField.setText(expenseNote.getName());
+			initialize();
+
+			List<ExpenseDTO> selectedItem = availableExpenses.getItems();
+     		expenseNote.setExpenses(selectedItem);
+
+
+
+        	 okClicked = true;
+             FactoryController.getExpenseNoteOverviewController().loadData();
+             dialogStage.close();
 	}
 
 	public void setDialogStage(Stage dialogStage) {
@@ -166,5 +181,9 @@ public class ExpenseNoteEditController {
 	 public void setMainApp(MainApp mainApp) {
 			this.mainApp = mainApp;
 		}
+
+	 public boolean isOkClicked() {
+	        return okClicked;
+	    }
 
 }

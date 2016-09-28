@@ -106,7 +106,7 @@
       <HBox layoutX="505.0" layoutY="56.0" prefHeight="25.0" prefWidth="299.0" spacing="5.0" AnchorPane.leftAnchor="505.0" AnchorPane.rightAnchor="6.0">
          <children>
             <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="138.0" text="Confirm and Print" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="138.0" text="Cancel  expense note" />
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="138.0" text="Cancel expense note" />
          </children>
       </HBox>
    </children>

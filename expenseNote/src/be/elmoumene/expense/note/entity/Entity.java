@@ -2,15 +2,16 @@ package be.elmoumene.expense.note.entity;
 
 public class Entity {
 
-	private Float id;
+	private Long id;
 	private String name;
-	private String entity;
+	private String country;
 	private String city;
 	private String locality;
-	public Float getId() {
+
+	public Long getId() {
 		return id;
 	}
-	public void setId(Float id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -19,11 +20,11 @@ public class Entity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getEntity() {
-		return entity;
+	public String getCountry() {
+		return country;
 	}
-	public void setEntity(String entity) {
-		this.entity = entity;
+	public void setCountry(String country) {
+		this.country = country;
 	}
 	public String getCity() {
 		return city;

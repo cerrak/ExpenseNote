@@ -17,4 +17,8 @@ public abstract class FactoryDao {
 	  public static ExpenseNoteDao getExpenseNoteDao(){
 		  return ExpenseNoteDaoImpl.getInstance();
 	  }
+
+	  public static EntityDao getEntityDao(){
+		  return EntityDaoImpl.getInstance();
+	  }
 }

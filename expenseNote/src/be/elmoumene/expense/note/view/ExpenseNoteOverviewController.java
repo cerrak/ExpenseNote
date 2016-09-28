@@ -20,8 +20,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -42,6 +44,14 @@ public class ExpenseNoteOverviewController {
     private TableColumn<ExpenseNoteDTO, Status> statusColumn;
     @FXML
     private TableColumn<ExpenseNoteDTO, Status> currencyColumn;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField commentField;
+    @FXML
+    private ListView<ExpenseDTO> availableExpenses;
+    @FXML
+    private ListView<ExpenseDTO> selectedExpenses;
 
 
  // SERVICES
@@ -136,36 +146,13 @@ public class ExpenseNoteOverviewController {
 
 	}
 
-	public void showExpenseNoteDetail(ExpenseNoteDTO expenseNote){
-		try {
-	        // Load the fxml file and create a new stage for the popup dialog.
-	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(MainApp.class.getResource("view/ExpenseNoteOverview.fxml"));
-	        AnchorPane page = (AnchorPane) loader.load();
+	public void showExpenseNoteDetail(ExpenseNoteDTO dto){
+		//if(dto != null){
+			//fill the data's with the info from the expense note
 
-	        // Create the dialog Stage.
-	        Stage dialogStage = new Stage();
-	        dialogStage.setTitle("Expense Note Detail");
-	        dialogStage.initModality(Modality.WINDOW_MODAL);
-	        dialogStage.initOwner(mainApp.getPrimaryStage());
-	        Scene scene = new Scene(page);
-	        dialogStage.setScene(scene);
 
-	        // Set the person into the controller.
-	        ExpenseNoteOverviewController controller = loader.getController();
-	        //controller.setDialogStage(dialogStage);
-	        //controller.setExpenseNote(expenseNote);
-	        controller.setMainApp(mainApp);
-
-	        //controller.load();
-
-	        // Show the dialog and wait until the user closes it
-	        dialogStage.showAndWait();
-
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
 	}
+
 
 	public void showExpenseNewDialog(ExpenseNoteDTO expenseNote) {
 	    try {
@@ -198,6 +185,40 @@ public class ExpenseNoteOverviewController {
 	    }
 	}
 
+	public boolean showExpenseNoteEditDialog(ExpenseNoteDTO expenseNote){
+		try {
+	        // Load the fxml file and create a new stage for the popup dialog.
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(MainApp.class.getResource("view/ExpenseNoteEditDialog.fxml"));
+	        AnchorPane page = (AnchorPane) loader.load();
+
+	        // Create the dialog Stage.
+	        Stage dialogStage = new Stage();
+	        dialogStage.setTitle("Add/Remove Expenses");
+	        dialogStage.initModality(Modality.WINDOW_MODAL);
+	        dialogStage.initOwner(mainApp.getPrimaryStage());
+	        Scene scene = new Scene(page);
+	        dialogStage.setScene(scene);
+
+	        // Set the expenses into the controller.
+	        ExpenseNoteEditController controller = loader.getController();
+	        controller.setDialogStage(dialogStage);
+	        controller.setExpenseNote(expenseNote);
+	        controller.setMainApp(mainApp);
+
+	        controller.load();
+
+	        // Show the dialog and wait until the user closes it
+	        dialogStage.showAndWait();
+
+	        return controller.isOkClicked();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 	public void handleNewExpenseNote(){
 		ExpenseNoteDTO tempExpense = new ExpenseNoteDTO();
 		showExpenseNewDialog(tempExpense);
@@ -205,9 +226,27 @@ public class ExpenseNoteOverviewController {
 	}
 
 	public void handleEditExpenseNote(){
-
 		//boolean okClicked = showExpenseNoteEditDialog(tempExpense);
+		ExpenseNoteDTO selectedExpenseNote = expenseNoteTable.getSelectionModel().getSelectedItem();
+    	if (selectedExpenseNote != null) {
+        boolean okClicked = showExpenseNoteEditDialog(selectedExpenseNote);
+        if (okClicked) {
+            showExpenseNoteDetail(selectedExpenseNote);
+        	}
+
+    	} else {
+	        // Nothing selected.
+	        Alert alert = new Alert(AlertType.WARNING);
+	        alert.initOwner(mainApp.getPrimaryStage());
+	        alert.setTitle("No Selection");
+	        alert.setHeaderText("No Expense Note Selected");
+	        alert.setContentText("Please select an expense Note in the table.");
+
+	        alert.showAndWait();
+    	}
+
 	}
+
 
 	public void handelShowExpense(){
 
