@@ -32,15 +32,11 @@ public class PersonDTO {
 	private IntegerProperty postalCode;
 	private StringProperty city;
 	private ObjectProperty<LocalDate> birthday;
-	private StringProperty entity;
 	private StringProperty mobile;
 	private StringProperty email;
-	private StringProperty department;
-	private StringProperty approbateur;
-	private StringProperty controller;
 	private StringProperty title;
 	private BooleanProperty isActive;
-	private StringProperty passwordField;
+	private StringProperty password;
 	private UserRole userRole;
 
 
@@ -62,16 +58,16 @@ public class PersonDTO {
 	}
 
 	public String getPasswordField() {
-		return passwordField==null?null:passwordField.get();
+		return password==null?null:password.get();
 	}
 
 	public StringProperty passwordFieldProperty(){
-		return passwordField;
+		return password;
 
 	}
 
 	public void setPasswordField(String passwordField) {
-		this.passwordField = new SimpleStringProperty(passwordField);
+		this.password = new SimpleStringProperty(passwordField);
 	}
 
 	public String getFirstName() {
@@ -158,19 +154,6 @@ public class PersonDTO {
 		 this.email = new SimpleStringProperty(email);
 	    }
 
-	public String getEntity() {
-		return entity==null?null:entity.get();
-	}
-
-
-	public StringProperty EntityProperty() {
-	     return entity;
-	 }
-
-	public void setEntity(String entity) {
-		this.entity = new SimpleStringProperty(entity);
-	}
-
     public String getMobile() {
         return mobile==null?null:mobile.get();
     }
@@ -182,42 +165,6 @@ public class PersonDTO {
     public StringProperty mobileProperty() {
         return mobile;
     }
-
-	public String getApprobateur() {
-		return approbateur==null?null:approbateur.get();
-	}
-
-	  public StringProperty approbateurProperty() {
-	        return approbateur;
-	  }
-
-	public void setApprobateur(String approbateur) {
-		this.approbateur = new SimpleStringProperty(approbateur);
-	}
-
-	public String getDepartment(){
-		return department==null?null:department.get();
-	}
-
-	  public StringProperty departmentProperty() {
-	        return department;
-	  }
-
-	public void setDepartment(String departement){
-		this.department = new SimpleStringProperty(departement);
-	}
-
-	public String getController(){
-		return controller==null?null:controller.get();
-	}
-
-	public StringProperty controllerProperty() {
-        return controller;
-    }
-
-	public void setController(String controller){
-		this.controller = new SimpleStringProperty(controller);
-	}
 
     public String getTitle() {
         return title==null?null:title.get();
@@ -274,12 +221,8 @@ public class PersonDTO {
 		}
 
         entity.setBirthday(cal);
-		entity.setEntity(model.getEntity());
 		entity.setMobile(model.getMobile());
 		entity.setEmail(model.getEmail());
-		entity.setDepartment(model.getDepartment());
-		entity.setSupervisor(model.getApprobateur());
-		entity.setController(model.getController());
 		entity.setIsActive(model.getIsActive());
 		entity.setPassword(model.getPasswordField());
 		entity.setUserRole(model.getUserRole());
@@ -306,12 +249,8 @@ public class PersonDTO {
 
 		model.setBirthday(DateUtil.parse(formattedDate));
 
-		model.setEntity(entity.getEntity());
 		model.setMobile(entity.getMobile());
 		model.setEmail(entity.getEmail());
-		model.setDepartment(entity.getDepartment());
-		model.setApprobateur(entity.getSupervisor());
-		model.setController(entity.getController());
 		model.setIsActive(entity.getIsActive());
 		model.setPasswordField(entity.getPassword());
 		model.setUserRole(entity.getUserRole());

@@ -9,3 +9,8 @@ ALTER TABLE expense MODIFY receipt tinyint(1) DEFAULT '0';
 ALTER TABLE expense MODIFY expense_date DATE not null;
 
 ALTER TABLE expense_note MODIFY en_date DATE not null;
+
+ALTER TABLE person DROP COLUMN entity;
+ALTER TABLE person DROP COLUMN department;
+ALTER TABLE person DROP COLUMN supervisor;
+ALTER TABLE person DROP COLUMN controller;

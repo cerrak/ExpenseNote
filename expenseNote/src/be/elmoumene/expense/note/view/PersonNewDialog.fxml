@@ -82,10 +82,15 @@
             <TextField fx:id="departmentField" prefHeight="7.0" prefWidth="124.0" styleClass="label-bright" GridPane.columnIndex="1" />
             <TextField fx:id="approbateurField" prefHeight="5.0" prefWidth="124.0" styleClass="label-bright" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="controllerField" prefHeight="3.0" prefWidth="124.0" styleClass="label-bright" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField prefHeight="37.0" prefWidth="145.0" styleClass="label-bright" GridPane.columnIndex="1" />
+            <TextField styleClass="label-bright" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField styleClass="label-bright" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <TextField fx:id="entityField" layoutX="601.0" layoutY="260.0" prefHeight="17.0" prefWidth="145.0" styleClass="label-bright" />
       <ComboBox fx:id="roleComboBox" layoutX="594.0" layoutY="366.0" prefWidth="150.0" promptText="Select role" />
+      <TextField layoutX="605.0" layoutY="87.0" prefHeight="17.0" prefWidth="145.0" styleClass="label-bright" />
+      <ComboBox fx:id="roleComboBox" layoutX="603.0" layoutY="367.0" prefWidth="150.0" promptText="Select role" />
       <CheckBox fx:id="isActiv" layoutX="136.0" layoutY="91.0" mnemonicParsing="false" text="Enable" />
       <ButtonBar fx:id="buttonBar" layoutX="14.0" layoutY="593.0" prefHeight="40.0" prefWidth="275.0">
          <buttons>

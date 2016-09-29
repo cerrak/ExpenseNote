@@ -48,14 +48,6 @@ public class PersonOverviewController {
     private Label emailLabel;
     @FXML
     private Label mobileLabel;
-    @FXML
-    private Label entityLabel;
-    @FXML
-    private Label departmentLabel;
-    @FXML
-    private Label approbateurLabel;
-    @FXML
-    private Label controllerLabel;
 
 
     // SERVICES
@@ -141,10 +133,6 @@ public class PersonOverviewController {
     		birthdayLabel.setText(person.getBirthday().toString());
     		titleLabel.setText(person.getTitle());
     		emailLabel.setText(person.getEmail());
-    		entityLabel.setText(person.getEntity());
-    		departmentLabel.setText(person.getDepartment());
-    		approbateurLabel.setText(person.getApprobateur());
-    		controllerLabel.setText(person.getController());
 
 
     	} else {
@@ -159,9 +147,6 @@ public class PersonOverviewController {
     		mobileLabel.setText("");
     		emailLabel.setText("");
     		titleLabel.setText("");
-    		approbateurLabel.setText("");
-    		controllerLabel.setText("");
-    		departmentLabel.setText("");
 
     	}
     }
@@ -209,9 +194,7 @@ public class PersonOverviewController {
     @FXML
     private void handleNewPerson() {
         PersonDTO tempPerson = new PersonDTO();
-        boolean okClicked = showPersonNewDialog(tempPerson);
-
-
+        showPersonNewDialog(tempPerson);
     }
 
     /**

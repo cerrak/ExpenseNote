@@ -40,14 +40,6 @@ public class PersonNewDialogController {
     @FXML
     private TextField mobileField;
     @FXML
-    private TextField entityField;
-    @FXML
-    private TextField departmentField;
-    @FXML
-    private TextField approbateurField;
-    @FXML
-    private TextField controllerField;
-    @FXML
     private TextField titleField;
     @FXML
     private ComboBox<String> roleComboBox;
@@ -122,10 +114,6 @@ public class PersonNewDialogController {
 
 		titleField.setText(person.getTitle());
 		emailField.setText(person.getEmail());
-		entityField.setText(person.getEntity());
-		departmentField.setText(person.getDepartment());
-		approbateurField.setText(person.getApprobateur());
-		controllerField.setText(person.getController());
 		passwordField.setText(person.getPasswordField());
 
 		if (person.getUserRole() != null)
@@ -175,10 +163,6 @@ public class PersonNewDialogController {
             person.setBirthday(DateUtil.parse(birthdayField.getText()));
             person.setEmail(emailField.getText());
             person.setMobile(mobileField.getText());
-            person.setEntity(entityField.getText());
-            person.setDepartment(departmentField.getText());
-            person.setApprobateur(approbateurField.getText());
-            person.setController(controllerField.getText());
             person.setTitle(titleField.getText());
             person.setUserRole(UserRole.fromString(roleComboBox.getSelectionModel().getSelectedItem()));
             person.setPasswordField(passwordField.getText());
@@ -216,10 +200,6 @@ public class PersonNewDialogController {
             person.setBirthday(DateUtil.parse(birthdayField.getText()));
             person.setEmail(emailField.getText());
             person.setMobile(mobileField.getText());
-            person.setEntity(entityField.getText());
-            person.setDepartment(departmentField.getText());
-            person.setApprobateur(approbateurField.getText());
-            person.setController(controllerField.getText());
             person.setTitle(titleField.getText());
             person.setUserRole(UserRole.fromString(roleComboBox.getSelectionModel().getSelectedItem()));
             person.setPasswordField(passwordField.getText());

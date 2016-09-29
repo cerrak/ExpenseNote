@@ -7,6 +7,7 @@ public class Entity {
 	private String country;
 	private String city;
 	private String locality;
+	
 
 	public Long getId() {
 		return id;

@@ -37,8 +37,6 @@ public class PersonServiceImpl  implements PersonService{
 	public PersonDTO update(PersonDTO p) throws ExpenseNoteException{
 		// Business Logic
 
-		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField()));
-
 		Person entity = personDao.update(PersonDTO.personToEntity(p));
 
 		return PersonDTO.personToModel(entity);

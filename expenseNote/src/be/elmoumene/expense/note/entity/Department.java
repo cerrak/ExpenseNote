@@ -4,8 +4,9 @@ public class Department {
 
 	private Long id;
 	private String name;
-
-
+	private Entity entity;
+	private Person controller; 
+	
 	public Long getId() {
 		return id;
 	}
@@ -17,6 +18,18 @@ public class Department {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Entity getEntity() {
+		return entity;
+	}
+	public void setEntity(Entity entity) {
+		this.entity = entity;
+	}
+	public Person getController() {
+		return controller;
+	}
+	public void setController(Person controller) {
+		this.controller = controller;
 	}
 
 

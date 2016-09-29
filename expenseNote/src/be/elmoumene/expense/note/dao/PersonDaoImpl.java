@@ -8,7 +8,10 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import be.elmoumene.expense.note.database.ConnectionHSQL;
 import be.elmoumene.expense.note.entity.Person;
@@ -17,13 +20,23 @@ import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
 public class PersonDaoImpl implements PersonDao {
 
-	private final static String COLUMNS = "firstname, lastname, street, postalcode, city, "
-											+ "birthday, entity, mobile, email, department, "
-											+ "supervisor, controller, title, isactive, userrole, "
-											+ "passwordfield ";
+	private final static String ID = "id";
+	private final static String FIRSTNAME = "firstname"; 
+	private final static String LASTNAME = "lastname"; 
+	private final static String STREET = "street"; 
+	private final static String POSTAL_CODE = "postalcode"; 
+	private final static String CITY = "city"; 
+	private final static String BIRTHDAY = "birthday"; 
+	private final static String MOBILE = "mobile"; 
+	private final static String EMAIL = "email"; 
+	private final static String TITLE = "title"; 
+	private final static String IS_ACTIVE = "isactive"; 
+	private final static String USER_ROLE = "userrole"; 
+	private final static String PASSWORD_FIELD = "passwordfield"; 
 
-	private final static String COLUMNS_WITH_ID = COLUMNS + ", id";
-
+	private static Map<String, Integer> columns;
+	private static Map<String, Integer> columnsWithId;
+	
     private static PersonDaoImpl uniqueInstance = new PersonDaoImpl();
     private Connection con = ConnectionHSQL.getInstance().getConn();
     private PreparedStatement stm;
@@ -32,33 +45,52 @@ public class PersonDaoImpl implements PersonDao {
         return uniqueInstance;
     }
 
+    public PersonDaoImpl(){
+    	columns = new LinkedHashMap<String, Integer>();
+    	columns.put(FIRSTNAME, columns.size()+1);
+    	columns.put(LASTNAME, columns.size()+1);
+    	columns.put(STREET, columns.size()+1);
+    	columns.put(POSTAL_CODE, columns.size()+1);
+    	columns.put(CITY, columns.size()+1);
+    	columns.put(BIRTHDAY, columns.size()+1);
+    	columns.put(MOBILE, columns.size()+1);
+    	columns.put(TITLE, columns.size()+1);
+    	columns.put(IS_ACTIVE, columns.size()+1);
+    	columns.put(USER_ROLE, columns.size()+1);
+    	columns.put(PASSWORD_FIELD, columns.size()+1);
+    	columns.put(EMAIL, columns.size()+1);
+    	
+    	columnsWithId = new LinkedHashMap<String, Integer>(columns);
+    	columnsWithId.put(ID, columns.size()+1);
+
+    	
+    }
+    
 	@Override
 	public Person create(Person p) throws ExpenseNoteException {
-
+		String sqlColumns = columns.keySet().stream().collect(Collectors.joining(", "));
+		String sqlValues = columns.keySet().stream().map(string -> "?").collect(Collectors.joining(", "));	
+		
 		// INSERT
 		StringBuilder sql = new StringBuilder();
 		sql.append("Insert into person ");
-		sql.append("("+COLUMNS+") ");
-		sql.append("values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ");
+		sql.append("("+sqlColumns+") ");
+		sql.append("values ("+sqlValues+") ");
 
         try {
             stm = con.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
-            stm.setString(1, p.getFirstName());
-            stm.setString(2, p.getLastName());
-            stm.setString(3, p.getStreet());
-            stm.setInt(4, p.getPostalCode());
-            stm.setString(5, p.getCity());
-            stm.setTimestamp(6, new Timestamp(p.getBirthday().getTimeInMillis()));
-            stm.setString(7, p.getEntity());
-            stm.setString(8, p.getMobile());
-            stm.setString(9, p.getEmail());
-            stm.setString(10, p.getDepartment());
-            stm.setString(11, p.getSupervisor());
-            stm.setString(12, p.getController());
-            stm.setString(13, p.getTitle());
-            stm.setBoolean(14, p.getIsActive());
-            stm.setString(15, p.getUserRole().toString());
-            stm.setString(16,  p.getPassword().toString());
+            stm.setString(columns.get(FIRSTNAME), p.getFirstName());
+            stm.setString(columns.get(LASTNAME), p.getLastName());
+            stm.setString(columns.get(STREET), p.getStreet());
+            stm.setInt(columns.get(POSTAL_CODE), p.getPostalCode());
+            stm.setString(columns.get(CITY), p.getCity());
+            stm.setTimestamp(columns.get(BIRTHDAY), new Timestamp(p.getBirthday().getTimeInMillis()));
+            stm.setString(columns.get(MOBILE), p.getMobile());
+            stm.setString(columns.get(EMAIL), p.getEmail());
+            stm.setString(columns.get(TITLE), p.getTitle());
+            stm.setBoolean(columns.get(IS_ACTIVE), p.getIsActive());
+            stm.setString(columns.get(USER_ROLE), p.getUserRole().toString());
+            stm.setString(columns.get(PASSWORD_FIELD),  p.getPassword().toString());
 
             stm.executeUpdate();
             ResultSet res = stm.getGeneratedKeys();
@@ -74,36 +106,30 @@ public class PersonDaoImpl implements PersonDao {
 
 	@Override
 	public Person update(Person p) throws ExpenseNoteException {
-		// UPDATE
+		String sqlColumnsAndValues = columns.keySet().stream().map(string -> string + " = ?").collect(Collectors.joining(", "));	
+		
 				StringBuilder sql = new StringBuilder();
 				sql.append("Update person ");
-				//sql.append("("+COLUMNS+") ");
-				sql.append("set firstName = ?, lastName = ?, street = ?, postalcode = ?, city = ?, birthday = ?, entity = ?, "
-						+ "mobile = ?, email = ?, department = ?, supervisor = ?, controller = ?, title = ?, "
-						+ "isactive = ?, userrole = ? ");
-				sql.append("where id = "+ p.getId());
+				sql.append("set " + sqlColumnsAndValues + " ");
+				sql.append("where id = ?");
 
 		        try {
 		            stm = con.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
-		            stm.setString(1, p.getFirstName());
-		            stm.setString(2, p.getLastName());
-		            stm.setString(3, p.getStreet());
-		            stm.setInt(4, p.getPostalCode());
-		            stm.setString(5, p.getCity());
-		            stm.setTimestamp(6, new Timestamp(p.getBirthday().getTimeInMillis()));
-		            stm.setString(7, p.getEntity());
-		            stm.setString(8, p.getMobile());
-		            stm.setString(9, p.getEmail());
-		            stm.setString(10, p.getDepartment());
-		            stm.setString(11, p.getSupervisor());
-		            stm.setString(12, p.getController());
-		            stm.setString(13, p.getTitle());
-		            //stm.setString(16,  p.getPassword().toString());
-		            stm.setBoolean(14, p.getIsActive());
-		            stm.setString(15, p.getUserRole().toString());
-
-
-
+		            stm.setString(columns.get(FIRSTNAME), p.getFirstName());
+		            stm.setString(columns.get(LASTNAME), p.getLastName());
+		            stm.setString(columns.get(STREET), p.getStreet());
+		            stm.setInt(columns.get(POSTAL_CODE), p.getPostalCode());
+		            stm.setString(columns.get(CITY), p.getCity());
+		            stm.setTimestamp(columns.get(BIRTHDAY), new Timestamp(p.getBirthday().getTimeInMillis()));
+		            stm.setString(columns.get(MOBILE), p.getMobile());
+		            stm.setString(columns.get(EMAIL), p.getEmail());
+		            stm.setString(columns.get(TITLE), p.getTitle());
+		            stm.setBoolean(columns.get(IS_ACTIVE), p.getIsActive());
+		            stm.setString(columns.get(USER_ROLE), p.getUserRole().toString());
+		            stm.setString(columns.get(PASSWORD_FIELD),  p.getPassword().toString());
+		            
+		            stm.setLong(columnsWithId.get(ID), p.getId());
+		            
 		            stm.executeUpdate();
 		           return getPersonById(p.getId());
 
@@ -133,11 +159,13 @@ public class PersonDaoImpl implements PersonDao {
 
 	@Override
 	public Person getPersonById(Long id) {
+		
 		if(id==null)
 			return null;
-
+		
+		String sqlColumns = columnsWithId.keySet().stream().collect(Collectors.joining(", "));
 		StringBuilder sql = new StringBuilder();
-		sql.append("select " + COLUMNS_WITH_ID + " ");
+		sql.append("select " + sqlColumns + " ");
 		sql.append("from person ");
 		sql.append("where id = ?");
 
@@ -158,35 +186,32 @@ public class PersonDaoImpl implements PersonDao {
 
 	private Person mapResult(ResultSet res) throws SQLException{
 		Person p = new Person();
-		p.setId(res.getLong(17));
-		p.setFirstName(res.getString(1));
-		p.setLastName(res.getString(2));
-		p.setStreet(res.getString(3));
-		p.setPostalCode(res.getInt(4));
-		p.setCity(res.getString(5));
+		p.setId(res.getLong(columnsWithId.get(ID)));
+		p.setFirstName(res.getString(columnsWithId.get(FIRSTNAME)));
+		p.setLastName(res.getString(columnsWithId.get(LASTNAME)));
+		p.setStreet(res.getString(columnsWithId.get(STREET)));
+		p.setPostalCode(res.getInt(columnsWithId.get(POSTAL_CODE)));
+		p.setCity(res.getString(columnsWithId.get(CITY)));
 
 		Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(res.getTimestamp(6).getTime());
+		cal.setTimeInMillis(res.getTimestamp(columnsWithId.get(BIRTHDAY)).getTime());
 
 		p.setBirthday(cal);
-		p.setEntity(res.getString(7));
-		p.setMobile(res.getString(8));
-		p.setEmail(res.getString(9));
-		p.setDepartment(res.getString(10));
-		p.setSupervisor(res.getString(11));
-		p.setController(res.getString(12));
-		p.setTitle(res.getString(13));
-		p.setIsActive(res.getBoolean(14));
-		p.setUserRole(UserRole.fromString(res.getString(15)));
-		p.setPassword(res.getString(16));
+		p.setMobile(res.getString(columnsWithId.get(MOBILE)));
+		p.setEmail(res.getString(columnsWithId.get(EMAIL)));
+		p.setTitle(res.getString(columnsWithId.get(TITLE)));
+		p.setIsActive(res.getBoolean(columnsWithId.get(IS_ACTIVE)));
+		p.setUserRole(UserRole.fromString(res.getString(columnsWithId.get(USER_ROLE))));
+		p.setPassword(res.getString(columnsWithId.get(PASSWORD_FIELD)));
 
 		return p;
 	}
 
 	@Override
 	public Person getPersonByEmail(String email) {
+		String sqlColumns = columnsWithId.keySet().stream().collect(Collectors.joining(", "));
 		StringBuilder sql = new StringBuilder();
-		sql.append("select " + COLUMNS_WITH_ID + " ");
+		sql.append("select " + sqlColumns + " ");
 		sql.append("from person ");
 		sql.append("where email = ?");
 
@@ -207,9 +232,9 @@ public class PersonDaoImpl implements PersonDao {
 	@Override
 	public List<Person> getPersons() {
 		List<Person> list = new ArrayList<Person>();
-
+		String sqlColumns = columnsWithId.keySet().stream().collect(Collectors.joining(", "));
 		StringBuilder sql = new StringBuilder();
-		sql.append("select " + COLUMNS_WITH_ID + " ");
+		sql.append("select " + sqlColumns + " ");
 		sql.append("from person ");
 		sql.append("where deleted is false ");
 

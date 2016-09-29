@@ -17,25 +17,16 @@ public class Person {
 	private Integer postalCode;
 	private String city;
 	private Calendar birthday;
-	private String entity;
 	private String mobile;
 	private String email;
-	private String department;
-	private String supervisor;
-	private String controller;
 	private String title;
 	private List<Expense> expenses;
 	private UserRole userRole;
 	private String password;
 	private Boolean isActive;
-	private Person PersonById;
-
-
-
 
 	public Person() {
 	}
-
 
 	public Boolean getIsActive() {
 		return isActive;
@@ -44,16 +35,6 @@ public class Person {
 
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
-	}
-
-
-	public Person getPersonById() {
-		return PersonById;
-	}
-
-
-	public void setPersonById(Person personById) {
-		PersonById = personById;
 	}
 
 	public Long getId() {
@@ -125,17 +106,6 @@ public class Person {
 		this.birthday = birthday;
 	}
 
-
-	public String getEntity() {
-		return entity;
-	}
-
-
-	public void setEntity(String entity) {
-		this.entity = entity;
-	}
-
-
 	public String getMobile() {
 		return mobile;
 	}
@@ -155,25 +125,6 @@ public class Person {
 		this.email = email;
 	}
 
-
-	public String getDepartment() {
-		return department;
-	}
-
-
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-
-	public String getController() {
-		return controller;
-	}
-
-
-	public void setController(String controller) {
-		this.controller = controller;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -182,17 +133,6 @@ public class Person {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
-
-	public String getSupervisor() {
-		return supervisor;
-	}
-
-
-	public void setSupervisor(String supervisor) {
-		this.supervisor = supervisor;
-	}
-
 
 	public List<Expense> getExpenses() {
 		return expenses;
