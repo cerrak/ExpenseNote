@@ -38,7 +38,7 @@
                                     <TableColumn fx:id="categoryColumn" prefWidth="56.0" text="Category" />
                                     <TableColumn fx:id="countryColumn" prefWidth="75.0" text="Country" />
                                     <TableColumn fx:id="amountColumn" prefWidth="75.0" text="Amount" />
-                                    <TableColumn fx:id="currencyColumn" prefWidth="75.0" text="Currency" />
+                                    <TableColumn fx:id="currencyColumn" prefWidth="75.0" text="Currency" visible="false" />
                                     <TableColumn fx:id="receiptColumn" prefWidth="75.0" text="Receipt" />
                                  </columns>
                                  <columnResizePolicy>
@@ -53,7 +53,7 @@
                               <Label layoutX="14.0" layoutY="32.0" prefHeight="17.0" prefWidth="88.0" text="Supplier" AnchorPane.leftAnchor="14.0" />
                               <Label layoutX="14.0" layoutY="49.0" prefHeight="17.0" prefWidth="88.0" text="City" AnchorPane.leftAnchor="14.0" />
                               <Label layoutX="14.0" layoutY="66.0" prefHeight="17.0" prefWidth="88.0" text="Comments" />
-                              <Label fx:id="commentLabel" alignment="TOP_LEFT" contentDisplay="RIGHT" layoutX="102.0" layoutY="71.0" prefHeight="25.0" prefWidth="288.0" text="Some comments">
+                              <Label fx:id="commentLabel" alignment="TOP_LEFT" contentDisplay="RIGHT" layoutX="106.0" layoutY="65.0" prefHeight="25.0" prefWidth="288.0" text="Some comments">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -69,7 +69,7 @@
             </AnchorPane>
          </items>
       </SplitPane>
-      <Button layoutX="698.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleNewExpense" prefHeight="25.0" prefWidth="101.0" text="Add expense" AnchorPane.rightAnchor="14.0" />
-      <Button layoutX="572.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleEditExpense" prefHeight="25.0" prefWidth="101.0" text="Edit expense" />
+      <Button layoutX="673.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleNewExpense" prefHeight="25.0" prefWidth="117.0" text="Add " AnchorPane.rightAnchor="26.0" />
+      <Button layoutX="541.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleEditExpense" prefHeight="25.0" prefWidth="101.0" text="Edit " />
    </children>
 </AnchorPane>

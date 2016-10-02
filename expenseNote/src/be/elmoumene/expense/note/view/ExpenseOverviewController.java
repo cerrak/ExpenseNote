@@ -100,7 +100,6 @@ public class ExpenseOverviewController {
 				(observable, oldValue, newValue) -> showExpenseDetails(newValue));
 
 
-
     }
 
     public void showExpense(){
@@ -201,27 +200,27 @@ public class ExpenseOverviewController {
 
 	public void handleNewExpense(){
 		ExpenseDTO tempExpense = new ExpenseDTO();
-		boolean okClicked = showExpenseNewDialog(tempExpense);
+		showExpenseNewDialog(tempExpense);
 	}
 
-	public void handleEditExpense(){
+	public void handleEditExpense() {
 		ExpenseDTO selectedExpense = expenseTable.getSelectionModel().getSelectedItem();
-    	if (selectedExpense != null) {
-        boolean okClicked = showExpenseEditDialog(selectedExpense);
-        if (okClicked) {
-            showExpenseDetails(selectedExpense);
-        }
+		if (selectedExpense != null) {
 
-    } else {
-        // Nothing selected.
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.initOwner(mainApp.getPrimaryStage());
-        alert.setTitle("No Selection");
-        alert.setHeaderText("No Expense Selected");
-        alert.setContentText("Please select an expense in the table.");
+			if (showExpenseEditDialog(selectedExpense)) {
+				showExpenseDetails(selectedExpense);
+			}
 
-        alert.showAndWait();
-    	}
+		} else {
+			// Nothing selected.
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Expense Selected");
+			alert.setContentText("Please select an expense in the table.");
+
+			alert.showAndWait();
+		}
 	}
 
 	public void handleCreateExpenseNote(){

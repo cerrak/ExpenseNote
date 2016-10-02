@@ -10,6 +10,7 @@ import be.elmoumene.expense.note.entity.Status;
 import be.elmoumene.expense.note.model.ExpenseDTO;
 import be.elmoumene.expense.note.model.ExpenseNoteDTO;
 import be.elmoumene.expense.note.service.ExpenseNoteService;
+import be.elmoumene.expense.note.service.ExpenseService;
 import be.elmoumene.expense.note.service.FactoryService;
 import be.elmoumene.expense.note.util.DateUtil;
 import javafx.beans.property.SimpleObjectProperty;
@@ -57,6 +58,7 @@ public class ExpenseNoteOverviewController {
  // SERVICES
 
     private ExpenseNoteService expenseNoteService =  FactoryService.getExpenseNoteService();
+    private ExpenseService expenseService = FactoryService.getExpenseService();
     private MainApp mainApp;
 
     private static ExpenseNoteOverviewController uniqueInstance;
@@ -109,7 +111,7 @@ public class ExpenseNoteOverviewController {
 
     }
 
-    public Float totalAmountCalculation(List<ExpenseDTO> expenses){
+    public static Float totalAmountCalculation(List<ExpenseDTO> expenses){
     	Float totalAmount = 0f;
 
     	for (ExpenseDTO dto : expenses) {
@@ -225,25 +227,24 @@ public class ExpenseNoteOverviewController {
 
 	}
 
-	public void handleEditExpenseNote(){
-		//boolean okClicked = showExpenseNoteEditDialog(tempExpense);
+	public void handleEditExpenseNote() {
 		ExpenseNoteDTO selectedExpenseNote = expenseNoteTable.getSelectionModel().getSelectedItem();
-    	if (selectedExpenseNote != null) {
-        boolean okClicked = showExpenseNoteEditDialog(selectedExpenseNote);
-        if (okClicked) {
-            showExpenseNoteDetail(selectedExpenseNote);
-        	}
+		if (selectedExpenseNote != null) {
 
-    	} else {
-	        // Nothing selected.
-	        Alert alert = new Alert(AlertType.WARNING);
-	        alert.initOwner(mainApp.getPrimaryStage());
-	        alert.setTitle("No Selection");
-	        alert.setHeaderText("No Expense Note Selected");
-	        alert.setContentText("Please select an expense Note in the table.");
+			if (showExpenseNoteEditDialog(selectedExpenseNote)) {
+				showExpenseNoteDetail(selectedExpenseNote);
+			}
 
-	        alert.showAndWait();
-    	}
+		} else {
+			// Nothing selected.
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Expense Note Selected");
+			alert.setContentText("Please select an expense Note in the table.");
+
+			alert.showAndWait();
+		}
 
 	}
 
@@ -271,6 +272,5 @@ public class ExpenseNoteOverviewController {
 		}
 
 	}
-
 
 }

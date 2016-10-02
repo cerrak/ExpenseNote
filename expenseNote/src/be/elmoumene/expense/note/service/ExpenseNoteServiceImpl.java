@@ -68,6 +68,11 @@ public class ExpenseNoteServiceImpl implements ExpenseNoteService {
 			}
 		);
 
+		for(ExpenseNote entity : entities){
+			entity.setExpenses(expenseDao.getExpensesFromExpenseNoteId(entity.getId()));
+			ExpenseNotesDto.add(ExpenseNoteDTO.toDto(entity));
+		}
+		
 		return ExpenseNotesDto;
 	}
 

@@ -47,8 +47,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 	@Override
 	public ExpenseDTO getExpenseById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return ExpenseDTO.expenseToModel(expenseDao.getExpenseById(id));
 	}
 
 	@Override
@@ -69,7 +68,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 		List<ExpenseDTO> expensesDto = new ArrayList<ExpenseDTO>();
 
 		List<Expense> entities = expenseDao.getExpenses();
-		
+
 		if(entities!=null)
 			entities.forEach(entity -> expensesDto.add(ExpenseDTO.expenseToModel(entity)));
 
@@ -81,7 +80,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 		List<ExpenseDTO> expensesDto = new ArrayList<ExpenseDTO>();
 
 		List<Expense> entities = expenseDao.getExpensesFromExpenseNoteId(id);
-		
+
 		if(entities!=null)
 			entities.forEach(entity -> expensesDto.add(ExpenseDTO.expenseToModel(entity)));
 

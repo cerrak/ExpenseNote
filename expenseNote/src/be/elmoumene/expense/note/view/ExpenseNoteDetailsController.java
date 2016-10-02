@@ -10,14 +10,18 @@ import be.elmoumene.expense.note.model.ExpenseNoteDTO;
 import be.elmoumene.expense.note.service.ExpenseService;
 import be.elmoumene.expense.note.service.FactoryService;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -108,6 +112,14 @@ public class ExpenseNoteDetailsController {
     	expenseTable.getSelectionModel().selectedItemProperty().addListener(
 				(observable, oldValue, newValue) -> showExpenseDetails(newValue));
 
+    	expenseTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+    	    @Override
+    	    public void handle(MouseEvent event) {
+    	        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+    	            handleEditExpense();
+    	        }
+    	    }
+    	});
 
 
     }
@@ -150,6 +162,7 @@ public class ExpenseNoteDetailsController {
 
         expenseTable.setItems(FXCollections.observableArrayList(expenseList));
 
+        amountLabel.setText(ExpenseNoteOverviewController.totalAmountCalculation(expenseList).toString());
 	}
 
 	public boolean showExpenseNewDialog(ExpenseDTO expense) {
@@ -210,6 +223,27 @@ public class ExpenseNoteDetailsController {
 
 		mainApp.showExpenseOverview();
 
+	}
+
+	public void handleEditExpense() {
+
+		ExpenseDTO selectedExpense = expenseTable.getSelectionModel().getSelectedItem();
+		ExpenseDTO dto = expenseService.getExpenseById(selectedExpense.getId());
+
+		if (selectedExpense != null) {
+			showExpenseNewDialog(dto);
+			loadData();
+
+		} else {
+			// Nothing selected.
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Expense Selected");
+			alert.setContentText("Please select an expense in the table.");
+
+			alert.showAndWait();
+		}
 	}
 
 }

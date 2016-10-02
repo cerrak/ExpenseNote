@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="647.0" prefWidth="837.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.elmoumene.expense.note.view.PersonNewDialogController">
+<AnchorPane prefHeight="647.0" prefWidth="837.0" styleClass="background" stylesheets="@LightTheme.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.elmoumene.expense.note.view.PersonNewDialogController">
    <children>
       <Label layoutX="28.0" layoutY="4.0" text="Edit Person" />
       <GridPane layoutX="16.0" layoutY="124.0" prefHeight="374.0" prefWidth="297.0">
@@ -54,7 +54,7 @@
             <TextField fx:id="birthdayField" styleClass="label-bright" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </GridPane>
-      <ButtonBar fx:id="buttonBarNew" layoutX="645.0" layoutY="593.0" prefHeight="40.0" prefWidth="169.0">
+      <ButtonBar fx:id="buttonBarNew" layoutX="611.0" layoutY="593.0" prefHeight="40.0" prefWidth="214.0">
          <buttons>
           <Button defaultButton="true" mnemonicParsing="false" onAction="#handleNew" text="Save" />
             <Button mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
@@ -92,13 +92,13 @@
       <TextField layoutX="605.0" layoutY="87.0" prefHeight="17.0" prefWidth="145.0" styleClass="label-bright" />
       <ComboBox fx:id="roleComboBox" layoutX="603.0" layoutY="367.0" prefWidth="150.0" promptText="Select role" />
       <CheckBox fx:id="isActiv" layoutX="136.0" layoutY="91.0" mnemonicParsing="false" text="Enable" />
-      <ButtonBar fx:id="buttonBar" layoutX="14.0" layoutY="593.0" prefHeight="40.0" prefWidth="275.0">
+      <ButtonBar fx:id="buttonBar" layoutX="14.0" layoutY="593.0" prefHeight="40.0" prefWidth="371.0">
          <buttons>
             <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="180.0" text="Send welcome Mail" />
             <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="180.0" text="Reset password" />
          </buttons>
       </ButtonBar>
-      <ButtonBar fx:id="buttonBarEdit" layoutX="456.0" layoutY="593.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.rightAnchor="181.0">
+      <ButtonBar fx:id="buttonBarEdit" layoutX="425.0" layoutY="593.0" prefHeight="40.0" prefWidth="206.0" AnchorPane.rightAnchor="206.0">
          <buttons>
           <Button mnemonicParsing="false" onAction="#handleEdit" prefHeight="25.0" prefWidth="75.0" text="Save" />
             <Button mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />

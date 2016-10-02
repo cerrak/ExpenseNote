@@ -8,8 +8,8 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="864.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.elmoumene.expense.note.view.ExpenseNoteEditController">
    <children>
-      <JFXListView fx:id="availableExpenses" layoutX="88.0" layoutY="152.0" prefHeight="400.0" prefWidth="248.0" />
-      <JFXListView fx:id="selectedExpenses" layoutX="456.0" layoutY="152.0" prefHeight="400.0" prefWidth="248.0" AnchorPane.leftAnchor="456.0" />
+      <JFXListView fx:id="leftTableViewExpenses" layoutX="88.0" layoutY="152.0" prefHeight="400.0" prefWidth="248.0" />
+      <JFXListView fx:id="rightTableViewExpenses" layoutX="456.0" layoutY="152.0" prefHeight="400.0" prefWidth="248.0" AnchorPane.leftAnchor="456.0" />
       <Button layoutX="380.0" layoutY="292.0" mnemonicParsing="false" onAction="#addExpenses" text="&gt;" />
       <Button layoutX="380.0" layoutY="327.0" mnemonicParsing="false" onAction="#removeExpenses" text="&lt;" />
       <Button fx:id="cancelButton" layoutX="656.0" layoutY="561.0" mnemonicParsing="false" onAction="#cancelExpenseNote" prefHeight="25.0" prefWidth="52.0" text="Cancel" />
@@ -19,7 +19,7 @@
       <Label layoutX="156.0" layoutY="27.0" text="Name :" />
       <TextField fx:id="nameField" layoutX="264.0" layoutY="23.0" prefHeight="25.0" prefWidth="210.0" promptText="Expense report name" />
       <Label layoutX="516.0" layoutY="27.0" text="Total Amount :" />
-      <Label fx:id="amount" layoutX="595.0" layoutY="27.0" prefHeight="17.0" prefWidth="45.0" text="Amount" />
+      <Label fx:id="amountLabel" layoutX="595.0" layoutY="27.0" prefHeight="17.0" prefWidth="45.0" />
       <Label layoutX="156.0" layoutY="63.0" text="Comments :" />
       <TextField fx:id="commentField" alignment="TOP_LEFT" layoutX="264.0" layoutY="58.0" prefHeight="54.0" prefWidth="210.0" />
    </children>

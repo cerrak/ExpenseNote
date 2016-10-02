@@ -25,9 +25,9 @@ public class ExpenseNoteEditController {
 
 
     @FXML
-    private ListView<ExpenseDTO> availableExpenses;
+    private ListView<ExpenseDTO> leftTableViewExpenses;
     @FXML
-    private ListView<ExpenseDTO> selectedExpenses;
+    private ListView<ExpenseDTO> rightTableViewExpenses;
     @FXML
     private Button addButton;
     @FXML
@@ -69,25 +69,29 @@ public class ExpenseNoteEditController {
 
     @FXML
     public void initialize(){
-    	availableExpenses.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    	selectedExpenses.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    	leftTableViewExpenses.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    	rightTableViewExpenses.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 
     }
 
 	public void addExpenses(){
-    	List<ExpenseDTO> selectedItem = availableExpenses.getSelectionModel().getSelectedItems();
-    	selectedExpenses.getItems().addAll(selectedItem);
-    	availableExpenses.getItems().removeAll(selectedItem);
-    	availableExpenses.getSelectionModel().clearSelection();
+    	List<ExpenseDTO> selectedItem = leftTableViewExpenses.getSelectionModel().getSelectedItems();
+    	rightTableViewExpenses.getItems().addAll(selectedItem);
+    	leftTableViewExpenses.getItems().removeAll(selectedItem);
+    	leftTableViewExpenses.getSelectionModel().clearSelection();
+
+    	amountLabel.setText(ExpenseNoteOverviewController.totalAmountCalculation(rightTableViewExpenses.getItems()).toString());
 
     }
 
     public void removeExpenses(){
-    	List<ExpenseDTO> selectedItem = selectedExpenses.getSelectionModel().getSelectedItems();
-    	availableExpenses.getItems().addAll(selectedItem);
-    	selectedExpenses.getItems().removeAll(selectedItem);
-    	selectedExpenses.getSelectionModel().clearSelection();
+    	List<ExpenseDTO> selectedItem = rightTableViewExpenses.getSelectionModel().getSelectedItems();
+    	leftTableViewExpenses.getItems().addAll(selectedItem);
+    	rightTableViewExpenses.getItems().removeAll(selectedItem);
+    	rightTableViewExpenses.getSelectionModel().clearSelection();
+
+    	amountLabel.setText(ExpenseNoteOverviewController.totalAmountCalculation(rightTableViewExpenses.getItems()).toString());
     }
 
     public void handelSaveExpenseNote() throws ExpenseNoteException{
@@ -99,7 +103,7 @@ public class ExpenseNoteEditController {
     		expenseNote.setStatus((Status.DRAFT)); //set de la note de frais "DRAFT" lors de la création de la NdF
     		expenseNote.setCeationDate(Calendar.getInstance());
 
-    		List<ExpenseDTO> selectedItem = selectedExpenses.getItems();
+    		List<ExpenseDTO> selectedItem = rightTableViewExpenses.getItems();
      		expenseNote.setExpenses(selectedItem);
         	expenseNote = expenseNoteService.create(expenseNote);
 
@@ -129,10 +133,8 @@ public class ExpenseNoteEditController {
 			nameField.setText(expenseNote.getName());
 			initialize();
 
-			List<ExpenseDTO> selectedItem = availableExpenses.getItems();
+			List<ExpenseDTO> selectedItem = leftTableViewExpenses.getItems();
      		expenseNote.setExpenses(selectedItem);
-
-
 
         	 okClicked = true;
              FactoryController.getExpenseNoteOverviewController().loadData();
@@ -169,7 +171,7 @@ public class ExpenseNoteEditController {
 
 	 public void load(){
 	    	List<ExpenseDTO> expenses = expenseService.getAvailableExpenses(mainApp.getUser());
-	    	availableExpenses.getItems().addAll(expenses);
+	    	leftTableViewExpenses.getItems().addAll(expenses);
 	    }
 
 	 public MainApp getMainApp() {

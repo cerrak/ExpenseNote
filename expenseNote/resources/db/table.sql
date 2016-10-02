@@ -14,7 +14,7 @@ create table person (
 	passwordfield varchar(255) not null,
 	deleted tinyint(1) DEFAULT '0',
 	constraint pk_personid primary key (id),
-	CONSTRAINT uc_email UNIQUE (email)
+	constraint uc_email UNIQUE (email)
 );
 
 Create table expense (
