@@ -108,8 +108,24 @@ public class ExpenseDaoImpl implements ExpenseDao {
 	}
 
 	@Override
-	public void delete(Expense e) {
-		// TODO Auto-generated method stub
+	public void delete(Long id) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("delete ");
+		sql.append("from expense ");
+		sql.append("where id = ?");
+
+		try {
+            stm = con.prepareStatement(sql.toString());
+            stm.setLong(1, id);
+
+            stm.executeUpdate();
+
+
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+
 
 	}
 

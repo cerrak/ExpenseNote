@@ -45,7 +45,7 @@ public class ExpenseNoteServiceImpl implements ExpenseNoteService {
 		// 1)  supprime l'id de la note de frais contenu dans la/les dépense/s.
 		expenseDao.detacheExpenseNote(en.getId());
 
-		// 2)
+		// 2)supprimer la note de frais
 		expenseNoteDao.delete(en.getId());
 	}
 
@@ -72,7 +72,7 @@ public class ExpenseNoteServiceImpl implements ExpenseNoteService {
 			entity.setExpenses(expenseDao.getExpensesFromExpenseNoteId(entity.getId()));
 			ExpenseNotesDto.add(ExpenseNoteDTO.toDto(entity));
 		}
-		
+
 		return ExpenseNotesDto;
 	}
 

@@ -47,6 +47,7 @@ public class ExpenseNoteEditController {
 
     private ExpenseService expenseService = FactoryService.getExpenseService();
     private ExpenseNoteService expenseNoteService = FactoryService.getExpenseNoteService();
+
     private MainApp mainApp;
     private ExpenseNoteDTO expenseNote;
 
@@ -172,6 +173,7 @@ public class ExpenseNoteEditController {
 	 public void load(){
 	    	List<ExpenseDTO> expenses = expenseService.getAvailableExpenses(mainApp.getUser());
 	    	leftTableViewExpenses.getItems().addAll(expenses);
+	    	rightTableViewExpenses.getItems().addAll(expenseService.getExpensesFromExpenseNoteId(expenseNote.getId()));
 	    }
 
 	 public MainApp getMainApp() {

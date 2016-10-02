@@ -41,7 +41,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 	@Override
 	public void delete(ExpenseDTO e) {
-		// TODO Auto-generated method stub
+		expenseDao.delete(e.getId());
 
 	}
 

@@ -228,6 +228,27 @@ public class ExpenseOverviewController {
 		//boolean okClicked = showExpenseNoteOverviewDialog(tempExpense);
 	}
 
+	public void handleDeleteExpense(){
+		 int selectedIndex = expenseTable.getSelectionModel().getSelectedIndex();
+
+	        ExpenseDTO e = expenseTable.getSelectionModel().getSelectedItem();
+
+	        if (selectedIndex >= 0){
+
+	        	expenseTable.getItems().remove(selectedIndex);
+	        	expenseService.delete(e);
+
+	        }else{
+	          //nothing selected
+	        	Alert alert = new Alert(AlertType.WARNING);
+	            alert.initOwner(mainApp.getPrimaryStage());
+	            alert.setTitle("No Selection");
+	            alert.setHeaderText("No Person Selected");
+	            alert.setContentText("Please select a person in the table.");
+	            alert.showAndWait();
+	        }
+	}
+
 	public void handelShowExpenseNote(){
 
 		mainApp.showExpenseNoteOverview();

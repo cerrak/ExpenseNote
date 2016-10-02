@@ -11,7 +11,7 @@ public interface ExpenseDao {
 
 	public Expense update(Expense e) throws ExpenseNoteException;
 
-	public void delete(Expense e);
+	public void delete(Long id);
 
 	public Expense getExpenseById(Long id);
 
