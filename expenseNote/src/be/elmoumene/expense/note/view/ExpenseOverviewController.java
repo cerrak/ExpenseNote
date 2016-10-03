@@ -9,6 +9,7 @@ import be.elmoumene.expense.note.model.ExpenseNoteDTO;
 import be.elmoumene.expense.note.service.ExpenseService;
 import be.elmoumene.expense.note.service.FactoryService;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,58 +21,58 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ExpenseOverviewController {
 	@FXML
-    private TableView<ExpenseDTO> expenseTable;
-    @FXML
-    private TableColumn<ExpenseDTO, LocalDate> dateColumn;
-    @FXML
-    private TableColumn<ExpenseDTO, String> categoryColumn;
-    @FXML
-    private TableColumn<ExpenseDTO, String> countryColumn;
-    @FXML
-    private TableColumn<ExpenseDTO, String> currencyColumn;
-    @FXML
-    private TableColumn<ExpenseDTO, Float> amountColumn;
-    @FXML
-    private TableColumn<ExpenseDTO, Boolean> receiptColumn;
+	private TableView<ExpenseDTO> expenseTable;
+	@FXML
+	private TableColumn<ExpenseDTO, LocalDate> dateColumn;
+	@FXML
+	private TableColumn<ExpenseDTO, String> categoryColumn;
+	@FXML
+	private TableColumn<ExpenseDTO, String> countryColumn;
+	@FXML
+	private TableColumn<ExpenseDTO, String> currencyColumn;
+	@FXML
+	private TableColumn<ExpenseDTO, Float> amountColumn;
+	@FXML
+	private TableColumn<ExpenseDTO, Boolean> receiptColumn;
 
-    @FXML
-    private Label commentLabel;
-    @FXML
-    private Label supplierLabel;
-    @FXML
-    private Label cityLabel;
-    @FXML
-    private TextField expenseNoteNameField;
-    @FXML
-    private TextField commentField;
+	@FXML
+	private Label commentLabel;
+	@FXML
+	private Label supplierLabel;
+	@FXML
+	private Label cityLabel;
+	@FXML
+	private TextField expenseNoteNameField;
+	@FXML
+	private TextField commentField;
 
+	// SERVICES
 
- // SERVICES
+	private ExpenseService expenseService = FactoryService.getExpenseService();
+	private MainApp mainApp;
 
-    private ExpenseService expenseService =  FactoryService.getExpenseService();
-    private MainApp mainApp;
+	private static ExpenseOverviewController uniqueInstance;
 
-    private static ExpenseOverviewController uniqueInstance;
+	/**
+	 * The constructor. The constructor is called before the initialize()
+	 * method.
+	 */
+	public ExpenseOverviewController() {
+		uniqueInstance = this;
+	}
 
-    /**
-     * The constructor.
-     * The constructor is called before the initialize() method.
-     */
-    public ExpenseOverviewController() {
-    	uniqueInstance = this;
-    }
+	public static ExpenseOverviewController getInstance() {
+		return uniqueInstance;
+	}
 
-    public static ExpenseOverviewController getInstance() {
-        return uniqueInstance;
-    }
-
-    /**
+	/**
      * Initializes the controller class. This method is automatically called
      * after the fxml file has been loaded.
      */
@@ -99,23 +100,32 @@ public class ExpenseOverviewController {
     	expenseTable.getSelectionModel().selectedItemProperty().addListener(
 				(observable, oldValue, newValue) -> showExpenseDetails(newValue));
 
+    	expenseTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+    	@Override
+ 	    	public void handle(MouseEvent event) {
+ 	        	if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+ 	        		ExpenseDTO selectedItem = expenseTable.getSelectionModel().getSelectedItem();
+ 	        		showExpenseEditDialog(selectedItem);
+ 	        	}
+ 	    	}
+    	});
+
 
     }
 
-    public void showExpense(){
-    	loadData();
-    }
+	public void showExpense() {
+		loadData();
+	}
 
 	private void showExpenseDetails(ExpenseDTO dto) {
 		if (dto != null) {
-    		// Fill the labels with info from the person object.
+			// Fill the labels with info from the person object.
 
-    		supplierLabel.setText(dto.getSupplier());
-    		cityLabel.setText(dto.getCity());
-    		commentLabel.setText(dto.getComment());
+			supplierLabel.setText(dto.getSupplier());
+			cityLabel.setText(dto.getCity());
+			commentLabel.setText(dto.getComment());
 
-		}
-		else{
+		} else {
 			supplierLabel.setText("");
 			cityLabel.setText("");
 			commentLabel.setText("");
@@ -130,75 +140,75 @@ public class ExpenseOverviewController {
 	}
 
 	public void loadData() {
-        // Add observable list data to the table
-        expenseTable.setItems(FXCollections.observableArrayList(expenseService.getAvailableExpenses(mainApp.getUser())));
+		// Add observable list data to the table
+		expenseTable
+				.setItems(FXCollections.observableArrayList(expenseService.getAvailableExpenses(mainApp.getUser())));
 
 	}
 
 	public boolean showExpenseNewDialog(ExpenseDTO expense) {
-	    try {
-	        // Load the fxml file and create a new stage for the popup dialog.
-	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(MainApp.class.getResource("view/ExpenseNewDialog.fxml"));
-	        AnchorPane page = (AnchorPane) loader.load();
-
-	        // Create the dialog Stage.
-	        Stage dialogStage = new Stage();
-	        dialogStage.setTitle("Add Expense");
-	        dialogStage.initModality(Modality.WINDOW_MODAL);
-	        dialogStage.initOwner(mainApp.getPrimaryStage());
-	        Scene scene = new Scene(page);
-	        dialogStage.setScene(scene);
-
-	        // Set the person into the controller.
-	        ExpenseNewDialogController controller = loader.getController();
-	        controller.setDialogStage(dialogStage);
-	        controller.setExpense(expense);
-	        controller.setMainApp(mainApp);
-
-	        // Show the dialog and wait until the user closes it
-	        dialogStage.showAndWait();
-
-	        return controller.isOkClicked();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        return false;
-	    }
-	}
-
-	public boolean showExpenseEditDialog(ExpenseDTO expense){
 		try {
-	        // Load the fxml file and create a new stage for the popup dialog.
-	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(MainApp.class.getResource("view/ExpenseNewDialog.fxml"));
-	        AnchorPane page = (AnchorPane) loader.load();
+			// Load the fxml file and create a new stage for the popup dialog.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/ExpenseNewDialog.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
 
-	        // Create the dialog Stage.
-	        Stage dialogStage = new Stage();
-	        dialogStage.setTitle("Edit Expense");
-	        dialogStage.initModality(Modality.WINDOW_MODAL);
-	        dialogStage.initOwner(mainApp.getPrimaryStage());
-	        Scene scene = new Scene(page);
-	        dialogStage.setScene(scene);
+			// Create the dialog Stage.
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Add Expense");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(mainApp.getPrimaryStage());
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
 
-	        // Set the expense into the controller.
-	        ExpenseNewDialogController controller = loader.getController();
-	        controller.setDialogStage(dialogStage);
-	        controller.setExpense(expense);
-	        controller.setMainApp(mainApp);
+			// Set the person into the controller.
+			ExpenseNewDialogController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setExpense(expense);
+			controller.setMainApp(mainApp);
 
-	        // Show the dialog and wait until the user closes it
-	        dialogStage.showAndWait();
+			// Show the dialog and wait until the user closes it
+			dialogStage.showAndWait();
 
-
-	        return controller.isOkClicked();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        return false;
-	    }
+			return controller.isOkClicked();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
-	public void handleNewExpense(){
+	public boolean showExpenseEditDialog(ExpenseDTO expense) {
+		try {
+			// Load the fxml file and create a new stage for the popup dialog.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/ExpenseNewDialog.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Create the dialog Stage.
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Edit Expense");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(mainApp.getPrimaryStage());
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Set the expense into the controller.
+			ExpenseNewDialogController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setExpense(expense);
+			controller.setMainApp(mainApp);
+
+			// Show the dialog and wait until the user closes it
+			dialogStage.showAndWait();
+
+			return controller.isOkClicked();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public void handleNewExpense() {
 		ExpenseDTO tempExpense = new ExpenseDTO();
 		showExpenseNewDialog(tempExpense);
 	}
@@ -223,37 +233,36 @@ public class ExpenseOverviewController {
 		}
 	}
 
-	public void handleCreateExpenseNote(){
+	public void handleCreateExpenseNote() {
 		ExpenseNoteDTO tempExpense = new ExpenseNoteDTO();
-		//boolean okClicked = showExpenseNoteOverviewDialog(tempExpense);
+		// boolean okClicked = showExpenseNoteOverviewDialog(tempExpense);
 	}
 
-	public void handleDeleteExpense(){
-		 int selectedIndex = expenseTable.getSelectionModel().getSelectedIndex();
+	public void handleDeleteExpense() {
+		int selectedIndex = expenseTable.getSelectionModel().getSelectedIndex();
 
-	        ExpenseDTO e = expenseTable.getSelectionModel().getSelectedItem();
+		ExpenseDTO e = expenseTable.getSelectionModel().getSelectedItem();
 
-	        if (selectedIndex >= 0){
+		if (selectedIndex >= 0) {
 
-	        	expenseTable.getItems().remove(selectedIndex);
-	        	expenseService.delete(e);
+			expenseTable.getItems().remove(selectedIndex);
+			expenseService.delete(e);
 
-	        }else{
-	          //nothing selected
-	        	Alert alert = new Alert(AlertType.WARNING);
-	            alert.initOwner(mainApp.getPrimaryStage());
-	            alert.setTitle("No Selection");
-	            alert.setHeaderText("No Person Selected");
-	            alert.setContentText("Please select a person in the table.");
-	            alert.showAndWait();
-	        }
+		} else {
+			// nothing selected
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Person Selected");
+			alert.setContentText("Please select a person in the table.");
+			alert.showAndWait();
+		}
 	}
 
-	public void handelShowExpenseNote(){
+	public void handelShowExpenseNote() {
 
 		mainApp.showExpenseNoteOverview();
 
 	}
-
 
 }

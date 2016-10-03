@@ -3,14 +3,13 @@ package be.elmoumene.expense.note.dao;
 import java.util.List;
 
 import be.elmoumene.expense.note.entity.ExpenseNote;
-import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
 
 public interface ExpenseNoteDao {
 
-	public ExpenseNote create(ExpenseNote en) throws ExpenseNoteException;
+	public ExpenseNote create(ExpenseNote en) throws Exception;
 
-	public ExpenseNote update(ExpenseNote en) throws ExpenseNoteException;
+	public ExpenseNote update(ExpenseNote en) throws Exception;
 
 	public void delete(Long id);
 

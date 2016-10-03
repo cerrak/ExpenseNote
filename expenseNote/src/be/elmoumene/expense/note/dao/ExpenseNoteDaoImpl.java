@@ -32,7 +32,10 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
     }
 
 	@Override
-	public ExpenseNote create(ExpenseNote en) throws ExpenseNoteException {
+	public ExpenseNote create(ExpenseNote en) throws Exception {
+
+		Long expenseNoteId = null;
+		Exception error = null;
 
 		// INSERT
 		StringBuilder sql = new StringBuilder();
@@ -57,7 +60,7 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 			// SELECT CREATED EXPENSENOTE
 			res.next();
 
-			Long expenseNoteId = res.getLong(1);
+			expenseNoteId = res.getLong(1);
 
 			for (Expense e : en.getExpenses()) {
 				// update All Expense one by one
@@ -65,26 +68,32 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 				sql = new StringBuilder();
 				sql.append("Update expense ");
 				sql.append("set expense_note_id=? ");
-				sql.append("where id = " + e.getId());
+				sql.append("where id = ?");
 
 				stm = con.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
 				stm.setLong(1, expenseNoteId);
+				stm.setLong(2,  e.getId());
 
 				stm.executeUpdate();
 			}
 
 			con.commit();
-			con.setAutoCommit(true);
-			return getExpenseNoteById(res.getLong(1));
 
 		} catch (SQLException ex) {
+			error = ex;
 			try {
 				con.rollback();
-				con.setAutoCommit(true);
 			} catch (SQLException e) {
-				throw new ExpenseNoteException("Expense creation in error", e);
+				error = e;
 			}
-			throw new ExpenseNoteException("Expense creation in error", ex);
+		}
+
+		con.setAutoCommit(true);
+
+		if (error == null){
+			return getExpenseNoteById(expenseNoteId);
+		}else{
+			throw new ExpenseNoteException("Expense creation in error", error);
 		}
 	}
 
@@ -96,26 +105,73 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 
 
 	@Override
-	public ExpenseNote update(ExpenseNote en) throws ExpenseNoteException {
+	public ExpenseNote update(ExpenseNote en) throws Exception {
+
+		Exception error = null;
+
 		// UPDATE
 		StringBuilder sql = new StringBuilder();
 		sql.append("Update expense_note ");
-		sql.append("set en_name=?, comment=?, en_status=? ");
-		sql.append("where id = "+ en.getId());
+		sql.append("set en_name=?, comment=?, person_id=?, en_status=? ");
+		sql.append("where id = ?" );
 
-        try {
-            stm = con.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
-            stm.setString(1, en.getName());
-            stm.setString(2, en.getComment());
-            stm.setString(3, en.getStatus().toString());
+		try {
+			con.setAutoCommit(false);
 
+			// UPDATE EXPENSENOTE
+			stm = con.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
 
-            stm.executeUpdate();
-           return getExpenseNoteById(en.getId());
+			stm.setString(1, en.getName());
+			stm.setString(2, en.getComment());
+			stm.setLong(3, en.getPerson().getId());
+			stm.setString(4, en.getStatus().toString());
+			stm.setLong(5,  en.getId());
+			stm.executeUpdate();
 
-        } catch (Exception ex) {
-        	throw new ExpenseNoteException("User update in error", ex);
-        }
+			// REMOVE ALL EXPENSES FROM EXPENSE_NOTE
+
+			sql = new StringBuilder();
+			sql.append("Update expense ");
+			sql.append("set expense_note_id = null ");
+			sql.append("where expense_note_id = ?");
+
+			stm = con.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+			stm.setLong(1, en.getId());
+			stm.executeUpdate();
+
+			// ADD ALL SELECTED EXPENSE TO THE EXPENSE NOTE
+			for (Expense e : en.getExpenses()) {
+				// update All Expense one by one
+
+				sql = new StringBuilder();
+				sql.append("Update expense ");
+				sql.append("set expense_note_id=? ");
+				sql.append("where id = ?");
+
+				stm = con.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+				stm.setLong(1, en.getId());
+				stm.setLong(2,  e.getId());
+				stm.executeUpdate();
+			}
+
+			con.commit();
+
+		} catch (SQLException ex) {
+			error = ex;
+			try {
+				con.rollback();
+			} catch (SQLException e) {
+				error = e;
+			}
+		}
+
+		con.setAutoCommit(true);
+
+		if (error == null){
+			return getExpenseNoteById(en.getId());
+		}else{
+			throw new ExpenseNoteException("Expense creation in error", error);
+		}
 	}
 
 

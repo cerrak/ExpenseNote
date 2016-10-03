@@ -5,7 +5,6 @@ import java.util.List;
 
 import be.elmoumene.expense.note.MainApp;
 import be.elmoumene.expense.note.entity.Status;
-import be.elmoumene.expense.note.exception.ExpenseNoteException;
 import be.elmoumene.expense.note.model.ExpenseDTO;
 import be.elmoumene.expense.note.model.ExpenseNoteDTO;
 import be.elmoumene.expense.note.service.ExpenseNoteService;
@@ -95,20 +94,29 @@ public class ExpenseNoteEditController {
     	amountLabel.setText(ExpenseNoteOverviewController.totalAmountCalculation(rightTableViewExpenses.getItems()).toString());
     }
 
-    public void handelSaveExpenseNote() throws ExpenseNoteException{
+    public void handelSaveExpenseNote() throws Exception{
     	if(isInputValid())
 		 {
+    		if(expenseNote == null)
+    			expenseNote = new ExpenseNoteDTO();
+
 			expenseNote.setPerson(mainApp.getUser());
     		expenseNote.setName(nameField.getText());
     		expenseNote.setComment(commentField.getText());
-    		expenseNote.setStatus((Status.DRAFT)); //set de la note de frais "DRAFT" lors de la création de la NdF
+    		expenseNote.setStatus((Status.DRAFT));
     		expenseNote.setCeationDate(Calendar.getInstance());
 
     		List<ExpenseDTO> selectedItem = rightTableViewExpenses.getItems();
      		expenseNote.setExpenses(selectedItem);
-        	expenseNote = expenseNoteService.create(expenseNote);
+
+     		if(expenseNote.getId() == null){
+     			expenseNote = expenseNoteService.create(expenseNote);
+     		}else{
+     			expenseNote = expenseNoteService.update(expenseNote);
+     		}
 
             okClicked = true;
+            // refresh expense note Table
             FactoryController.getExpenseNoteOverviewController().loadData();
             dialogStage.close();
 		}
@@ -129,17 +137,6 @@ public class ExpenseNoteEditController {
 	public void setExpenseNote(ExpenseNoteDTO expenseNote) {
 		this.expenseNote = expenseNote;
 
-		if(expenseNote.getId() != null)
-			commentField.setText(expenseNote.getComment());
-			nameField.setText(expenseNote.getName());
-			initialize();
-
-			List<ExpenseDTO> selectedItem = leftTableViewExpenses.getItems();
-     		expenseNote.setExpenses(selectedItem);
-
-        	 okClicked = true;
-             FactoryController.getExpenseNoteOverviewController().loadData();
-             dialogStage.close();
 	}
 
 	public void setDialogStage(Stage dialogStage) {
@@ -173,7 +170,11 @@ public class ExpenseNoteEditController {
 	 public void load(){
 	    	List<ExpenseDTO> expenses = expenseService.getAvailableExpenses(mainApp.getUser());
 	    	leftTableViewExpenses.getItems().addAll(expenses);
-	    	rightTableViewExpenses.getItems().addAll(expenseService.getExpensesFromExpenseNoteId(expenseNote.getId()));
+	    	if(expenseNote != null){
+	    		commentField.setText(expenseNote.getComment());
+				nameField.setText(expenseNote.getName());
+	    		rightTableViewExpenses.getItems().addAll(expenseService.getExpensesFromExpenseNoteId(expenseNote.getId()));
+	    	}
 	    }
 
 	 public MainApp getMainApp() {
