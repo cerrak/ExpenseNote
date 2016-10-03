@@ -1,5 +1,8 @@
 package be.elmoumene.expense.note.view;
 
+import be.elmoumene.expense.note.controller.country.CountryNewController;
+import be.elmoumene.expense.note.controller.country.CountryOverviewController;
+
 /**
  *
  * @author Mouaad El Moumène
@@ -22,5 +25,11 @@ public class FactoryController {
 		  return ExpenseNoteOverviewController.getInstance();
 	  }
 
-
+	  public static CountryOverviewController getCountryOverviewController(){
+		  return CountryOverviewController.getInstance();
+	  }
+	  
+	  public static CountryNewController getCountryNewController(){
+		  return CountryNewController.getInstance();
+	  }
 }

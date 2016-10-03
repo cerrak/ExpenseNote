@@ -69,12 +69,6 @@ public class Expense {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	public Country getCountry() {
-		return country;
-	}
-	public void setCountry(Country country) {
-		this.country = country;
-	}
 
 	public String getCurrency() {
 		return currency;
@@ -99,6 +93,14 @@ public class Expense {
 
 	public void setExpenseNote(ExpenseNote expenseNote) {
 		this.expenseNote = expenseNote;
+	}
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
 	}
 
 }

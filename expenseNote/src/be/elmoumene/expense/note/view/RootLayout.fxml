@@ -23,6 +23,13 @@
               <MenuItem mnemonicParsing="false" onAction="#handleShowBirthdayStatistics" text="Show Statistics" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Manage">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleCountry" text="Country" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleDepartment" text="Department" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleEntity" text="Entity" />
+               </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />

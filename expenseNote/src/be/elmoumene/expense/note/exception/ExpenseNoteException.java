@@ -9,6 +9,11 @@ public class ExpenseNoteException extends Exception {
 	public ExpenseNoteException(String string) {
 		super(string);
 	}
+	
+	public ExpenseNoteException(Exception exception) {
+		super(exception);
+	}
+
 
 
 }

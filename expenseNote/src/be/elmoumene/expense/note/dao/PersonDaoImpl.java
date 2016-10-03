@@ -20,6 +20,8 @@ import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
 public class PersonDaoImpl implements PersonDao {
 
+	private final static String TABLE_NAME = "person";
+	
 	private final static String ID = "id";
 	private final static String FIRSTNAME = "firstname"; 
 	private final static String LASTNAME = "lastname"; 
@@ -73,7 +75,7 @@ public class PersonDaoImpl implements PersonDao {
 		
 		// INSERT
 		StringBuilder sql = new StringBuilder();
-		sql.append("Insert into person ");
+		sql.append("Insert into "+TABLE_NAME+" ");
 		sql.append("("+sqlColumns+") ");
 		sql.append("values ("+sqlValues+") ");
 
@@ -109,7 +111,7 @@ public class PersonDaoImpl implements PersonDao {
 		String sqlColumnsAndValues = columns.keySet().stream().map(string -> string + " = ?").collect(Collectors.joining(", "));	
 		
 				StringBuilder sql = new StringBuilder();
-				sql.append("Update person ");
+				sql.append("Update "+TABLE_NAME+" ");
 				sql.append("set " + sqlColumnsAndValues + " ");
 				sql.append("where id = ?");
 
@@ -142,7 +144,7 @@ public class PersonDaoImpl implements PersonDao {
 	@Override
 	public void delete(Person p) throws ExpenseNoteException {
 		StringBuilder sql = new StringBuilder();
-		sql.append("Update person ");
+		sql.append("Update "+TABLE_NAME+" ");
 		sql.append("set deleted = ? ");
 		sql.append("where id = "+ p.getId());
 
@@ -166,7 +168,7 @@ public class PersonDaoImpl implements PersonDao {
 		String sqlColumns = columnsWithId.keySet().stream().collect(Collectors.joining(", "));
 		StringBuilder sql = new StringBuilder();
 		sql.append("select " + sqlColumns + " ");
-		sql.append("from person ");
+		sql.append("from "+TABLE_NAME+" ");
 		sql.append("where id = ?");
 
 		try {
@@ -212,7 +214,7 @@ public class PersonDaoImpl implements PersonDao {
 		String sqlColumns = columnsWithId.keySet().stream().collect(Collectors.joining(", "));
 		StringBuilder sql = new StringBuilder();
 		sql.append("select " + sqlColumns + " ");
-		sql.append("from person ");
+		sql.append("from "+TABLE_NAME+" ");
 		sql.append("where email = ?");
 
 		try {
@@ -235,7 +237,7 @@ public class PersonDaoImpl implements PersonDao {
 		String sqlColumns = columnsWithId.keySet().stream().collect(Collectors.joining(", "));
 		StringBuilder sql = new StringBuilder();
 		sql.append("select " + sqlColumns + " ");
-		sql.append("from person ");
+		sql.append("from "+TABLE_NAME+" ");
 		sql.append("where deleted is false ");
 
 		try {

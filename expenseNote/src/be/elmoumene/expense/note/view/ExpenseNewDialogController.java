@@ -1,10 +1,11 @@
 package be.elmoumene.expense.note.view;
 
 import be.elmoumene.expense.note.MainApp;
-import be.elmoumene.expense.note.entity.Country;
 import be.elmoumene.expense.note.entity.ExpenseCategory;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
+import be.elmoumene.expense.note.model.CountryDTO;
 import be.elmoumene.expense.note.model.ExpenseDTO;
+import be.elmoumene.expense.note.service.CountryService;
 import be.elmoumene.expense.note.service.ExpenseService;
 import be.elmoumene.expense.note.service.FactoryService;
 import be.elmoumene.expense.note.util.DateUtil;
@@ -27,7 +28,7 @@ import javafx.stage.Stage;
 	@FXML
     private ComboBox<String> categoryComboBox;
 	@FXML
-    private ComboBox<String> countryComboBox;
+    private ComboBox<CountryDTO> countryComboBox;
     @FXML
     private TextField amountField;
     @FXML
@@ -49,7 +50,8 @@ import javafx.stage.Stage;
     // SERVICES
 
     private ExpenseService expenseService =  FactoryService.getExpenseService();
-
+    private CountryService countryService =  FactoryService.getCountryService();
+    
     private static ExpenseNewDialogController uniqueInstance;
     private Stage dialogStage;
     private ExpenseDTO expense;
@@ -69,9 +71,9 @@ import javafx.stage.Stage;
     }
 
     @FXML
-    private void initialize() {
+    private void initialize() throws ExpenseNoteException {
     	categoryComboBox.getItems().addAll(ExpenseCategory.literalsCode());
-    	countryComboBox.getItems().addAll(Country.literalsCode());
+    	countryComboBox.getItems().addAll(countryService.getCounties());
 
     }
 
@@ -111,7 +113,7 @@ import javafx.stage.Stage;
 			categoryComboBox.setValue(expense.getExpenseCategory().toString());
 
 		if (expense.getCountry() != null)
-			countryComboBox.setValue(expense.getCountry().toString());
+			countryComboBox.setValue(expense.getCountry());
 
 		if (expense.getId() != null)
 			saveNextBtnBar.setVisible(false);
@@ -142,7 +144,7 @@ import javafx.stage.Stage;
             expense.setDateExpense(DateUtil.parse(dateField.getText()));
             expense.setExpenseCategory(ExpenseCategory.fromString(categoryComboBox.getSelectionModel().getSelectedItem()));
             expense.setCity(cityField.getText());
-            expense.setCountry(Country.fromString(countryComboBox.getSelectionModel().getSelectedItem()));
+            expense.setCountry(countryComboBox.getSelectionModel().getSelectedItem());
             expense.setReceipt(receipt.isSelected());
             expense.setComment(commentField.getText());
             expense.setSupplier(supplierField.getText());
@@ -176,7 +178,7 @@ import javafx.stage.Stage;
             expense.setDateExpense(DateUtil.parse(dateField.getText()));
             expense.setExpenseCategory(ExpenseCategory.fromString(categoryComboBox.getSelectionModel().getSelectedItem()));
             expense.setCity(cityField.getText());
-            expense.setCountry(Country.fromString(countryComboBox.getSelectionModel().getSelectedItem()));
+            expense.setCountry(countryComboBox.getSelectionModel().getSelectedItem());
             expense.setReceipt(receipt.isSelected());
             expense.setComment(commentField.getText());
             expense.setSupplier(supplierField.getText());
@@ -215,7 +217,7 @@ import javafx.stage.Stage;
             expense.setDateExpense(DateUtil.parse(dateField.getText()));
             expense.setExpenseCategory(ExpenseCategory.fromString(categoryComboBox.getSelectionModel().getSelectedItem()));
             expense.setCity(cityField.getText());
-            expense.setCountry(Country.fromString(countryComboBox.getSelectionModel().getSelectedItem()));
+            expense.setCountry(countryComboBox.getSelectionModel().getSelectedItem());
             expense.setReceipt(receipt.isSelected());
             expense.setComment(commentField.getText());
             expense.setSupplier(supplierField.getText());

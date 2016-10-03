@@ -17,4 +17,9 @@ public abstract class FactoryService {
 	  public static ExpenseNoteService getExpenseNoteService(){
 		  return ExpenseNoteServiceImpl.getInstance();
 	  }
+	  
+	  public static CountryService getCountryService(){
+		  return CountryServiceImpl.getInstance();
+	  }
 }
+

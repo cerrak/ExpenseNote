@@ -1,6 +1,9 @@
 package be.elmoumene.expense.note;
 
 import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.security.Permission;
+import java.util.concurrent.FutureTask;
 
 import be.elmoumene.expense.note.model.ExpenseNoteDTO;
 import be.elmoumene.expense.note.model.PersonDTO;
@@ -11,8 +14,11 @@ import be.elmoumene.expense.note.view.LoginController;
 import be.elmoumene.expense.note.view.PersonOverviewController;
 import be.elmoumene.expense.note.view.RootLayoutController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -45,6 +51,11 @@ public class MainApp extends Application {
 	}
 
 	public static void main(String[] args) {
+		System.setSecurityManager(new SecurityManager(){
+            @Override
+            public void checkPermission(Permission perm) {}
+        });
+        Thread.setDefaultUncaughtExceptionHandler(ALERT_EXCEPTION_HANDLER);
 		launch(args);
 	}
 
@@ -59,6 +70,28 @@ public class MainApp extends Application {
 
 	}
 
+	 public static final UncaughtExceptionHandler ALERT_EXCEPTION_HANDLER = (thread, cause) -> {
+	        try {
+	            cause.printStackTrace();
+	            final Runnable showDialog = () -> {
+	               Alert alert = new Alert(AlertType.ERROR);
+	               alert.setContentText("An unknown error occurred");
+	               alert.showAndWait();
+	            };
+	            if (Platform.isFxApplicationThread()) {
+	               showDialog.run();
+	            } else {
+	               FutureTask<Void> showDialogTask = new FutureTask<Void>(showDialog, null);
+	               Platform.runLater(showDialogTask);
+	               showDialogTask.get();
+	            }
+	        } catch (Throwable t) {
+	            t.printStackTrace();
+	        } finally {
+	            //System.exit(-1);
+	        }
+	    };
+	    
 	private void initApplication() throws IOException {
 
         // Load root layout from fxml file.

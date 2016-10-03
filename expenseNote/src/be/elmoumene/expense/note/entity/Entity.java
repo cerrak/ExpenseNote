@@ -8,6 +8,7 @@ public class Entity {
 	private String city;
 	private String locality;
 	
+	public Entity(){};
 
 	public Long getId() {
 		return id;

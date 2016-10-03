@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 
-import be.elmoumene.expense.note.entity.Country;
 import be.elmoumene.expense.note.entity.Expense;
 import be.elmoumene.expense.note.entity.ExpenseCategory;
 import be.elmoumene.expense.note.util.DateUtil;
@@ -24,7 +23,7 @@ public class ExpenseDTO {
 	private LongProperty id;
 	private FloatProperty amount;
 	private StringProperty supplier;
-	private ObjectProperty<Country> country;
+	private ObjectProperty<CountryDTO> country;
 	private StringProperty city;
 	private ObjectProperty<LocalDate> dateExpense;
 	private StringProperty comment;
@@ -77,15 +76,15 @@ public class ExpenseDTO {
 	}
 
 
-    public Country getCountry() {
+    public CountryDTO getCountry() {
     	return country==null?null:country.get();
     }
 
-    public void setCountry(Country country) {
-    	this.country = new SimpleObjectProperty<Country>(country);
+    public void setCountry(CountryDTO country) {
+    	this.country = new SimpleObjectProperty<CountryDTO>(country);
     }
 
-    public ObjectProperty<Country> countryProperty() {
+    public ObjectProperty<CountryDTO> countryProperty() {
         return country;
     }
 
@@ -199,7 +198,7 @@ public class ExpenseDTO {
 
         entity.setDate(cal);
 		entity.setComment(dto.getComment());
-		entity.setCountry(dto.getCountry());
+		entity.setCountry(CountryDTO.toEntity(dto.getCountry()));
 		entity.setPerson(PersonDTO.personToEntity(dto.getPerson()));
 		entity.setCurrency(dto.getCurrency());
 		entity.setExpenseCategory(dto.getExpenseCategory());
@@ -214,7 +213,7 @@ public class ExpenseDTO {
 		model.setId(entity.getId());
 		model.setCity(entity.getCity());
 		model.setComment(entity.getComment());
-		model.setCountry(entity.getCountry());
+		model.setCountry(CountryDTO.toDto(entity.getCountry()));
 		model.setCurrency(entity.getCurrency());
 		model.setExpenseCategory(entity.getExpenseCategory());
 

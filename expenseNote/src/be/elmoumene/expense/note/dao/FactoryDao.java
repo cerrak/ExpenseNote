@@ -21,4 +21,8 @@ public abstract class FactoryDao {
 	  public static EntityDao getEntityDao(){
 		  return EntityDaoImpl.getInstance();
 	  }
+
+	public static CountryDao getCountryDao() {
+		 return CountryDaoImpl.getInstance();
+	}
 }

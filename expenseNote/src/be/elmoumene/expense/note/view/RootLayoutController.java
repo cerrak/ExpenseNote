@@ -1,9 +1,19 @@
 package be.elmoumene.expense.note.view;
 
+import java.io.IOException;
+
 import be.elmoumene.expense.note.MainApp;
+import be.elmoumene.expense.note.controller.country.CountryNewController;
+import be.elmoumene.expense.note.controller.country.CountryOverviewController;
+import be.elmoumene.expense.note.exception.ExpenseNoteException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * The controller for the root layout. The root layout provides the basic
@@ -88,4 +98,50 @@ public class RootLayoutController {
     private void handleExit() {
         System.exit(0);
     }
+    
+    @FXML
+    private void handleCountry() throws ExpenseNoteException {
+    	showCountryOverview();
+    }
+    
+    @FXML
+    private void handleDepartment() {
+
+    }
+    
+    @FXML
+    private void handleEntity() {
+    	
+    }
+    
+    private void showCountryOverview() throws ExpenseNoteException{
+	    try {
+	        // Load the fxml file and create a new stage for the popup dialog.
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(CountryNewController.class.getResource("CountryOverview.fxml"));
+	        AnchorPane page = (AnchorPane) loader.load();
+
+	        // Create the dialog Stage.
+	        Stage dialogStage = new Stage();
+	        dialogStage.initModality(Modality.WINDOW_MODAL);
+	        dialogStage.initOwner(mainApp.getPrimaryStage());
+	        Scene scene = new Scene(page);
+	        dialogStage.setScene(scene);
+
+	        // Set the person into the controller.
+	        CountryOverviewController controller = loader.getController();
+	        controller.setDialogStage(dialogStage);
+	        controller.setMainApp(mainApp);
+	        controller.loadData();
+
+	        // Show the dialog and wait until the user closes it
+	        dialogStage.showAndWait();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+    }
+    
+    
+
 }

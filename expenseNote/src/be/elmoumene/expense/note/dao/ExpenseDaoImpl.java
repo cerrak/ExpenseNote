@@ -20,13 +20,13 @@ import be.elmoumene.expense.note.exception.ExpenseNoteException;
 public class ExpenseDaoImpl implements ExpenseDao {
 
 
-	private final static String COLUMNS = "city, comment, country, currency, expensecategory_id, "
+	private final static String COLUMNS = "city, comment, country_id, currency, expensecategory_id, "
 										+ "expense_date, supplier, amount, person_id, receipt" ;
 
 	private final static String COLUMNS_WITH_ID = COLUMNS + ", id";
 
 	private PersonDao personDao = FactoryDao.getPersonDao();
-
+	private CountryDao countryDao = FactoryDao.getCountryDao();
 
 	private static ExpenseDaoImpl uniqueInstance = new ExpenseDaoImpl();
     private Connection con = ConnectionHSQL.getInstance().getConn();
@@ -49,7 +49,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
             stm = con.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
             stm.setString(1, e.getCity());
             stm.setString(2, e.getComment());
-            stm.setString(3, e.getCountry().toString());
+            stm.setLong(3, e.getCountry().getId());
             stm.setString(4, e.getCurrency());
             stm.setString(5, e.getExpenseCategory().toString());
             stm.setTimestamp(6, new Timestamp(e.getDate().getTimeInMillis()));
@@ -83,7 +83,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
 		// UPDATE
 		StringBuilder sql = new StringBuilder();
 		sql.append("Update expense ");
-		sql.append("set city=?, comment=?, country=?, expensecategory_id=?, "
+		sql.append("set city=?, comment=?, country_id=?, expensecategory_id=?, "
 					+ "expense_date=?, supplier=?, amount=?, receipt=? ");
 		sql.append("where id = "+ e.getId());
 
@@ -91,8 +91,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
             stm = con.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
             stm.setString(1, e.getCity());
             stm.setString(2, e.getComment());
-            stm.setString(3, e.getCountry().toString());
-            //stm.setString(4, e.getCurrency());
+            stm.setLong(3, e.getCountry().getId());
             stm.setString(4, e.getExpenseCategory().toString());
             stm.setTimestamp(5, new Timestamp(e.getDate().getTimeInMillis()));
             stm.setString(6, e.getSupplier());
@@ -176,30 +175,36 @@ public class ExpenseDaoImpl implements ExpenseDao {
         return null;
 	}
 
-	private Expense mapResult(ResultSet res) throws SQLException{
+	private Expense mapResult(ResultSet res) throws SQLException {
 		Expense e = new Expense();
 
+		try {
+			e.setCity(res.getString(1));
+			e.setComment(res.getString(2));
 
-		e.setCity(res.getString(1));
-		e.setComment(res.getString(2));
-		e.setCountry(Country.fromString(res.getString(3)));
-		e.setCurrency(res.getString(4));
-		e.setExpenseCategory(ExpenseCategory.fromString(res.getString(5)));
+			Country c = countryDao.getCountryById(res.getLong(3));
+			e.setCountry(c);
 
-		Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(res.getTimestamp(6).getTime());
+			e.setCurrency(res.getString(4));
+			e.setExpenseCategory(ExpenseCategory.fromString(res.getString(5)));
 
-		e.setDate(cal);
-		e.setSupplier(res.getString(7));
-		e.setAmount(res.getFloat(8));
-		e.setReceipt(res.getBoolean(10));
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(res.getTimestamp(6).getTime());
 
-		Person p = personDao.getPersonById(res.getLong(9));
-		e.setPerson(p);
+			e.setDate(cal);
+			e.setSupplier(res.getString(7));
+			e.setAmount(res.getFloat(8));
+			e.setReceipt(res.getBoolean(10));
 
-		e.setId(res.getLong(11));
+			Person p = personDao.getPersonById(res.getLong(9));
+			e.setPerson(p);
 
-		return e;
+			e.setId(res.getLong(11));
+			return e;
+
+		} catch (Exception ex) {
+			throw new SQLException(ex);
+		}
 	}
 
 	public List<Expense> getAvailableExpense(Long id) {

@@ -17,7 +17,7 @@ create table person (
 	constraint uc_email UNIQUE (email)
 );
 
-Create table expense (
+create table expense (
 	id int not null AUTO_INCREMENT,
 	supplier varchar(255),
 	city varchar(255),
@@ -25,12 +25,13 @@ Create table expense (
 	receipt tinyint(1) DEFAULT '0',
 	expense_date DATE not null,
 	comment varchar(255),
-	country varchar(255),
     person_id int not null,
     currency varchar(255),
-    expensecategory varchar(255) not null,
+    expensecategory_id varchar(255) not null,
     expense_note_id int,
+    country_id int not null,
 	constraint pk_ExpenseID primary key (id),
+    constraint fk_expense_country FOREIGN KEY (country_id) references country(id),
 	constraint fk_expense_person FOREIGN KEY (person_id) references person(id),
 	constraint fk_expense_note foreign key (expense_note_id) references expense_note(id)
 
@@ -48,3 +49,51 @@ create table expense_note (
 
 
 );
+
+create table country (
+	id int not null AUTO_INCREMENT,
+    name varchar(255) not null,
+    constraint pk_country_id primary key(id),
+    constraint unique_country_name UNIQUE (name)
+);
+
+create table entity (
+	id int not null AUTO_INCREMENT,
+    name varchar(255) not null,
+    city varchar(255) not null,
+    locality varchar(255) not null,
+    country_id int not null,
+    deleted tinyint(1) DEFAULT '0',
+    constraint fk_entity_country FOREIGN KEY (country_id) references country(id),
+    constraint pk_entity_id primary key(id),
+    constraint name UNIQUE (email)
+);
+
+create table department (
+	id int not null AUTO_INCREMENT,
+    name varchar(255) not null,
+    entity_id int not null,
+    deleted tinyint(1) DEFAULT '0',
+    constraint fk_department_entity FOREIGN KEY (entity_id) references entity(id),
+    constraint pk_department_id primary key(id),
+    constraint name UNIQUE (email)
+);
+
+create table supervisor (
+	person_id int not null AUTO_INCREMENT,
+	department_id int not null,
+    constraint fk_supervisor_department FOREIGN KEY (department_id) references department(id),
+	constraint fk_supervisor_person FOREIGN KEY (person_id) references person(id)
+);
+
+create table controller (
+	person_id int not null,
+	entity_id int not null,
+    constraint fk_controller_entity FOREIGN KEY (entity_id) references entity(id),
+	constraint fk_supervisor_person FOREIGN KEY (person_id) references person(id)
+);
+
+
+
+
+
