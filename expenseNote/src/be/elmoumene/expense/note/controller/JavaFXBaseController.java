@@ -1,4 +1,4 @@
-package be.elmoumene.expense.note.controller.country;
+package be.elmoumene.expense.note.controller;
 
 import be.elmoumene.expense.note.MainApp;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;

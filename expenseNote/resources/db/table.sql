@@ -27,10 +27,11 @@ create table expense (
 	comment varchar(255),
     person_id int not null,
     currency varchar(255),
-    expensecategory_id varchar(255) not null,
+    expensecategory_id int not null,
     expense_note_id int,
     country_id int not null,
 	constraint pk_ExpenseID primary key (id),
+	constraint fk_expense_category FOREIGN KEY (expensecategory_id) references category(id),
     constraint fk_expense_country FOREIGN KEY (country_id) references country(id),
 	constraint fk_expense_person FOREIGN KEY (person_id) references person(id),
 	constraint fk_expense_note foreign key (expense_note_id) references expense_note(id)
@@ -93,7 +94,12 @@ create table controller (
 	constraint fk_supervisor_person FOREIGN KEY (person_id) references person(id)
 );
 
-
+create table category (
+	id int not null AUTO_INCREMENT,
+    name varchar(255) not null,
+    constraint pk_category_id primary key(id),
+    constraint unique_category_name UNIQUE (name)
+);
 
 
 

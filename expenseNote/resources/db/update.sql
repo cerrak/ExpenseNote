@@ -29,3 +29,22 @@ create table country (
 INSERT INTO country (name) VALUES ('Belgique');
 ALTER TABLE expense DROP COLUMN country;
 ALTER TABLE expense ADD country_id int not null  DEFAULT '1';
+
+--
+
+ALTER TABLE expense ADD CONSTRAINT fk_expense_country FOREIGN KEY (country_id) references country(id) ON DELETE SET NULL;;
+ALTER TABLE expense MODIFY country_id int not null;
+
+create table category (
+	id int not null AUTO_INCREMENT,
+    name varchar(255) not null,
+    constraint pk_category_id primary key(id),
+    constraint unique_category_name UNIQUE (name)
+);
+
+INSERT INTO category(name) VALUES ('Restaurant');
+ALTER TABLE expense DROP expensecategory_id;
+ALTER TABLE expense ADD expensecategory_id int not null  DEFAULT '1';
+ALTER TABLE expense MODIFY expensecategory_id int not null;
+
+ALTER TABLE expense ADD CONSTRAINT fk_expense_category FOREIGN KEY (expensecategory_id) references category(id) ON DELETE SET NULL;

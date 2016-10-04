@@ -21,5 +21,9 @@ public abstract class FactoryService {
 	  public static CountryService getCountryService(){
 		  return CountryServiceImpl.getInstance();
 	  }
+	  
+	  public static CategoryService getCategoryService(){
+		  return CategoryServiceImpl.getInstance();
+	  }
 }
 

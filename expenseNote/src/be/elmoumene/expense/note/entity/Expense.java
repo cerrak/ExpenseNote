@@ -15,7 +15,7 @@ public class Expense {
 	private String currency;
 	private Person person;
 	private ExpenseNote expenseNote;
-	private ExpenseCategory expenseCategory;
+	private Category Category;
 
 	public Expense(){
 	}
@@ -50,12 +50,6 @@ public class Expense {
 	}
 	public void setReceipt(Boolean receipt) {
 		this.receipt = receipt;
-	}
-	public ExpenseCategory getExpenseCategory() {
-		return expenseCategory;
-	}
-	public void setExpenseCategory(ExpenseCategory expenseCategory) {
-		this.expenseCategory = expenseCategory;
 	}
 	public Calendar getDate() {
 		return date;
@@ -101,6 +95,14 @@ public class Expense {
 
 	public void setCountry(Country country) {
 		this.country = country;
+	}
+
+	public Category getCategory() {
+		return Category;
+	}
+
+	public void setCategory(Category category) {
+		Category = category;
 	}
 
 }

@@ -1,11 +1,11 @@
-package be.elmoumene.expense.note.controller.country;
+package be.elmoumene.expense.note.controller.category;
 
 import java.io.IOException;
 
 import be.elmoumene.expense.note.controller.JavaFXBaseController;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
-import be.elmoumene.expense.note.model.CountryDTO;
-import be.elmoumene.expense.note.service.CountryService;
+import be.elmoumene.expense.note.model.CategoryDTO;
+import be.elmoumene.expense.note.service.CategoryService;
 import be.elmoumene.expense.note.service.FactoryService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -20,28 +20,28 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class CountryOverviewController extends JavaFXBaseController<CountryDTO> {
+public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO> {
 	
 	@FXML
-    private TableView<CountryDTO> countryTable;
+    private TableView<CategoryDTO> categoryTable;
 	@FXML
-	private TableColumn<CountryDTO, Integer> id;
+	private TableColumn<CategoryDTO, Integer> id;
     @FXML
-    private TableColumn<CountryDTO, String> name;
+    private TableColumn<CategoryDTO, String> name;
 
-    private CountryService countryService =  FactoryService.getCountryService();
+    private CategoryService categoryService =  FactoryService.getCategoryService();
    
-    private static CountryOverviewController uniqueInstance;
+    private static CategoryOverviewController uniqueInstance;
 
     /**
      * The constructor.
      * The constructor is called before the initialize() method.
      */
-    public CountryOverviewController() {
+    public CategoryOverviewController() {
     	uniqueInstance = this;
     }
 
-    public static CountryOverviewController getInstance() {
+    public static CategoryOverviewController getInstance() {
         return uniqueInstance;
     }
 
@@ -52,22 +52,22 @@ public class CountryOverviewController extends JavaFXBaseController<CountryDTO> 
 
     @Override
 	public void loadData() throws ExpenseNoteException {
-		countryTable.setItems(FXCollections.observableArrayList(countryService.getCountries()));
+		categoryTable.setItems(FXCollections.observableArrayList(categoryService.getCategories()));
 	}
 
-	public void showNewAndEditDialog(CountryDTO country) {
+	public void showNewAndEditDialog(CategoryDTO category) {
 	    try {
 	        // Load the fxml file and create a new stage for the popup dialog.
 	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(getClass().getResource("CountryNewDialog.fxml"));
+	        loader.setLocation(getClass().getResource("CategoryNewDialog.fxml"));
 	        AnchorPane page = (AnchorPane) loader.load();
 
 	        // Create the dialog Stage.
 	        Stage dialogStage = new Stage();
-	        if(country == null){
-	        	dialogStage.setTitle("add country");
+	        if(category == null){
+	        	dialogStage.setTitle("add category");
 	        }else{
-	        	dialogStage.setTitle("edit country");
+	        	dialogStage.setTitle("edit category");
 	        }
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(getDialogStage());
@@ -75,9 +75,9 @@ public class CountryOverviewController extends JavaFXBaseController<CountryDTO> 
 	        dialogStage.setScene(scene);
 
 	        // Set the person into the controller.
-	        CountryNewController controller = loader.getController();
+	        CategoryNewController controller = loader.getController();
 	        controller.setDialogStage(dialogStage);
-	        controller.setModel(country);
+	        controller.setModel(category);
 	        controller.setMainApp(getMainApp());
 	        controller.loadData();
 
@@ -90,12 +90,12 @@ public class CountryOverviewController extends JavaFXBaseController<CountryDTO> 
 	}
 
 
-	public void handleNewCountry(){
+	public void handleNewCategory(){
 		showNewAndEditDialog(null);
 	}
 
-	public void handleEditCountry() {
-		CountryDTO dto = countryTable.getSelectionModel().getSelectedItem();
+	public void handleEditCategory() {
+		CategoryDTO dto = categoryTable.getSelectionModel().getSelectedItem();
 		if (dto != null) {
 			showNewAndEditDialog(dto);
 
@@ -104,8 +104,8 @@ public class CountryOverviewController extends JavaFXBaseController<CountryDTO> 
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(getMainApp().getPrimaryStage());
 			alert.setTitle("No Selection");
-			alert.setHeaderText("No Country Note Selected");
-			alert.setContentText("Please select a country in the table.");
+			alert.setHeaderText("No Category Note Selected");
+			alert.setContentText("Please select a category in the table.");
 
 			alert.showAndWait();
 		}
@@ -114,14 +114,14 @@ public class CountryOverviewController extends JavaFXBaseController<CountryDTO> 
 
 	public void handelDelete() throws ExpenseNoteException {
 
-		CountryDTO dto = countryTable.getSelectionModel().getSelectedItem();
+		CategoryDTO dto = categoryTable.getSelectionModel().getSelectedItem();
 
 		if (dto == null) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(getMainApp().getPrimaryStage());
 			alert.setTitle("No Selection");
-			alert.setHeaderText("No Country Note Selected");
-			alert.setContentText("Please select a country in the table.");
+			alert.setHeaderText("No Category Note Selected");
+			alert.setContentText("Please select a category in the table.");
 			
 			alert.showAndWait();
 		} else {
@@ -130,12 +130,12 @@ public class CountryOverviewController extends JavaFXBaseController<CountryDTO> 
         	
             alert.initOwner(getDialogStage());
             alert.setTitle("Question???");
-            alert.setHeaderText("Delete Country");
+            alert.setHeaderText("Delete Category");
             alert.setContentText("Do you really want to delete?");
             alert.showAndWait();
 			
             if (alert.getResult() == ButtonType.YES) {
-            	countryService.delete(dto);
+            	categoryService.delete(dto);
             }
 			
 			loadData();

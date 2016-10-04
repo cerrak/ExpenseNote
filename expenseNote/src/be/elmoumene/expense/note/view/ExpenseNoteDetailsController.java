@@ -131,7 +131,7 @@ public class ExpenseNoteDetailsController {
 
 			userLabel.setText(dto.getPerson().getFirstName() + " " + dto.getPerson().getLastName());
 			creationDateLabel.setText(dto.getDateExpense().toString());
-			categoryLabel.setText(dto.getExpenseCategory().toString());
+			categoryLabel.setText(dto.getCategory().toString());
 			countryLabel.setText(dto.getCountry().toString());
 			//receiptLabel.set(dto.getReceipt()));
 			commentLabel.setText(dto.getComment());

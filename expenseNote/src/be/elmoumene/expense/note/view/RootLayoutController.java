@@ -3,6 +3,7 @@ package be.elmoumene.expense.note.view;
 import java.io.IOException;
 
 import be.elmoumene.expense.note.MainApp;
+import be.elmoumene.expense.note.controller.category.CategoryOverviewController;
 import be.elmoumene.expense.note.controller.country.CountryNewController;
 import be.elmoumene.expense.note.controller.country.CountryOverviewController;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
@@ -105,6 +106,11 @@ public class RootLayoutController {
     }
     
     @FXML
+    private void handleCategory() throws ExpenseNoteException {
+    	showCategoryOverview();
+    }
+    
+    @FXML
     private void handleDepartment() {
 
     }
@@ -112,6 +118,34 @@ public class RootLayoutController {
     @FXML
     private void handleEntity() {
     	
+    }
+    
+    private void showCategoryOverview() throws ExpenseNoteException{
+	    try {
+	        // Load the fxml file and create a new stage for the popup dialog.
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(CategoryOverviewController.class.getResource("CategoryOverview.fxml"));
+	        AnchorPane page = (AnchorPane) loader.load();
+
+	        // Create the dialog Stage.
+	        Stage dialogStage = new Stage();
+	        dialogStage.initModality(Modality.WINDOW_MODAL);
+	        dialogStage.initOwner(mainApp.getPrimaryStage());
+	        Scene scene = new Scene(page);
+	        dialogStage.setScene(scene);
+
+	        // Set the person into the controller.
+	        CategoryOverviewController controller = loader.getController();
+	        controller.setDialogStage(dialogStage);
+	        controller.setMainApp(mainApp);
+	        controller.loadData();
+
+	        // Show the dialog and wait until the user closes it
+	        dialogStage.showAndWait();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
     }
     
     private void showCountryOverview() throws ExpenseNoteException{

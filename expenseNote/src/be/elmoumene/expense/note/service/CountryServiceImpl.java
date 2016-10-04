@@ -57,7 +57,7 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@Override
-	public List<CountryDTO> getCounties() throws ExpenseNoteException {
+	public List<CountryDTO> getCountries() throws ExpenseNoteException {
 
 		List<CountryDTO> countriesDto = new ArrayList<CountryDTO>();
 

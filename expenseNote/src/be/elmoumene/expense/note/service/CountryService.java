@@ -16,7 +16,7 @@ public interface CountryService {
 
 	public CountryDTO getCountryById(Long id) throws ExpenseNoteException;
 
-	public List<CountryDTO> getCounties() throws ExpenseNoteException;
+	public List<CountryDTO> getCountries() throws ExpenseNoteException;
 
 
 }

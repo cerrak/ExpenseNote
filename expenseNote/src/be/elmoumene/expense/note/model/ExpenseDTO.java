@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.Calendar;
 
 import be.elmoumene.expense.note.entity.Expense;
-import be.elmoumene.expense.note.entity.ExpenseCategory;
 import be.elmoumene.expense.note.util.DateUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.FloatProperty;
@@ -29,7 +28,7 @@ public class ExpenseDTO {
 	private StringProperty comment;
 	private StringProperty currency;
 	private BooleanProperty receipt;
-	private ObjectProperty<ExpenseCategory> expenseCategory;
+	private ObjectProperty<CategoryDTO> category;
 	private ObjectProperty<PersonDTO> person;
 
 	/**
@@ -39,16 +38,16 @@ public class ExpenseDTO {
 
 	}
 
-	public void setExpenseCategory(ExpenseCategory expenseCategory) {
-		this.expenseCategory = new SimpleObjectProperty<ExpenseCategory> (expenseCategory);
+	public void setCategory(CategoryDTO category) {
+		this.category = new SimpleObjectProperty<CategoryDTO> (category);
 	}
 
-	public ExpenseCategory getExpenseCategory(){
-		return expenseCategory==null?null:expenseCategory.get();
+	public CategoryDTO getCategory(){
+		return category==null?null:category.get();
 	}
 
-	public ObjectProperty<ExpenseCategory> categoryProperty() {
-		return expenseCategory;
+	public ObjectProperty<CategoryDTO> categoryProperty() {
+		return category;
 	}
 
 	public Long getId() {
@@ -201,7 +200,7 @@ public class ExpenseDTO {
 		entity.setCountry(CountryDTO.toEntity(dto.getCountry()));
 		entity.setPerson(PersonDTO.personToEntity(dto.getPerson()));
 		entity.setCurrency(dto.getCurrency());
-		entity.setExpenseCategory(dto.getExpenseCategory());
+		entity.setCategory(CategoryDTO.toEntity(dto.getCategory()));
 
 		return entity;
 	}
@@ -215,7 +214,7 @@ public class ExpenseDTO {
 		model.setComment(entity.getComment());
 		model.setCountry(CountryDTO.toDto(entity.getCountry()));
 		model.setCurrency(entity.getCurrency());
-		model.setExpenseCategory(entity.getExpenseCategory());
+		model.setCategory(CategoryDTO.toDto(entity.getCategory()));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		String formattedDate = sdf.format(entity.getDate().getTime());

@@ -1,5 +1,6 @@
 package be.elmoumene.expense.note.view;
 
+import be.elmoumene.expense.note.controller.FactoryController;
 import be.elmoumene.expense.note.entity.UserRole;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
 import be.elmoumene.expense.note.model.PersonDTO;
@@ -82,6 +83,7 @@ public class PersonNewDialogController {
     @FXML
     private void initialize() {
     	roleComboBox.getItems().addAll(UserRole.literalsCode());
+    	roleComboBox.getSelectionModel().select(UserRole.USER.toString());
 
     }
 

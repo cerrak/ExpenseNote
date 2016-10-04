@@ -1,34 +1,34 @@
-package be.elmoumene.expense.note.controller.country;
+package be.elmoumene.expense.note.controller.category;
 
 import be.elmoumene.expense.note.controller.FactoryController;
 import be.elmoumene.expense.note.controller.JavaFXBaseController;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
-import be.elmoumene.expense.note.model.CountryDTO;
-import be.elmoumene.expense.note.service.CountryService;
+import be.elmoumene.expense.note.model.CategoryDTO;
+import be.elmoumene.expense.note.service.CategoryService;
 import be.elmoumene.expense.note.service.FactoryService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 
-public class CountryNewController extends JavaFXBaseController<CountryDTO>{
+public class CategoryNewController extends JavaFXBaseController<CategoryDTO>{
 
     @FXML
     private TextField name;
     
-    private CountryService countryService =  FactoryService.getCountryService();
+    private CategoryService categoryService =  FactoryService.getCategoryService();
     
-    private static CountryNewController uniqueInstance;
+    private static CategoryNewController uniqueInstance;
 
     /**
      * The constructor.
      * The constructor is called before the initialize() method.
      */
-    public CountryNewController() {
+    public CategoryNewController() {
     	uniqueInstance = this;
     }
 
-    public static CountryNewController getInstance() {
+    public static CategoryNewController getInstance() {
         return uniqueInstance;
     }
     
@@ -46,16 +46,16 @@ public class CountryNewController extends JavaFXBaseController<CountryDTO>{
 
 
 	public void handleSave() throws ExpenseNoteException{
-		CountryDTO dto = getModel();
+		CategoryDTO dto = getModel();
 		if(dto == null)
-			dto = new CountryDTO();
+			dto = new CategoryDTO();
 		dto.setName(name.getText());
 		
 			try {
 				if(dto.getId() == null){		
-					countryService.create(dto);
+					categoryService.create(dto);
 				}else{
-					countryService.update(dto);
+					categoryService.update(dto);
 				}
 			} catch (ExpenseNoteException e) {
 	               Alert alert = new Alert(AlertType.ERROR);
@@ -63,7 +63,7 @@ public class CountryNewController extends JavaFXBaseController<CountryDTO>{
 	               alert.showAndWait();
 	               
 			}
-		FactoryController.getCountryOverviewController().loadData();
+		FactoryController.getCategoryOverviewController().loadData();
 		getDialogStage().close();
 	}
 	

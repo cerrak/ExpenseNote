@@ -11,9 +11,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import be.elmoumene.expense.note.database.ConnectionHSQL;
+import be.elmoumene.expense.note.entity.Category;
 import be.elmoumene.expense.note.entity.Country;
 import be.elmoumene.expense.note.entity.Expense;
-import be.elmoumene.expense.note.entity.ExpenseCategory;
 import be.elmoumene.expense.note.entity.Person;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
@@ -27,7 +27,8 @@ public class ExpenseDaoImpl implements ExpenseDao {
 
 	private PersonDao personDao = FactoryDao.getPersonDao();
 	private CountryDao countryDao = FactoryDao.getCountryDao();
-
+	private CategoryDao categoryDao = FactoryDao.getCategoryDao();
+	
 	private static ExpenseDaoImpl uniqueInstance = new ExpenseDaoImpl();
     private Connection con = ConnectionHSQL.getInstance().getConn();
     private PreparedStatement stm;
@@ -51,7 +52,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
             stm.setString(2, e.getComment());
             stm.setLong(3, e.getCountry().getId());
             stm.setString(4, e.getCurrency());
-            stm.setString(5, e.getExpenseCategory().toString());
+            stm.setLong(5, e.getCategory().getId());
             stm.setTimestamp(6, new Timestamp(e.getDate().getTimeInMillis()));
             stm.setString(7, e.getSupplier());
             stm.setFloat(8, e.getAmount());
@@ -92,7 +93,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
             stm.setString(1, e.getCity());
             stm.setString(2, e.getComment());
             stm.setLong(3, e.getCountry().getId());
-            stm.setString(4, e.getExpenseCategory().toString());
+            stm.setLong(4, e.getCategory().getId());
             stm.setTimestamp(5, new Timestamp(e.getDate().getTimeInMillis()));
             stm.setString(6, e.getSupplier());
             stm.setFloat(7, e.getAmount());
@@ -182,11 +183,13 @@ public class ExpenseDaoImpl implements ExpenseDao {
 			e.setCity(res.getString(1));
 			e.setComment(res.getString(2));
 
-			Country c = countryDao.getCountryById(res.getLong(3));
-			e.setCountry(c);
+			Country country = countryDao.getCountryById(res.getLong(3));
+			e.setCountry(country);
 
 			e.setCurrency(res.getString(4));
-			e.setExpenseCategory(ExpenseCategory.fromString(res.getString(5)));
+			
+			Category category = categoryDao.getCategoryById(res.getLong(5));
+			e.setCategory(category); 
 
 			Calendar cal = Calendar.getInstance();
 			cal.setTimeInMillis(res.getTimestamp(6).getTime());
