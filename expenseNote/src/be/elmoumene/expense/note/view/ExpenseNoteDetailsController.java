@@ -60,6 +60,8 @@ public class ExpenseNoteDetailsController {
     private Label cityLabel;
     @FXML
     private Label userLabel;
+    @FXML
+    private Label statusLabel;
 
     private ExpenseNoteDTO expenseNote;
 
@@ -95,8 +97,8 @@ public class ExpenseNoteDetailsController {
     		cellData.getValue().dateExpenseProperty());
     	countryColumn.setCellValueFactory(cellData ->
     		cellData.getValue().countryProperty().asString());
-    	currencyColumn.setCellValueFactory(cellData ->
-    		cellData.getValue().currencyProperty());
+    	//currencyColumn.setCellValueFactory(cellData ->
+    		//cellData.getValue().currencyProperty());
     	amountColumn.setCellValueFactory(cellData ->
     		cellData.getValue().amountProperty().asObject());
     	receiptColumn.setCellValueFactory(cellData ->
@@ -137,6 +139,7 @@ public class ExpenseNoteDetailsController {
 			commentLabel.setText(dto.getComment());
 			supplierLabel.setText(dto.getSupplier());
 			cityLabel.setText(dto.getCity());
+
 		}
 		else{
 			creationDateLabel.setText("");

@@ -15,9 +15,9 @@ public class CategoryNewController extends JavaFXBaseController<CategoryDTO>{
 
     @FXML
     private TextField name;
-    
+
     private CategoryService categoryService =  FactoryService.getCategoryService();
-    
+
     private static CategoryNewController uniqueInstance;
 
     /**
@@ -31,8 +31,8 @@ public class CategoryNewController extends JavaFXBaseController<CategoryDTO>{
     public static CategoryNewController getInstance() {
         return uniqueInstance;
     }
-    
-    
+
+
 	@Override
 	public void initialize() {
 	}
@@ -50,9 +50,9 @@ public class CategoryNewController extends JavaFXBaseController<CategoryDTO>{
 		if(dto == null)
 			dto = new CategoryDTO();
 		dto.setName(name.getText());
-		
+
 			try {
-				if(dto.getId() == null){		
+				if(dto.getId() == null){
 					categoryService.create(dto);
 				}else{
 					categoryService.update(dto);
@@ -61,12 +61,12 @@ public class CategoryNewController extends JavaFXBaseController<CategoryDTO>{
 	               Alert alert = new Alert(AlertType.ERROR);
 	               alert.setContentText(e.getMessage());
 	               alert.showAndWait();
-	               
+
 			}
 		FactoryController.getCategoryOverviewController().loadData();
 		getDialogStage().close();
 	}
-	
+
 	public void handleCancel(){
 		getDialogStage().close();
 	}

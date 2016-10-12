@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="431.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.elmoumene.expense.note.controller.department.DepartmentNewController">
+   <children>
+      <Label layoutX="29.0" layoutY="56.0" text="Department :" />
+      <TextField fx:id="nameField" layoutX="106.0" layoutY="53.0" />
+      <ButtonBar layoutX="340.0" layoutY="263.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.rightAnchor="14.0" />
+    <Button layoutX="288.0" layoutY="53.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
+      <Button layoutX="344.0" layoutY="53.0" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
+      <Label layoutX="29.0" layoutY="92.0" text="Entity :" />
+      <ComboBox fx:id="entityComboBox" layoutX="106.0" layoutY="88.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>

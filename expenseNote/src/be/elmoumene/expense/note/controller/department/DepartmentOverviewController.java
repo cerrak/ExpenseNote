@@ -1,11 +1,11 @@
-package be.elmoumene.expense.note.controller.category;
+package be.elmoumene.expense.note.controller.department;
 
 import java.io.IOException;
 
 import be.elmoumene.expense.note.controller.JavaFXBaseController;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
-import be.elmoumene.expense.note.model.CategoryDTO;
-import be.elmoumene.expense.note.service.CategoryService;
+import be.elmoumene.expense.note.model.DepartmentDTO;
+import be.elmoumene.expense.note.service.DepartmentService;
 import be.elmoumene.expense.note.service.FactoryService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -20,28 +20,28 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO> {
+public class DepartmentOverviewController extends JavaFXBaseController<DepartmentDTO> {
 
 	@FXML
-    private TableView<CategoryDTO> categoryTable;
+    private TableView<DepartmentDTO> departmentTable;
 	@FXML
-	private TableColumn<CategoryDTO, Integer> id;
+	private TableColumn<DepartmentDTO, Integer> id;
     @FXML
-    private TableColumn<CategoryDTO, String> name;
+    private TableColumn<DepartmentDTO, String> name;
 
-    private CategoryService categoryService =  FactoryService.getCategoryService();
+    private DepartmentService departmentService =  FactoryService.getDepartmentService();
 
-    private static CategoryOverviewController uniqueInstance;
+    private static DepartmentOverviewController uniqueInstance;
 
     /**
      * The constructor.
      * The constructor is called before the initialize() method.
      */
-    public CategoryOverviewController() {
+    public DepartmentOverviewController() {
     	uniqueInstance = this;
     }
 
-    public static CategoryOverviewController getInstance() {
+    public static DepartmentOverviewController getInstance() {
         return uniqueInstance;
     }
 
@@ -52,22 +52,22 @@ public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO
 
     @Override
 	public void loadData() throws ExpenseNoteException {
-    	categoryTable.setItems(FXCollections.observableArrayList(categoryService.getCategories()));
+    	departmentTable.setItems(FXCollections.observableArrayList(departmentService.getDepartments()));
 	}
 
-	public void showNewAndEditDialog(CategoryDTO entity) {
+	public void showNewAndEditDialog(DepartmentDTO department) throws ExpenseNoteException {
 	    try {
 	        // Load the fxml file and create a new stage for the popup dialog.
 	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(getClass().getResource("CategoryNewDialog.fxml"));
+	        loader.setLocation(getClass().getResource("DepartmentNewDialog.fxml"));
 	        AnchorPane page = (AnchorPane) loader.load();
 
 	        // Create the dialog Stage.
 	        Stage dialogStage = new Stage();
-	        if(entity == null){
-	        	dialogStage.setTitle("add Category");
+	        if(department == null){
+	        	dialogStage.setTitle("add Department");
 	        }else{
-	        	dialogStage.setTitle("edit Category");
+	        	dialogStage.setTitle("edit Department");
 	        }
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(getDialogStage());
@@ -75,9 +75,9 @@ public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO
 	        dialogStage.setScene(scene);
 
 	        // Set the person into the controller.
-	        CategoryNewController controller = loader.getController();
+	        DepartmentNewController controller = loader.getController();
 	        controller.setDialogStage(dialogStage);
-	        controller.setModel(entity);
+	        controller.setModel(department);
 	        controller.setMainApp(getMainApp());
 	        controller.loadData();
 
@@ -90,12 +90,12 @@ public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO
 	}
 
 
-	public void handleNewCategory(){
+	public void handleNewDepartment() throws ExpenseNoteException{
 		showNewAndEditDialog(null);
 	}
 
-	public void handleEditCategory() {
-		CategoryDTO dto = categoryTable.getSelectionModel().getSelectedItem();
+	public void handleEditDepartment() throws ExpenseNoteException {
+		DepartmentDTO dto = departmentTable.getSelectionModel().getSelectedItem();
 		if (dto != null) {
 			showNewAndEditDialog(dto);
 
@@ -104,8 +104,8 @@ public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(getMainApp().getPrimaryStage());
 			alert.setTitle("No Selection");
-			alert.setHeaderText("No Category Selected");
-			alert.setContentText("Please select a Category in the table.");
+			alert.setHeaderText("No Department Selected");
+			alert.setContentText("Please select a Department in the table.");
 
 			alert.showAndWait();
 		}
@@ -114,14 +114,14 @@ public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO
 
 	public void handelDelete() throws ExpenseNoteException {
 
-		CategoryDTO dto = categoryTable.getSelectionModel().getSelectedItem();
+		DepartmentDTO dto = departmentTable.getSelectionModel().getSelectedItem();
 
 		if (dto == null) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(getMainApp().getPrimaryStage());
 			alert.setTitle("No Selection");
-			alert.setHeaderText("No Category Selected");
-			alert.setContentText("Please select a Category in the table.");
+			alert.setHeaderText("No Department Selected");
+			alert.setContentText("Please select a Department in the table.");
 
 			alert.showAndWait();
 		} else {
@@ -130,14 +130,14 @@ public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO
 
             alert.initOwner(getDialogStage());
             alert.setTitle("Question???");
-            alert.setHeaderText("Delete Category");
+            alert.setHeaderText("Delete Department");
             alert.setContentText("Do you really want to delete?");
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES) {
             	// ref au create /update
             	//utiliser le try & catch pour afficher le message d'erreur a l'ecran
-            	categoryService.delete(dto);
+            	departmentService.delete(dto);
             }
 
 			loadData();

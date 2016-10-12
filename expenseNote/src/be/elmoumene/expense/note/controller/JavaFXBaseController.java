@@ -12,12 +12,12 @@ public abstract class JavaFXBaseController<T> {
     private Stage dialogStage;
 
     private T model;
-    
+
     @FXML
-    public abstract void initialize();
-    
+    public abstract void initialize() throws ExpenseNoteException;
+
     public abstract void loadData() throws ExpenseNoteException;
-    
+
 	public MainApp getMainApp() {
 		return mainApp;
 	}
@@ -41,5 +41,5 @@ public abstract class JavaFXBaseController<T> {
 	public void setModel(T model) {
 		this.model = model;
 	}
-    
+
 }

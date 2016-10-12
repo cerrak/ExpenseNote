@@ -5,7 +5,7 @@ import java.util.List;
 
 public enum Status {
 
-	DRAFT("DRAFT"), SUBMITTED("SUBMITTED"), APPROVED("APPROVED"), VALIDATED("VALIDATED"), REJECTED("REJECTED");
+	DRAFT("DRAFT"), CONTROLLED("CONTROLLED"), SUBMITTED("SUBMITTED"), APPROVED("APPROVED"), VALIDATED("VALIDATED"), REJECTED("REJECTED");
 
 	private final String name;
 
@@ -32,6 +32,9 @@ public enum Status {
 
 		case "APPROVED":
 			return APPROVED;
+
+		case "CONTROLLED":
+			return CONTROLLED;
 
 		case "VALIDATED":
 			return VALIDATED;

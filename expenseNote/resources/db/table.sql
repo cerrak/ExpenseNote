@@ -67,7 +67,7 @@ create table entity (
     deleted tinyint(1) DEFAULT '0',
     constraint fk_entity_country FOREIGN KEY (country_id) references country(id),
     constraint pk_entity_id primary key(id),
-    constraint name UNIQUE (email)
+    constraint unique_entity_name UNIQUE (name)
 );
 
 create table department (
@@ -77,7 +77,7 @@ create table department (
     deleted tinyint(1) DEFAULT '0',
     constraint fk_department_entity FOREIGN KEY (entity_id) references entity(id),
     constraint pk_department_id primary key(id),
-    constraint name UNIQUE (email)
+    constraint unique_department_name UNIQUE (name)
 );
 
 create table supervisor (
@@ -88,7 +88,7 @@ create table supervisor (
 );
 
 create table controller (
-	person_id int not null,
+	person_id int not null AUTO_INCREMENT,
 	entity_id int not null,
     constraint fk_controller_entity FOREIGN KEY (entity_id) references entity(id),
 	constraint fk_supervisor_person FOREIGN KEY (person_id) references person(id)

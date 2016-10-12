@@ -17,13 +17,21 @@ public abstract class FactoryService {
 	  public static ExpenseNoteService getExpenseNoteService(){
 		  return ExpenseNoteServiceImpl.getInstance();
 	  }
-	  
+
 	  public static CountryService getCountryService(){
 		  return CountryServiceImpl.getInstance();
 	  }
-	  
+
 	  public static CategoryService getCategoryService(){
 		  return CategoryServiceImpl.getInstance();
+	  }
+
+	  public static EntityService getEntityService(){
+		  return EntityServiceImpl.getInstance();
+	  }
+
+	  public static DepartmentService getDepartmentService(){
+		  return DepartmentServiceImpl.getInstance();
 	  }
 }
 

@@ -7,16 +7,16 @@ import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
 public interface EntityDao {
 
-	public Entity create(Entity e) throws ExpenseNoteException;
+	public Entity create(Entity en) throws ExpenseNoteException;
 
-	public Entity update(Entity e) throws ExpenseNoteException;
+	public Entity update(Entity en) throws ExpenseNoteException;
 
-	public void delete(Entity e);
+	public void delete(Entity en) throws ExpenseNoteException;
 
-	public List<Entity> getEntities();
+	public Entity getEntityById(Long id) throws ExpenseNoteException;
 
-	public List<Entity> getEntities(Long entityId);
+	public List<Entity> getCountries() throws ExpenseNoteException;
 
-	public Entity getEntityById(Long id);
+	public Entity getEntityByName(String name) throws ExpenseNoteException;
 
 }

@@ -1,11 +1,11 @@
-package be.elmoumene.expense.note.controller.category;
+package be.elmoumene.expense.note.controller.entity;
 
 import java.io.IOException;
 
 import be.elmoumene.expense.note.controller.JavaFXBaseController;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
-import be.elmoumene.expense.note.model.CategoryDTO;
-import be.elmoumene.expense.note.service.CategoryService;
+import be.elmoumene.expense.note.model.EntityDTO;
+import be.elmoumene.expense.note.service.EntityService;
 import be.elmoumene.expense.note.service.FactoryService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -20,28 +20,28 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO> {
+public class EntityOverviewController extends JavaFXBaseController<EntityDTO> {
 
 	@FXML
-    private TableView<CategoryDTO> categoryTable;
+    private TableView<EntityDTO> entityTable;
 	@FXML
-	private TableColumn<CategoryDTO, Integer> id;
+	private TableColumn<EntityDTO, Integer> id;
     @FXML
-    private TableColumn<CategoryDTO, String> name;
+    private TableColumn<EntityDTO, String> name;
 
-    private CategoryService categoryService =  FactoryService.getCategoryService();
+    private EntityService EntityService =  FactoryService.getEntityService();
 
-    private static CategoryOverviewController uniqueInstance;
+    private static EntityOverviewController uniqueInstance;
 
     /**
      * The constructor.
      * The constructor is called before the initialize() method.
      */
-    public CategoryOverviewController() {
+    public EntityOverviewController() {
     	uniqueInstance = this;
     }
 
-    public static CategoryOverviewController getInstance() {
+    public static EntityOverviewController getInstance() {
         return uniqueInstance;
     }
 
@@ -52,22 +52,22 @@ public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO
 
     @Override
 	public void loadData() throws ExpenseNoteException {
-    	categoryTable.setItems(FXCollections.observableArrayList(categoryService.getCategories()));
+    	entityTable.setItems(FXCollections.observableArrayList(EntityService.getEntities()));
 	}
 
-	public void showNewAndEditDialog(CategoryDTO entity) {
+	public void showNewAndEditDialog(EntityDTO entity) throws ExpenseNoteException {
 	    try {
 	        // Load the fxml file and create a new stage for the popup dialog.
 	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(getClass().getResource("CategoryNewDialog.fxml"));
+	        loader.setLocation(getClass().getResource("EntityNewDialog.fxml"));
 	        AnchorPane page = (AnchorPane) loader.load();
 
 	        // Create the dialog Stage.
 	        Stage dialogStage = new Stage();
 	        if(entity == null){
-	        	dialogStage.setTitle("add Category");
+	        	dialogStage.setTitle("add entity");
 	        }else{
-	        	dialogStage.setTitle("edit Category");
+	        	dialogStage.setTitle("edit entity");
 	        }
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(getDialogStage());
@@ -75,7 +75,7 @@ public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO
 	        dialogStage.setScene(scene);
 
 	        // Set the person into the controller.
-	        CategoryNewController controller = loader.getController();
+	        EntityNewController controller = loader.getController();
 	        controller.setDialogStage(dialogStage);
 	        controller.setModel(entity);
 	        controller.setMainApp(getMainApp());
@@ -90,22 +90,32 @@ public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO
 	}
 
 
-	public void handleNewCategory(){
-		showNewAndEditDialog(null);
+	public void handleNewEntity(){
+		try {
+			showNewAndEditDialog(null);
+		} catch (ExpenseNoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public void handleEditCategory() {
-		CategoryDTO dto = categoryTable.getSelectionModel().getSelectedItem();
+	public void handleEditEntity() {
+		EntityDTO dto = entityTable.getSelectionModel().getSelectedItem();
 		if (dto != null) {
-			showNewAndEditDialog(dto);
+			try {
+				showNewAndEditDialog(dto);
+			} catch (ExpenseNoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		} else {
 			// Nothing selected.
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(getMainApp().getPrimaryStage());
 			alert.setTitle("No Selection");
-			alert.setHeaderText("No Category Selected");
-			alert.setContentText("Please select a Category in the table.");
+			alert.setHeaderText("No Entity Selected");
+			alert.setContentText("Please select an entity in the table.");
 
 			alert.showAndWait();
 		}
@@ -114,14 +124,14 @@ public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO
 
 	public void handelDelete() throws ExpenseNoteException {
 
-		CategoryDTO dto = categoryTable.getSelectionModel().getSelectedItem();
+		EntityDTO dto = entityTable.getSelectionModel().getSelectedItem();
 
 		if (dto == null) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(getMainApp().getPrimaryStage());
 			alert.setTitle("No Selection");
-			alert.setHeaderText("No Category Selected");
-			alert.setContentText("Please select a Category in the table.");
+			alert.setHeaderText("No Entity Note Selected");
+			alert.setContentText("Please select an entity in the table.");
 
 			alert.showAndWait();
 		} else {
@@ -130,14 +140,14 @@ public class CategoryOverviewController extends JavaFXBaseController<CategoryDTO
 
             alert.initOwner(getDialogStage());
             alert.setTitle("Question???");
-            alert.setHeaderText("Delete Category");
+            alert.setHeaderText("Delete Entity");
             alert.setContentText("Do you really want to delete?");
             alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES) {
             	// ref au create /update
             	//utiliser le try & catch pour afficher le message d'erreur a l'ecran
-            	categoryService.delete(dto);
+            	EntityService.delete(dto);
             }
 
 			loadData();

@@ -3,6 +3,8 @@ package be.elmoumene.expense.note.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import be.elmoumene.expense.note.dao.CategoryDao;
 import be.elmoumene.expense.note.dao.FactoryDao;
 import be.elmoumene.expense.note.entity.Category;
@@ -11,7 +13,7 @@ import be.elmoumene.expense.note.model.CategoryDTO;
 
 public class CategoryServiceImpl implements CategoryService {
 
-	
+
 	private static CategoryService uniqueInstance = new CategoryServiceImpl();
 
 	private CategoryDao categoryDao = FactoryDao.getCategoryDao();
@@ -19,11 +21,11 @@ public class CategoryServiceImpl implements CategoryService {
 	public static CategoryService getInstance() {
 		return uniqueInstance;
 	}
-	
+
 	@Override
 	public CategoryDTO create(CategoryDTO dto) throws ExpenseNoteException {
 		Category categoryFound = categoryDao.getCategoryByName(dto.getName());
-		
+
 		if(categoryFound!= null){
 			throw new ExpenseNoteException("this Category already existe!!!");
 		}else{
@@ -36,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
 	public CategoryDTO update(CategoryDTO dto) throws ExpenseNoteException {
 		// in first check if the name is already used on database
 		Category categoryFound = categoryDao.getCategoryByName(dto.getName());
-		
+
 		if(categoryFound != null && categoryFound.getId() != dto.getId()){
 			throw new ExpenseNoteException("this Category already existe!!!");
 		}else{
@@ -47,7 +49,13 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void delete(CategoryDTO dto) throws ExpenseNoteException {
-		categoryDao.delete(CategoryDTO.toEntity(dto));
+
+		try {
+			categoryDao.delete(CategoryDTO.toEntity(dto));
+		} catch (Throwable e) {
+			if(e instanceof MySQLIntegrityConstraintViolationException)
+				throw new ExpenseNoteException("");
+		}
 	}
 
 	@Override
@@ -65,7 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 		if(entities!=null)
 			entities.forEach(entity -> countriesDto.add(CategoryDTO.toDto(entity)));
-		
+
 		return countriesDto;
 
 	}

@@ -184,7 +184,7 @@ public class ExpenseDTO {
 		entity.setAmount(dto.getAmount());
 		entity.setReceipt(dto.getReceipt());
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         String formattedDate = dto.getDateExpense().toString();
 
@@ -232,7 +232,7 @@ public class ExpenseDTO {
 	@Override
 	public String toString() {
 
-		return this.getId() + "  " + this.getComment() + "  " + this.getAmount() + "  " +this.getDateExpense() ;
+		return this.getAmount() + "€ - " + this.getSupplier() + " - " + this.getCity() + " - " + this.getDateExpense();
 	}
 
 //	@Override

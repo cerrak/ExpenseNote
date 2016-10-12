@@ -4,10 +4,19 @@ public class Entity {
 
 	private Long id;
 	private String name;
-	private String country;
+	private Country country;
 	private String city;
 	private String locality;
-	
+	private Boolean deleted;
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public Entity(){};
 
 	public Long getId() {
@@ -22,10 +31,10 @@ public class Entity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
-	public void setCountry(String country) {
+	public void setCountry(Country country) {
 		this.country = country;
 	}
 	public String getCity() {

@@ -29,4 +29,8 @@ public abstract class FactoryDao {
 	public static CategoryDao getCategoryDao() {
 		return CategoryDaoImpl.getInstance();
 	}
+
+	public static DepartmentDao getDepartmentDao(){
+		return DepartmentDaoImpl.getInstance();
+	}
 }

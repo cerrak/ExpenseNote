@@ -212,6 +212,7 @@ public class PersonOverviewController {
             boolean okClicked = showPersonEditDialog(selectedPerson);
             if (okClicked) {
                 showPersonDetails(selectedPerson);
+
             }
 
         } else {

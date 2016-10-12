@@ -17,6 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -47,14 +48,15 @@ import javafx.stage.Stage;
     private ButtonBar saveNextBtnBar;
     @FXML
     private ButtonBar saveBtnBar;
-
+    @FXML
+    private DatePicker datePicker;
 
     // SERVICES
 
     private ExpenseService expenseService =  FactoryService.getExpenseService();
     private CountryService countryService =  FactoryService.getCountryService();
     private CategoryService categoryService =  FactoryService.getCategoryService();
-    
+
     private static ExpenseNewDialogController uniqueInstance;
     private Stage dialogStage;
     private ExpenseDTO expense;

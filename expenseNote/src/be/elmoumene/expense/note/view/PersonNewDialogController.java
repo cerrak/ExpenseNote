@@ -3,7 +3,9 @@ package be.elmoumene.expense.note.view;
 import be.elmoumene.expense.note.controller.FactoryController;
 import be.elmoumene.expense.note.entity.UserRole;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
+import be.elmoumene.expense.note.model.EntityDTO;
 import be.elmoumene.expense.note.model.PersonDTO;
+import be.elmoumene.expense.note.service.EntityService;
 import be.elmoumene.expense.note.service.FactoryService;
 import be.elmoumene.expense.note.service.PersonService;
 import be.elmoumene.expense.note.util.DateUtil;
@@ -54,12 +56,17 @@ public class PersonNewDialogController {
     private ButtonBar buttonBarNew;
     @FXML
     private ButtonBar buttonBarEdit;
+    @FXML
+    private ComboBox<EntityDTO> entityComboBox;
+    //@FXML
+    //private ComboBox<departmentDTO> departmentComboBox;
 
 
 
     // SERVICES
 
     private PersonService personService =  FactoryService.getPersonService();
+    private EntityService entityService = FactoryService.getEntityService();
 
     private static PersonNewDialogController uniqueInstance;
 
@@ -81,9 +88,13 @@ public class PersonNewDialogController {
     }
 
     @FXML
-    private void initialize() {
+    private void initialize() throws ExpenseNoteException {
     	roleComboBox.getItems().addAll(UserRole.literalsCode());
     	roleComboBox.getSelectionModel().select(UserRole.USER.toString());
+    	//entityComboBox.getItems().addAll(entityService.getEntities());
+
+
+// hide the isActiv button
 
     }
 
@@ -124,10 +135,10 @@ public class PersonNewDialogController {
 		if (person.getIsActive() != null)
 			isActiv.setSelected(person.getIsActive());
 
-		if(person.getId() != null)
-			passwordField.setVisible(false); // set invisible for editing
-		if(person.getId() != null)
-			passwordLabel.setVisible(false); // set invisible for editing
+//		if(person.getId() != null)
+//			passwordField.setVisible(false); // set invisible for editing
+//		if(person.getId() != null)
+//			passwordLabel.setVisible(false); // set invisible for editing
 
 
 		if(person.getId() != null)
@@ -191,8 +202,8 @@ public class PersonNewDialogController {
 
     @FXML
     private void handleEdit() {
-        if (isInputValid()) {
 
+        if (isInputValid()) {
 
             person.setFirstName(firstNameField.getText());
             person.setLastName(lastNameField.getText());

@@ -11,12 +11,14 @@ public interface DepartmentDao {
 
 	public Department update(Department d) throws ExpenseNoteException;
 
-	public void delete(Department d);
+	public void delete(Department d) throws ExpenseNoteException;
 
-	public List<Department> getDepartments();
+	public List<Department> getDepartments() throws ExpenseNoteException;
 
-	public List<Department> getDepartments(Long DepartmentId);
+	public List<Department> getDepartments(Long departmentId);
 
-	public Department getDepartmentById(Long id);
+	public Department getDepartmentById(Long id) throws ExpenseNoteException;
+
+	public Department getDepartmentByName(String name) throws ExpenseNoteException;
 
 }

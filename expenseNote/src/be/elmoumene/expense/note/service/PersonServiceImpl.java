@@ -26,7 +26,7 @@ public class PersonServiceImpl  implements PersonService{
 	public PersonDTO create(PersonDTO p) throws ExpenseNoteException {
 		// Business logic
 
-		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField()));
+		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField())); //encrypter
 
 		Person entity = personDao.create(PersonDTO.personToEntity(p));
 
@@ -36,6 +36,8 @@ public class PersonServiceImpl  implements PersonService{
 	@Override
 	public PersonDTO update(PersonDTO p) throws ExpenseNoteException{
 		// Business Logic
+
+		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField())); //encrypter
 
 		Person entity = personDao.update(PersonDTO.personToEntity(p));
 
