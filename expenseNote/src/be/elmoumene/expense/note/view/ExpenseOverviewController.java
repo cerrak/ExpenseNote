@@ -20,6 +20,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -52,6 +53,8 @@ public class ExpenseOverviewController {
 	private TextField expenseNoteNameField;
 	@FXML
 	private TextField commentField;
+    @FXML
+    private TitledPane expenseNoteTitled;
 
 	// SERVICES
 

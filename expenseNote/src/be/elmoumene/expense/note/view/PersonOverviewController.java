@@ -193,8 +193,8 @@ public class PersonOverviewController {
      */
     @FXML
     private void handleNewPerson() {
-        PersonDTO tempPerson = new PersonDTO();
-        showPersonNewDialog(tempPerson);
+
+        showPersonNewDialog();
     }
 
     /**
@@ -227,7 +227,7 @@ public class PersonOverviewController {
         }
     }
 
-	public boolean showPersonNewDialog(PersonDTO person) {
+	public boolean showPersonNewDialog() {
     try {
         // Load the fxml file and create a new stage for the popup dialog.
         FXMLLoader loader = new FXMLLoader();
@@ -245,7 +245,6 @@ public class PersonOverviewController {
         // Set the person into the controller.
         PersonNewDialogController controller = loader.getController();
         controller.setDialogStage(dialogStage);
-        controller.setPerson(person);
 
 
         // Show the dialog and wait until the user closes it

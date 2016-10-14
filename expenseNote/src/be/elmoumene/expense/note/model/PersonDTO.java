@@ -195,7 +195,7 @@ public class PersonDTO {
 		this.userRole = userRole;
 	}
 
-	public static Person personToEntity(PersonDTO model){
+	public static Person toEntity(PersonDTO model){
 		if(model == null)
 			return null;
 
@@ -231,7 +231,7 @@ public class PersonDTO {
 
 	}
 
-	public static PersonDTO personToModel(Person entity){
+	public static PersonDTO toDto(Person entity){
 		if(entity == null)
 			return null;
 		PersonDTO model = new PersonDTO();

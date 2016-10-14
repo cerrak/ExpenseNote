@@ -1,5 +1,7 @@
 package be.elmoumene.expense.note.view;
 
+import java.time.LocalDate;
+
 import be.elmoumene.expense.note.MainApp;
 import be.elmoumene.expense.note.controller.FactoryController;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
@@ -10,7 +12,6 @@ import be.elmoumene.expense.note.service.CategoryService;
 import be.elmoumene.expense.note.service.CountryService;
 import be.elmoumene.expense.note.service.ExpenseService;
 import be.elmoumene.expense.note.service.FactoryService;
-import be.elmoumene.expense.note.util.DateUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -19,6 +20,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
 
 	/**
@@ -43,13 +45,13 @@ import javafx.stage.Stage;
     @FXML
     private TextField cityField;
     @FXML
-    private TextField dateField;
-    @FXML
     private ButtonBar saveNextBtnBar;
     @FXML
     private ButtonBar saveBtnBar;
     @FXML
     private DatePicker datePicker;
+    @FXML
+    private TitledPane expenseTitled;
 
     // SERVICES
 
@@ -114,7 +116,7 @@ import javafx.stage.Stage;
 
 
 		if (expense.getDateExpense() != null)
-		dateField.setText(DateUtil.format(expense.getDateExpense()));
+			datePicker.setValue(expense.getDateExpense());
 
 		if (expense.getCategory() != null)
 			categoryComboBox.setValue(expense.getCategory());
@@ -148,13 +150,14 @@ import javafx.stage.Stage;
 
         	expense.setPerson(mainApp.getUser());
             expense.setAmount(Float.parseFloat(amountField.getText()));
-            expense.setDateExpense(DateUtil.parse(dateField.getText()));
             expense.setCategory(categoryComboBox.getSelectionModel().getSelectedItem());
             expense.setCity(cityField.getText());
             expense.setCountry(countryComboBox.getSelectionModel().getSelectedItem());
             expense.setReceipt(receipt.isSelected());
             expense.setComment(commentField.getText());
             expense.setSupplier(supplierField.getText());
+
+            expense.setDateExpense(datePicker.getValue());
 
             try {
             	expense = expenseService.create(expense);
@@ -182,7 +185,7 @@ import javafx.stage.Stage;
 
         	expense.setPerson(mainApp.getUser());
             expense.setAmount(Float.parseFloat(amountField.getText()));
-            expense.setDateExpense(DateUtil.parse(dateField.getText()));
+            expense.setDateExpense(datePicker.getValue());;
             expense.setCategory(categoryComboBox.getSelectionModel().getSelectedItem());
             expense.setCity(cityField.getText());
             expense.setCountry(countryComboBox.getSelectionModel().getSelectedItem());
@@ -204,7 +207,7 @@ import javafx.stage.Stage;
 			}
 
             amountField.setText("");
-            dateField.setText("");
+            datePicker.setValue(expense.getDateExpense());
             //categoryComboBox.setItems(null);
             cityField.setText("");
             //countryComboBox.setItems(null);
@@ -221,7 +224,7 @@ import javafx.stage.Stage;
 
         	expense.setPerson(mainApp.getUser());
             expense.setAmount(Float.parseFloat(amountField.getText()));
-            expense.setDateExpense(DateUtil.parse(dateField.getText()));
+            expense.setDateExpense(datePicker.getValue());;
             expense.setCategory(categoryComboBox.getSelectionModel().getSelectedItem());
             expense.setCity(cityField.getText());
             expense.setCountry(countryComboBox.getSelectionModel().getSelectedItem());
@@ -282,13 +285,14 @@ import javafx.stage.Stage;
             errorMessage += "No valid city!\n";
         }
 
-        if (dateField.getText() == null || dateField.getText().length() == 0) {
-            errorMessage += "No valid date!\n";
-        } else {
-            if (!DateUtil.validDate(dateField.getText())) {
-                errorMessage += "No valid date. Use the format dd.mm.yyyy!\n";
-            }
-        }
+		if (datePicker.getValue() == null) {
+			errorMessage += "Date field is mandatory!\n";
+		} else {
+
+			if (datePicker.getValue().isAfter(LocalDate.now())) {
+				errorMessage += "You cannot submit a postdated expense\n";
+			}
+		}
         if(countryComboBox.getItems().equals(null)){
         	errorMessage += "No valid country!\n";
         }

@@ -1,20 +1,23 @@
 package be.elmoumene.expense.note.view;
 
+import java.time.LocalDate;
+
 import be.elmoumene.expense.note.controller.FactoryController;
 import be.elmoumene.expense.note.entity.UserRole;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
 import be.elmoumene.expense.note.model.EntityDTO;
 import be.elmoumene.expense.note.model.PersonDTO;
+import be.elmoumene.expense.note.model.SupervisorDTO;
 import be.elmoumene.expense.note.service.EntityService;
 import be.elmoumene.expense.note.service.FactoryService;
 import be.elmoumene.expense.note.service.PersonService;
-import be.elmoumene.expense.note.util.DateUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -37,8 +40,6 @@ public class PersonNewDialogController {
     @FXML
     private TextField cityField;
     @FXML
-    private TextField birthdayField;
-    @FXML
     private TextField emailField;
     @FXML
     private TextField mobileField;
@@ -58,6 +59,8 @@ public class PersonNewDialogController {
     private ButtonBar buttonBarEdit;
     @FXML
     private ComboBox<EntityDTO> entityComboBox;
+    @FXML
+    private DatePicker datePicker;
     //@FXML
     //private ComboBox<departmentDTO> departmentComboBox;
 
@@ -123,7 +126,7 @@ public class PersonNewDialogController {
 		cityField.setText(person.getCity());
 
 		if (person.getBirthday() != null)
-			birthdayField.setText(DateUtil.format(person.getBirthday()));
+			datePicker.setValue(person.getBirthday());
 
 		titleField.setText(person.getTitle());
 		emailField.setText(person.getEmail());
@@ -165,30 +168,36 @@ public class PersonNewDialogController {
      */
     @FXML
     private void handleNew() {
-        if (isInputValid()) {
+		if (isInputValid()) {
+			try {
 
+				UserRole role = UserRole.fromString(roleComboBox.getSelectionModel().getSelectedItem());
 
-            person.setFirstName(firstNameField.getText());
-            person.setLastName(lastNameField.getText());
-            person.setStreet(streetField.getText());
-            person.setPostalCode(Integer.parseInt(postalCodeField.getText()));
-            person.setCity(cityField.getText());
-            person.setBirthday(DateUtil.parse(birthdayField.getText()));
-            person.setEmail(emailField.getText());
-            person.setMobile(mobileField.getText());
-            person.setTitle(titleField.getText());
-            person.setUserRole(UserRole.fromString(roleComboBox.getSelectionModel().getSelectedItem()));
-            person.setPasswordField(passwordField.getText());
-            person.setIsActive(isActiv.isSelected());
+				switch (role) {
+				case ADMIN:
+					/// TODO implement admin
+					break;
+				case SUPERVISOR:
+					SupervisorDTO supervisor = new SupervisorDTO();
+					fillPerson(supervisor);
+					// supervisor.setDepartment(department);
+					personService.create(supervisor);
+					break;
+				case CONTROLLER:
+					// ControllerDTO controller = new ControllerDTO();
+					//fillPerson(controller);
+					// controller.setentity(entity);
+					//personService.create(controller);
+					break;
+				default:
+					PersonDTO person = new PersonDTO();
+					fillPerson(person);
+					personService.create(person);
+				}
 
-
-
-            try {
-				person = personService.create(person);
-
-	            okClicked = true;
-	            FactoryController.getPersonOverviewController().loadData();
-	            dialogStage.close();
+				okClicked = true;
+				FactoryController.getPersonOverviewController().loadData();
+				dialogStage.close();
 
 			} catch (ExpenseNoteException e) {
 				// TODO fill the exception on screen
@@ -196,8 +205,24 @@ public class PersonNewDialogController {
 
 			}
 
+		}
+	}
 
-        }
+    private void fillPerson(PersonDTO person){
+
+		person.setFirstName(firstNameField.getText());
+		person.setLastName(lastNameField.getText());
+		person.setStreet(streetField.getText());
+		person.setPostalCode(Integer.parseInt(postalCodeField.getText()));
+		person.setCity(cityField.getText());
+		person.setBirthday(datePicker.getValue());
+		person.setEmail(emailField.getText());
+		person.setMobile(mobileField.getText());
+		person.setTitle(titleField.getText());
+		person.setUserRole(UserRole.fromString(roleComboBox.getSelectionModel().getSelectedItem()));
+		person.setPasswordField(passwordField.getText());
+		person.setIsActive(isActiv.isSelected());
+
     }
 
     @FXML
@@ -210,14 +235,13 @@ public class PersonNewDialogController {
             person.setStreet(streetField.getText());
             person.setPostalCode(Integer.parseInt(postalCodeField.getText()));
             person.setCity(cityField.getText());
-            person.setBirthday(DateUtil.parse(birthdayField.getText()));
+            person.setBirthday(datePicker.getValue());
             person.setEmail(emailField.getText());
             person.setMobile(mobileField.getText());
             person.setTitle(titleField.getText());
             person.setUserRole(UserRole.fromString(roleComboBox.getSelectionModel().getSelectedItem()));
             person.setPasswordField(passwordField.getText());
             person.setIsActive(isActiv.isSelected());
-
 
 
             try {
@@ -279,11 +303,11 @@ public class PersonNewDialogController {
             errorMessage += "No valid city!\n";
         }
 
-        if (birthdayField.getText() == null || birthdayField.getText().length() == 0) {
+        if (datePicker.getValue() == null) {
             errorMessage += "No valid birthday!\n";
         } else {
-            if (!DateUtil.validDate(birthdayField.getText())) {
-                errorMessage += "No valid birthday. Use the format dd.mm.yyyy!\n";
+            if (datePicker.getValue().isAfter(LocalDate.of(1998, 01, 01))) {
+                errorMessage += "The employee must be major !\n";
             }
         }
         if(roleComboBox.getItems().equals(null)){

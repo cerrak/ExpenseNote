@@ -22,15 +22,15 @@ public class PersonServiceImpl  implements PersonService{
         return uniqueInstance;
     }
 
-	@Override
+    @Override
 	public PersonDTO create(PersonDTO p) throws ExpenseNoteException {
 		// Business logic
 
 		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField())); //encrypter
 
-		Person entity = personDao.create(PersonDTO.personToEntity(p));
+		Person entity = personDao.create(PersonDTO.toEntity(p));
 
-		return PersonDTO.personToModel(entity);
+		return PersonDTO.toDto(entity);
 	}
 
 	@Override
@@ -39,14 +39,14 @@ public class PersonServiceImpl  implements PersonService{
 
 		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField())); //encrypter
 
-		Person entity = personDao.update(PersonDTO.personToEntity(p));
+		Person entity = personDao.update(PersonDTO.toEntity(p));
 
-		return PersonDTO.personToModel(entity);
+		return PersonDTO.toDto(entity);
 	}
 
 	@Override
 	public void delete(PersonDTO p) throws ExpenseNoteException {
-		personDao.delete(PersonDTO.personToEntity(p));
+		personDao.delete(PersonDTO.toEntity(p));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class PersonServiceImpl  implements PersonService{
 	public PersonDTO getPersonByEmail(String email) {
 		Person entity = personDao.getPersonByEmail(email);
 
-		return PersonDTO.personToModel(entity);
+		return PersonDTO.toDto(entity);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class PersonServiceImpl  implements PersonService{
 
 		List<Person> entities = personDao.getPersons();
 
-		entities.forEach( entity -> personsDto.add(PersonDTO.personToModel(entity)));
+		entities.forEach( entity -> personsDto.add(PersonDTO.toDto(entity)));
 
 		return personsDto;
 	}
@@ -87,7 +87,7 @@ public class PersonServiceImpl  implements PersonService{
 
 		if (entity!=null && entity.getPassword().equals(cryptedPassword)){
 
-				return PersonDTO.personToModel(entity);
+				return PersonDTO.toDto(entity);
 		}
 
 		return null;

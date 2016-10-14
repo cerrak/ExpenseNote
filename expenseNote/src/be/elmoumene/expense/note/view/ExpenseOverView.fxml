@@ -9,6 +9,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -21,10 +23,6 @@
                <children>
                   <VBox layoutX="1.0" layoutY="3.0" prefHeight="435.0" prefWidth="173.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="918.0" text="Dashboard" />
-                        <Button disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="918.0" text="Expenses" underline="true" />
-                        <Button mnemonicParsing="false" onAction="#handelShowExpenseNote" prefHeight="25.0" prefWidth="918.0" text="Expense notes" />
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="918.0" text="Settlements" />
                         <Accordion>
                           <panes>
                             <TitledPane animated="false" text="Dashboard">
@@ -32,7 +30,7 @@
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                               </content>
                             </TitledPane>
-                            <TitledPane animated="false" onDragDetected="#initialize" text="Expenses">
+                            <TitledPane animated="false" text="Expenses">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -43,7 +41,7 @@
                                     </AnchorPane>
                               </content>
                             </TitledPane>
-                            <TitledPane animated="false" text="Expense notes">
+                            <TitledPane animated="false" onMouseClicked="#handelShowExpenseNote" text="Expense notes">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                               </content>
@@ -97,13 +95,15 @@
             </AnchorPane>
          </items>
       </SplitPane>
-      <Button layoutX="411.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleNewExpense" prefHeight="25.0" prefWidth="117.0" text="New" />
-      <Button layoutX="541.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleEditExpense" prefHeight="25.0" prefWidth="101.0" text="Edit " />
-      <Button layoutX="655.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleDeleteExpense" prefHeight="25.0" prefWidth="117.0" text="Delete" />
-      <Label blendMode="DARKEN" layoutX="64.0" layoutY="53.0" text="Expenses Overview" textFill="#0a0909" underline="true">
+      <Label blendMode="DARKEN" layoutX="64.0" layoutY="53.0" text="Expenses Overview" textFill="#0a0909" underline="true" AnchorPane.leftAnchor="74.0" AnchorPane.topAnchor="63.0">
          <font>
             <Font name="Arial" size="29.0" />
          </font>
       </Label>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="586.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../../Pictures/ExpenseNote%20logo.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

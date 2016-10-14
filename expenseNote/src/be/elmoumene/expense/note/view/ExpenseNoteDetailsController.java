@@ -249,4 +249,8 @@ public class ExpenseNoteDetailsController {
 		}
 	}
 
+	public void handelSendExpenseNote(){
+
+	}
+
 }

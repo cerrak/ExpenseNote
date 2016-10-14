@@ -198,7 +198,7 @@ public class ExpenseDTO {
         entity.setDate(cal);
 		entity.setComment(dto.getComment());
 		entity.setCountry(CountryDTO.toEntity(dto.getCountry()));
-		entity.setPerson(PersonDTO.personToEntity(dto.getPerson()));
+		entity.setPerson(PersonDTO.toEntity(dto.getPerson()));
 		entity.setCurrency(dto.getCurrency());
 		entity.setCategory(CategoryDTO.toEntity(dto.getCategory()));
 
@@ -223,7 +223,7 @@ public class ExpenseDTO {
 		model.setSupplier(entity.getSupplier());
 		model.setAmount(entity.getAmount());
 		model.setReceipt(entity.getReceipt());
-		model.setPerson(PersonDTO.personToModel(entity.getPerson()));
+		model.setPerson(PersonDTO.toDto(entity.getPerson()));
 
 		return model;
 
