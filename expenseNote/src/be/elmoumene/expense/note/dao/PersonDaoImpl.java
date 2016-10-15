@@ -14,11 +14,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import be.elmoumene.expense.note.database.ConnectionHSQL;
+import be.elmoumene.expense.note.entity.Department;
 import be.elmoumene.expense.note.entity.Person;
 import be.elmoumene.expense.note.entity.UserRole;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
-public class PersonDaoImpl implements PersonDao {
+public class PersonDaoImpl<T extends Person> implements PersonDao<Person> {
 
 	private final static String TABLE_NAME = "person";
 	
@@ -35,15 +36,18 @@ public class PersonDaoImpl implements PersonDao {
 	private final static String IS_ACTIVE = "isactive"; 
 	private final static String USER_ROLE = "userrole"; 
 	private final static String PASSWORD_FIELD = "passwordfield"; 
-
+	private final static String DEPARTMENT = "department_id";
+	
 	private static Map<String, Integer> columns;
 	private static Map<String, Integer> columnsWithId;
 	
-    private static PersonDaoImpl uniqueInstance = new PersonDaoImpl();
+    private static PersonDao uniqueInstance = new PersonDaoImpl();
     private Connection con = ConnectionHSQL.getInstance().getConn();
     private PreparedStatement stm;
 
-    public static PersonDaoImpl getInstance() {
+    private DepartmentDao departmentDao = FactoryDao.getDepartmentDao();
+    
+    public static PersonDao getInstance() {
         return uniqueInstance;
     }
 
@@ -61,6 +65,7 @@ public class PersonDaoImpl implements PersonDao {
     	columns.put(USER_ROLE, columns.size()+1);
     	columns.put(PASSWORD_FIELD, columns.size()+1);
     	columns.put(EMAIL, columns.size()+1);
+    	columns.put(DEPARTMENT, columns.size()+1);
     	
     	columnsWithId = new LinkedHashMap<String, Integer>(columns);
     	columnsWithId.put(ID, columns.size()+1);
@@ -93,13 +98,14 @@ public class PersonDaoImpl implements PersonDao {
             stm.setBoolean(columns.get(IS_ACTIVE), p.getIsActive());
             stm.setString(columns.get(USER_ROLE), p.getUserRole().toString());
             stm.setString(columns.get(PASSWORD_FIELD),  p.getPassword().toString());
-
+            stm.setLong(columns.get(DEPARTMENT), p.getDepartment().getId());
+            
             stm.executeUpdate();
             ResultSet res = stm.getGeneratedKeys();
 
            // SELECT CREATED PERSON
             res.next();
-           return getPersonById(res.getLong(1));
+           return getById(res.getLong(1));
 
         } catch (Exception e) {
         	throw new ExpenseNoteException("User creation in error", e);
@@ -129,11 +135,12 @@ public class PersonDaoImpl implements PersonDao {
 		            stm.setBoolean(columns.get(IS_ACTIVE), p.getIsActive());
 		            stm.setString(columns.get(USER_ROLE), p.getUserRole().toString());
 		            stm.setString(columns.get(PASSWORD_FIELD),  p.getPassword().toString());
+		            stm.setLong(columns.get(DEPARTMENT), p.getDepartment().getId());
 		            
 		            stm.setLong(columnsWithId.get(ID), p.getId());
 		            
 		            stm.executeUpdate();
-		           return getPersonById(p.getId());
+		           return getById(p.getId());
 
 		        } catch (Exception e) {
 		        	throw new ExpenseNoteException("User update in error", e);
@@ -160,7 +167,7 @@ public class PersonDaoImpl implements PersonDao {
 	}
 
 	@Override
-	public Person getPersonById(Long id) {
+	public Person getById(Long id) {
 		
 		if(id==null)
 			return null;
@@ -179,14 +186,14 @@ public class PersonDaoImpl implements PersonDao {
             res.next();
             return mapResult(res);
 
-        } catch (SQLException e) {
+        } catch (SQLException | ExpenseNoteException e) {
             System.out.println(e.toString());
         }
         return null;
 	}
 
 
-	private Person mapResult(ResultSet res) throws SQLException{
+	private Person mapResult(ResultSet res) throws SQLException, ExpenseNoteException{
 		Person p = new Person();
 		p.setId(res.getLong(columnsWithId.get(ID)));
 		p.setFirstName(res.getString(columnsWithId.get(FIRSTNAME)));
@@ -206,11 +213,15 @@ public class PersonDaoImpl implements PersonDao {
 		p.setUserRole(UserRole.fromString(res.getString(columnsWithId.get(USER_ROLE))));
 		p.setPassword(res.getString(columnsWithId.get(PASSWORD_FIELD)));
 
+		Department d = departmentDao.getDepartmentById(res.getLong(columnsWithId.get(DEPARTMENT)));
+		p.setDepartment(d);
+//		Entity entity = entityDao.getEntityById(res.getLong(columnsWithId.get(ENTITY_ID)));
+//		d.setEntity(entity);
 		return p;
 	}
 
 	@Override
-	public Person getPersonByEmail(String email) {
+	public Person getByEmail(String email) {
 		String sqlColumns = columnsWithId.keySet().stream().collect(Collectors.joining(", "));
 		StringBuilder sql = new StringBuilder();
 		sql.append("select " + sqlColumns + " ");
@@ -225,14 +236,14 @@ public class PersonDaoImpl implements PersonDao {
             res.next();
             return mapResult(res);
 
-        } catch (SQLException e) {
+        } catch (SQLException | ExpenseNoteException e) {
             System.out.println(e.toString());
         }
 		return null;
 	}
 
 	@Override
-	public List<Person> getPersons() {
+	public List<Person> getList() {
 		List<Person> list = new ArrayList<Person>();
 		String sqlColumns = columnsWithId.keySet().stream().collect(Collectors.joining(", "));
 		StringBuilder sql = new StringBuilder();
@@ -250,7 +261,7 @@ public class PersonDaoImpl implements PersonDao {
             }
 
             return list;
-        } catch (SQLException e) {
+        } catch (SQLException | ExpenseNoteException e) {
             System.out.println(e.toString());
         }
         return null;

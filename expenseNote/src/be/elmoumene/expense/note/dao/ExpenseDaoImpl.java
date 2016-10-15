@@ -25,7 +25,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
 
 	private final static String COLUMNS_WITH_ID = COLUMNS + ", id";
 
-	private PersonDao personDao = FactoryDao.getPersonDao();
+	private PersonDao<Person> personDao = FactoryDao.getPersonDao();
 	private CountryDao countryDao = FactoryDao.getCountryDao();
 	private CategoryDao categoryDao = FactoryDao.getCategoryDao();
 	
@@ -199,7 +199,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
 			e.setAmount(res.getFloat(8));
 			e.setReceipt(res.getBoolean(10));
 
-			Person p = personDao.getPersonById(res.getLong(9));
+			Person p = personDao.getById(res.getLong(9));
 			e.setPerson(p);
 
 			e.setId(res.getLong(11));

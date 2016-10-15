@@ -24,6 +24,7 @@ public class Person {
 	private UserRole userRole;
 	private String password;
 	private Boolean isActive;
+	private Department department;
 
 	public Person() {
 	}
@@ -161,6 +162,14 @@ public class Person {
 
 	public void setPassword(String password) {
 		this.password =  password;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 
 }

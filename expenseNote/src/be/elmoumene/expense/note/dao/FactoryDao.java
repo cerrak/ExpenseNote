@@ -1,12 +1,14 @@
 package be.elmoumene.expense.note.dao;
 
+import be.elmoumene.expense.note.entity.Person;
+
 /**
  *
  * @author Mouaad El Moumène
  */
 public abstract class FactoryDao {
 
-	public static PersonDao getPersonDao() {
+	public static PersonDao<Person> getPersonDao() {
 		return PersonDaoImpl.getInstance();
 	}
 
@@ -33,4 +35,5 @@ public abstract class FactoryDao {
 	public static DepartmentDao getDepartmentDao(){
 		return DepartmentDaoImpl.getInstance();
 	}
+
 }

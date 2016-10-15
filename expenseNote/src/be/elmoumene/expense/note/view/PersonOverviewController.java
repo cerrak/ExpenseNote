@@ -52,7 +52,8 @@ public class PersonOverviewController {
 
     // SERVICES
 
-    private PersonService personService =  FactoryService.getPersonService();
+    private PersonService<PersonDTO> personService =  FactoryService.getPersonService();
+    
     private static PersonOverviewController uniqueInstance;
 
     /**
@@ -289,7 +290,7 @@ public class PersonOverviewController {
 
 	public void loadData() {
         // Add observable list data to the table
-        personTable.setItems(FXCollections.observableArrayList(personService.getPersons()));
+        personTable.setItems(FXCollections.observableArrayList(personService.getList()));
 
 	}
 }

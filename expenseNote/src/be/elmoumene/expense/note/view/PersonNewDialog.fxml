@@ -80,15 +80,15 @@
             <Label GridPane.columnIndex="1" />
             <Label text="Approbateur" GridPane.rowIndex="1" />
             <Label text="Controller" GridPane.rowIndex="2" />
-            <TextField fx:id="departmentField" prefHeight="7.0" prefWidth="124.0" styleClass="label-bright" GridPane.columnIndex="1" />
-            <TextField fx:id="approbateurField" prefHeight="5.0" prefWidth="124.0" styleClass="label-bright" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="controllerField" prefHeight="3.0" prefWidth="124.0" styleClass="label-bright" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField  prefHeight="7.0" prefWidth="124.0" styleClass="label-bright" GridPane.columnIndex="1" />
+            <TextField  prefHeight="5.0" prefWidth="124.0" styleClass="label-bright" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField  prefHeight="3.0" prefWidth="124.0" styleClass="label-bright" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField prefHeight="37.0" prefWidth="145.0" styleClass="label-bright" GridPane.columnIndex="1" />
             <TextField styleClass="label-bright" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField styleClass="label-bright" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <TextField fx:id="entityField" layoutX="601.0" layoutY="260.0" prefHeight="17.0" prefWidth="145.0" styleClass="label-bright" />
+      <TextField  layoutX="601.0" layoutY="260.0" prefHeight="17.0" prefWidth="145.0" styleClass="label-bright" />
       <ComboBox fx:id="roleComboBox" layoutX="594.0" layoutY="366.0" prefWidth="150.0" promptText="Select role" />
       <TextField layoutX="605.0" layoutY="87.0" prefHeight="17.0" prefWidth="145.0" styleClass="label-bright" />
       <CheckBox fx:id="isActiv" layoutX="136.0" layoutY="91.0" mnemonicParsing="false" text="Enable" />
@@ -99,9 +99,9 @@
          </buttons>
       </ButtonBar>
       <Label layoutX="463.0" layoutY="370.0" text="Role :" />
-      <ComboBox layoutX="594.0" layoutY="407.0" prefHeight="25.0" prefWidth="150.0" promptText="Select department" />
+      <ComboBox fx:id="departmentComboBox" layoutX="594.0" layoutY="407.0" prefHeight="25.0" prefWidth="150.0" promptText="Select department" />
       <Label layoutX="458.0" layoutY="411.0" text="Department :" />
-      <ComboBox fx:id="roleComboBox211" layoutX="594.0" layoutY="320.0" prefHeight="25.0" prefWidth="150.0" promptText="Select  Entity" />
+      <ComboBox fx:id="entityComboBox" layoutX="594.0" layoutY="320.0" prefHeight="25.0" prefWidth="150.0" promptText="Select  Entity" />
       <Label layoutX="463.0" layoutY="324.0" text="Entity" />
    </children>
 </AnchorPane>

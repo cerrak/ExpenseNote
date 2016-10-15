@@ -8,6 +8,14 @@ import be.elmoumene.expense.note.entity.Controller;
  */
 public class ControllerDTO extends PersonDTO {
 
+	public ControllerDTO(PersonDTO dto) {
+		super(dto);
+	}
+	
+	public ControllerDTO() {
+		super();
+	}
+	
 	private EntityDTO entity;
 
 	public EntityDTO getEntity() {

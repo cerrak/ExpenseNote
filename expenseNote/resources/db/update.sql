@@ -48,3 +48,6 @@ ALTER TABLE expense ADD expensecategory_id int not null  DEFAULT '1';
 ALTER TABLE expense MODIFY expensecategory_id int not null;
 
 ALTER TABLE expense ADD CONSTRAINT fk_expense_category FOREIGN KEY (expensecategory_id) references category(id);
+
+ALTER TABLE person ADD department_id int not null  DEFAULT '1';
+ALTER TABLE person ADD CONSTRAINT fk_person_department FOREIGN KEY (department_id) references department(id);

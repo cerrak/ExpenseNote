@@ -13,7 +13,9 @@ create table person (
 	userrole varchar(255) not null,
 	passwordfield varchar(255) not null,
 	deleted tinyint(1) DEFAULT '0',
+	department_id int not null,
 	constraint pk_personid primary key (id),
+	constraint fk_person_department FOREIGN KEY (department_id) references department(id),
 	constraint uc_email UNIQUE (email)
 );
 
@@ -80,12 +82,6 @@ create table department (
     constraint unique_department_name UNIQUE (name)
 );
 
-create table supervisor (
-	person_id int not null AUTO_INCREMENT,
-	department_id int not null,
-    constraint fk_supervisor_department FOREIGN KEY (department_id) references department(id),
-	constraint fk_supervisor_person FOREIGN KEY (person_id) references person(id)
-);
 
 create table controller (
 	person_id int not null AUTO_INCREMENT,

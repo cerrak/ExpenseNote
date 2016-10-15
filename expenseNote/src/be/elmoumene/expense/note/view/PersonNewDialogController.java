@@ -1,13 +1,17 @@
 package be.elmoumene.expense.note.view;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import be.elmoumene.expense.note.controller.FactoryController;
 import be.elmoumene.expense.note.entity.UserRole;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
+import be.elmoumene.expense.note.model.ControllerDTO;
+import be.elmoumene.expense.note.model.DepartmentDTO;
 import be.elmoumene.expense.note.model.EntityDTO;
 import be.elmoumene.expense.note.model.PersonDTO;
-import be.elmoumene.expense.note.model.SupervisorDTO;
+import be.elmoumene.expense.note.service.ControllerService;
+import be.elmoumene.expense.note.service.DepartmentService;
 import be.elmoumene.expense.note.service.EntityService;
 import be.elmoumene.expense.note.service.FactoryService;
 import be.elmoumene.expense.note.service.PersonService;
@@ -61,16 +65,20 @@ public class PersonNewDialogController {
     private ComboBox<EntityDTO> entityComboBox;
     @FXML
     private DatePicker datePicker;
-    //@FXML
-    //private ComboBox<departmentDTO> departmentComboBox;
+    @FXML
+	private ComboBox<DepartmentDTO> departmentComboBox;
 
-
-
+    
     // SERVICES
 
-    private PersonService personService =  FactoryService.getPersonService();
+    private PersonService<PersonDTO> personService =  FactoryService.getPersonService();
+    
+    private ControllerService<ControllerDTO> controllerService =  FactoryService.getControllerService();
+     
     private EntityService entityService = FactoryService.getEntityService();
-
+    	
+    private DepartmentService departmentService =  FactoryService.getDepartmentService();
+    
     private static PersonNewDialogController uniqueInstance;
 
     private Stage dialogStage;
@@ -94,11 +102,19 @@ public class PersonNewDialogController {
     private void initialize() throws ExpenseNoteException {
     	roleComboBox.getItems().addAll(UserRole.literalsCode());
     	roleComboBox.getSelectionModel().select(UserRole.USER.toString());
-    	//entityComboBox.getItems().addAll(entityService.getEntities());
-
-
-// hide the isActiv button
-
+    	
+    	List<EntityDTO> entities = entityService.getEntities();
+    	
+    	if(entities!=null)
+    		entityComboBox.getItems().addAll(entities);
+    	
+    	entityComboBox.getSelectionModel().select(0);
+    	
+    	List<DepartmentDTO> deps = departmentService.getDepartments();
+    	
+    	if(deps!=null)
+    	departmentComboBox.getItems().addAll(deps);
+    	departmentComboBox.getSelectionModel().select(0);
     }
 
     /**
@@ -143,6 +159,7 @@ public class PersonNewDialogController {
 //		if(person.getId() != null)
 //			passwordLabel.setVisible(false); // set invisible for editing
 
+		departmentComboBox.getSelectionModel().select(person.getDepartment());
 
 		if(person.getId() != null)
 			buttonBarNew.setVisible(false);
@@ -177,17 +194,13 @@ public class PersonNewDialogController {
 				case ADMIN:
 					/// TODO implement admin
 					break;
-				case SUPERVISOR:
-					SupervisorDTO supervisor = new SupervisorDTO();
-					fillPerson(supervisor);
-					// supervisor.setDepartment(department);
-					personService.create(supervisor);
-					break;
 				case CONTROLLER:
-					// ControllerDTO controller = new ControllerDTO();
-					//fillPerson(controller);
-					// controller.setentity(entity);
-					//personService.create(controller);
+					ControllerDTO controller = new ControllerDTO();
+					fillPerson(controller);
+					if(entityComboBox.getValue() == null)
+						throw new ExpenseNoteException("choose an entity for the controller");
+					controller.setEntity(entityComboBox.getValue());
+					controllerService.create(controller);
 					break;
 				default:
 					PersonDTO person = new PersonDTO();
@@ -222,6 +235,7 @@ public class PersonNewDialogController {
 		person.setUserRole(UserRole.fromString(roleComboBox.getSelectionModel().getSelectedItem()));
 		person.setPasswordField(passwordField.getText());
 		person.setIsActive(isActiv.isSelected());
+		person.setDepartment(departmentComboBox.getSelectionModel().getSelectedItem());
 
     }
 
@@ -242,7 +256,7 @@ public class PersonNewDialogController {
             person.setUserRole(UserRole.fromString(roleComboBox.getSelectionModel().getSelectedItem()));
             person.setPasswordField(passwordField.getText());
             person.setIsActive(isActiv.isSelected());
-
+            person.setDepartment(departmentComboBox.getSelectionModel().getSelectedItem());
 
             try {
 				person = personService.update(person);

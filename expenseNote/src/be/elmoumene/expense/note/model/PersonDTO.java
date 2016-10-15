@@ -38,13 +38,28 @@ public class PersonDTO {
 	private BooleanProperty isActive;
 	private StringProperty password;
 	private UserRole userRole;
-
+	private ObjectProperty<DepartmentDTO> department;
 
 	public PersonDTO() {
 
 	}
 
-
+	public PersonDTO(PersonDTO dto) {
+		this.setId(dto.getId());
+		this.setFirstName(dto.getFirstName());
+		this.setLastName(dto.getLastName());
+		this.setStreet(dto.getStreet());
+		this.setPostalCode(dto.getPostalCode());
+		this.setCity(dto.getCity());
+		this.setTitle(dto.getTitle());
+		this.setBirthday(dto.getBirthday());
+		this.setMobile(dto.getMobile());
+		this.setEmail(dto.getEmail());
+		this.setIsActive(dto.getIsActive());
+		this.setPasswordField(dto.getPasswordField());
+		this.setUserRole(dto.getUserRole());
+	}
+	
     public Boolean getIsActive() {
         return isActive==null?null:isActive.get();
     }
@@ -114,7 +129,20 @@ public class PersonDTO {
     	this.postalCode = new SimpleIntegerProperty(postalCode);
     }
 
-    public IntegerProperty postalCodeProperty() {
+
+	public DepartmentDTO getDepartment() {
+    	return department==null?null:department.get();
+    }
+
+    public void setDepartment(DepartmentDTO department) {
+    	this.department = new SimpleObjectProperty<DepartmentDTO>(department);
+    }
+
+    public ObjectProperty<DepartmentDTO> entityProperty() {
+        return department;
+    }
+    
+	public IntegerProperty postalCodeProperty() {
         return postalCode;
     }
 
@@ -226,7 +254,7 @@ public class PersonDTO {
 		entity.setIsActive(model.getIsActive());
 		entity.setPassword(model.getPasswordField());
 		entity.setUserRole(model.getUserRole());
-
+		entity.setDepartment(DepartmentDTO.toEntity(model.getDepartment()));
 		return entity;
 
 	}
@@ -254,7 +282,7 @@ public class PersonDTO {
 		model.setIsActive(entity.getIsActive());
 		model.setPasswordField(entity.getPassword());
 		model.setUserRole(entity.getUserRole());
-
+		model.setDepartment(DepartmentDTO.toDto(entity.getDepartment()));
 		return model;
 
 	}

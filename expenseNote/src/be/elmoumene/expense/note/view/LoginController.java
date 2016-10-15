@@ -24,7 +24,7 @@ public class LoginController {
 
     // SERVICES
 
-    private PersonService personService =  FactoryService.getPersonService();
+    private PersonService<PersonDTO> personService =  FactoryService.getPersonService();
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
@@ -35,7 +35,7 @@ public class LoginController {
     	String email = emailField.getText();
     	String password = passwordField.getText();
 
-    	PersonDTO userConnected = personService.getPerson(email, password);
+    	PersonDTO userConnected = personService.getByLogin(email, password);
 
     	if(userConnected!=null && userConnected.getIsActive()==false){
     		Alert alert = new Alert(AlertType.WARNING);

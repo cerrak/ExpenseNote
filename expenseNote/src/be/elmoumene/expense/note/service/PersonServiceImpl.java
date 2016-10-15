@@ -12,13 +12,13 @@ import be.elmoumene.expense.note.exception.ExpenseNoteException;
 import be.elmoumene.expense.note.model.PersonDTO;
 
 
-public class PersonServiceImpl  implements PersonService{
+public class PersonServiceImpl<T extends PersonDTO>  implements PersonService<PersonDTO>{
 
-	private static PersonService uniqueInstance = new PersonServiceImpl();
+	private static PersonService<PersonDTO> uniqueInstance = new PersonServiceImpl<PersonDTO>();
 
-	private PersonDao personDao = FactoryDao.getPersonDao();
+	private PersonDao<Person> personDao = FactoryDao.getPersonDao();
 
-    public static PersonService getInstance() {
+    public static PersonService<PersonDTO> getInstance() {
         return uniqueInstance;
     }
 
@@ -50,38 +50,39 @@ public class PersonServiceImpl  implements PersonService{
 	}
 
 	@Override
-	public PersonDTO getPersonById(Long id) {
+	public PersonDTO getById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public PersonDTO getPersonByEmail(String email) {
-		Person entity = personDao.getPersonByEmail(email);
+	public PersonDTO getByEmail(String email) {
+		Person entity = personDao.getByEmail(email);
 
 		return PersonDTO.toDto(entity);
 	}
 
 	@Override
-	public List<PersonDTO> getPersons() {
+	public List<PersonDTO> getList() {
 
 		List<PersonDTO> personsDto = new ArrayList<PersonDTO>();
 
-		List<Person> entities = personDao.getPersons();
+		List<Person> entities = personDao.getList();
 
 		entities.forEach( entity -> personsDto.add(PersonDTO.toDto(entity)));
 
 		return personsDto;
 	}
 
-	public PersonDTO getPerson(String email, String password) {
+	@Override
+	public PersonDTO getByLogin(String email, String password) {
 		// 1) utiliser l'email et password pour générer le code sha1 (String)
 
 		String cryptedPassword = DigestUtils.sha1Hex(password);
 
 		// 2) récupérer l'utilisateur en DB via l'email
 
-		Person entity = personDao.getPersonByEmail(email);
+		Person entity = personDao.getByEmail(email);
 
 		// 3) comparer le code sha1 généré avec le mdp de l'utilisateur récupéré en DB
 
