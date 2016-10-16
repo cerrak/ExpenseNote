@@ -182,9 +182,10 @@ public class PersonNewDialogController {
 
     /**
      * Called when the user clicks ok.
+     * @throws Exception 
      */
     @FXML
-    private void handleNew() {
+    private void handleNew(){
 		if (isInputValid()) {
 			try {
 
@@ -212,7 +213,7 @@ public class PersonNewDialogController {
 				FactoryController.getPersonOverviewController().loadData();
 				dialogStage.close();
 
-			} catch (ExpenseNoteException e) {
+			} catch (Exception e) {
 				// TODO fill the exception on screen
 				e.printStackTrace();
 
@@ -240,40 +241,41 @@ public class PersonNewDialogController {
     }
 
     @FXML
-    private void handleEdit() {
+	private void handleEdit() throws Exception {
 
-        if (isInputValid()) {
+		if (isInputValid()) {
+			try {
+				UserRole role = UserRole.fromString(roleComboBox.getSelectionModel().getSelectedItem());
 
-            person.setFirstName(firstNameField.getText());
-            person.setLastName(lastNameField.getText());
-            person.setStreet(streetField.getText());
-            person.setPostalCode(Integer.parseInt(postalCodeField.getText()));
-            person.setCity(cityField.getText());
-            person.setBirthday(datePicker.getValue());
-            person.setEmail(emailField.getText());
-            person.setMobile(mobileField.getText());
-            person.setTitle(titleField.getText());
-            person.setUserRole(UserRole.fromString(roleComboBox.getSelectionModel().getSelectedItem()));
-            person.setPasswordField(passwordField.getText());
-            person.setIsActive(isActiv.isSelected());
-            person.setDepartment(departmentComboBox.getSelectionModel().getSelectedItem());
+				switch (role) {
+				case ADMIN:
+					/// TODO implement admin
+					break;
+				case CONTROLLER:
+					ControllerDTO controller = new ControllerDTO(person);
+					fillPerson(controller);
+					if (entityComboBox.getValue() == null)
+						throw new ExpenseNoteException("choose an entity for the controller");
+					controller.setEntity(entityComboBox.getValue());
+					controllerService.update(controller);
+					break;
+				default:
+					fillPerson(person);
+					personService.update(person);
+				}
 
-            try {
-				person = personService.update(person);
+				okClicked = true;
+				FactoryController.getPersonOverviewController().loadData();
+				dialogStage.close();
 
-	            okClicked = true;
-	            FactoryController.getPersonOverviewController().loadData();
-	            dialogStage.close();
-
-			} catch (ExpenseNoteException e) {
+			} catch (Exception e) {
 				// TODO fill the exception on screen
 				e.printStackTrace();
 
 			}
 
-
-        }
-    }
+		}
+	}
 
 
     /**

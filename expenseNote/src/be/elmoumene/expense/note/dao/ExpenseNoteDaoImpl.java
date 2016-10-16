@@ -79,11 +79,11 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 
 			con.commit();
 
-		} catch (SQLException ex) {
+		} catch (Exception ex) {
 			error = ex;
 			try {
 				con.rollback();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				error = e;
 			}
 		}
@@ -156,11 +156,11 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 
 			con.commit();
 
-		} catch (SQLException ex) {
+		} catch (Exception ex) {
 			error = ex;
 			try {
 				con.rollback();
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				error = e;
 			}
 		}

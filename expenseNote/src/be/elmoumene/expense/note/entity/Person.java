@@ -1,7 +1,11 @@
 package be.elmoumene.expense.note.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+
+import be.elmoumene.expense.note.model.PersonDTO;
+import be.elmoumene.expense.note.util.DateUtil;
 
 
 /**
@@ -170,6 +174,32 @@ public class Person {
 
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+
+	public PersonDTO toDto(){
+		PersonDTO model = new PersonDTO();
+
+		model.setId(this.getId());
+		model.setFirstName(this.getFirstName());
+		model.setLastName(this.getLastName());
+		model.setStreet(this.getStreet());
+		model.setPostalCode(this.getPostalCode());
+		model.setCity(this.getCity());
+		model.setTitle(this.getTitle());
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        String formattedDate = sdf.format(this.getBirthday().getTime());
+
+		model.setBirthday(DateUtil.parse(formattedDate));
+
+		model.setMobile(this.getMobile());
+		model.setEmail(this.getEmail());
+		model.setIsActive(this.getIsActive());
+		model.setPasswordField(this.getPassword());
+		model.setUserRole(this.getUserRole());
+
+		return model;
+
 	}
 
 }

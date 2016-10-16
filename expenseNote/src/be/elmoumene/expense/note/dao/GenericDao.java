@@ -6,9 +6,9 @@ import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
 public interface GenericDao<T> {
 
-	public T create(T t) throws ExpenseNoteException;
+	public T create(T t) throws Exception;
 
-	public T update(T t)throws ExpenseNoteException;
+	public T update(T t) throws  Exception;
 
 	public void delete(T t) throws ExpenseNoteException;
 

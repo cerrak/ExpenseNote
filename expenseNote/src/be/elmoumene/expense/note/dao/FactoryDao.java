@@ -1,5 +1,6 @@
 package be.elmoumene.expense.note.dao;
 
+import be.elmoumene.expense.note.entity.Controller;
 import be.elmoumene.expense.note.entity.Person;
 
 /**
@@ -9,7 +10,11 @@ import be.elmoumene.expense.note.entity.Person;
 public abstract class FactoryDao {
 
 	public static PersonDao<Person> getPersonDao() {
-		return PersonDaoImpl.getInstance();
+		return (PersonDao<Person>) PersonDaoImpl.getInstance();
+	}
+	
+	public static GenericDao<Controller> getControllerDao() {
+		return ControllerDaoImpl.getInstance();
 	}
 
 	public static ExpenseDao getExpenseDao() {

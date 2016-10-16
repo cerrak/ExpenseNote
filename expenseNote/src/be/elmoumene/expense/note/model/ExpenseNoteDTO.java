@@ -37,7 +37,7 @@ public class ExpenseNoteDTO {
 		entity.setComment(dto.getComment());
 		entity.setCeationDate(dto.getCeationDate());
 		entity.setStatus(dto.getStatus());
-		entity.setPerson(PersonDTO.toEntity(dto.getPerson()));
+		entity.setPerson(dto.getPerson().toEntity());
 
 		if (dto.getExpenses() != null){
 			List<Expense> expenses = new ArrayList<Expense>();
@@ -64,7 +64,7 @@ public class ExpenseNoteDTO {
 		dto.setComment(entity.getComment());
 		dto.setCeationDate(entity.getCeationDate());
 		dto.setStatus(entity.getStatus());
-		dto.setPerson(PersonDTO.toDto(entity.getPerson()));
+		dto.setPerson(entity.getPerson().toDto());
 
 		if (entity.getExpenses() != null){
 			List<ExpenseDTO> expenses = new ArrayList<ExpenseDTO>();

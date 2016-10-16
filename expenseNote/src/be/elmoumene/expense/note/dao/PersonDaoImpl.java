@@ -19,7 +19,7 @@ import be.elmoumene.expense.note.entity.Person;
 import be.elmoumene.expense.note.entity.UserRole;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
-public class PersonDaoImpl<T extends Person> implements PersonDao<Person> {
+public class PersonDaoImpl<T extends Person> implements PersonDao<T> {
 
 	private final static String TABLE_NAME = "person";
 	
@@ -41,13 +41,13 @@ public class PersonDaoImpl<T extends Person> implements PersonDao<Person> {
 	private static Map<String, Integer> columns;
 	private static Map<String, Integer> columnsWithId;
 	
-    private static PersonDao uniqueInstance = new PersonDaoImpl();
-    private Connection con = ConnectionHSQL.getInstance().getConn();
-    private PreparedStatement stm;
+    private static PersonDao<Person> uniqueInstance = new PersonDaoImpl<Person>();
+    protected Connection con = ConnectionHSQL.getInstance().getConn();
+    protected PreparedStatement stm;
 
     private DepartmentDao departmentDao = FactoryDao.getDepartmentDao();
     
-    public static PersonDao getInstance() {
+    public static PersonDao<?> getInstance() {
         return uniqueInstance;
     }
 
@@ -74,7 +74,7 @@ public class PersonDaoImpl<T extends Person> implements PersonDao<Person> {
     }
     
 	@Override
-	public Person create(Person p) throws ExpenseNoteException {
+	public T create(T p) throws Exception {
 		String sqlColumns = columns.keySet().stream().collect(Collectors.joining(", "));
 		String sqlValues = columns.keySet().stream().map(string -> "?").collect(Collectors.joining(", "));	
 		
@@ -113,7 +113,7 @@ public class PersonDaoImpl<T extends Person> implements PersonDao<Person> {
 	}
 
 	@Override
-	public Person update(Person p) throws ExpenseNoteException {
+	public T update(T p) throws Exception {
 		String sqlColumnsAndValues = columns.keySet().stream().map(string -> string + " = ?").collect(Collectors.joining(", "));	
 		
 				StringBuilder sql = new StringBuilder();
@@ -149,7 +149,7 @@ public class PersonDaoImpl<T extends Person> implements PersonDao<Person> {
 	}
 
 	@Override
-	public void delete(Person p) throws ExpenseNoteException {
+	public void delete(T p) throws ExpenseNoteException {
 		StringBuilder sql = new StringBuilder();
 		sql.append("Update "+TABLE_NAME+" ");
 		sql.append("set deleted = ? ");
@@ -167,7 +167,7 @@ public class PersonDaoImpl<T extends Person> implements PersonDao<Person> {
 	}
 
 	@Override
-	public Person getById(Long id) {
+	public T getById(Long id) {
 		
 		if(id==null)
 			return null;
@@ -193,7 +193,7 @@ public class PersonDaoImpl<T extends Person> implements PersonDao<Person> {
 	}
 
 
-	private Person mapResult(ResultSet res) throws SQLException, ExpenseNoteException{
+	protected T mapResult(ResultSet res) throws SQLException, ExpenseNoteException{
 		Person p = new Person();
 		p.setId(res.getLong(columnsWithId.get(ID)));
 		p.setFirstName(res.getString(columnsWithId.get(FIRSTNAME)));
@@ -215,13 +215,12 @@ public class PersonDaoImpl<T extends Person> implements PersonDao<Person> {
 
 		Department d = departmentDao.getDepartmentById(res.getLong(columnsWithId.get(DEPARTMENT)));
 		p.setDepartment(d);
-//		Entity entity = entityDao.getEntityById(res.getLong(columnsWithId.get(ENTITY_ID)));
-//		d.setEntity(entity);
-		return p;
+
+		return (T) p;
 	}
 
 	@Override
-	public Person getByEmail(String email) {
+	public T getByEmail(String email) {
 		String sqlColumns = columnsWithId.keySet().stream().collect(Collectors.joining(", "));
 		StringBuilder sql = new StringBuilder();
 		sql.append("select " + sqlColumns + " ");
@@ -243,8 +242,8 @@ public class PersonDaoImpl<T extends Person> implements PersonDao<Person> {
 	}
 
 	@Override
-	public List<Person> getList() {
-		List<Person> list = new ArrayList<Person>();
+	public List<T> getList() {
+		List<T> list = new ArrayList<T>();
 		String sqlColumns = columnsWithId.keySet().stream().collect(Collectors.joining(", "));
 		StringBuilder sql = new StringBuilder();
 		sql.append("select " + sqlColumns + " ");
@@ -266,5 +265,7 @@ public class PersonDaoImpl<T extends Person> implements PersonDao<Person> {
         }
         return null;
 	}
+
+
 
 }

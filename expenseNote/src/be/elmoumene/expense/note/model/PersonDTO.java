@@ -7,7 +7,6 @@ import java.util.Calendar;
 
 import be.elmoumene.expense.note.entity.Person;
 import be.elmoumene.expense.note.entity.UserRole;
-import be.elmoumene.expense.note.util.DateUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
@@ -44,22 +43,6 @@ public class PersonDTO {
 
 	}
 
-	public PersonDTO(PersonDTO dto) {
-		this.setId(dto.getId());
-		this.setFirstName(dto.getFirstName());
-		this.setLastName(dto.getLastName());
-		this.setStreet(dto.getStreet());
-		this.setPostalCode(dto.getPostalCode());
-		this.setCity(dto.getCity());
-		this.setTitle(dto.getTitle());
-		this.setBirthday(dto.getBirthday());
-		this.setMobile(dto.getMobile());
-		this.setEmail(dto.getEmail());
-		this.setIsActive(dto.getIsActive());
-		this.setPasswordField(dto.getPasswordField());
-		this.setUserRole(dto.getUserRole());
-	}
-	
     public Boolean getIsActive() {
         return isActive==null?null:isActive.get();
     }
@@ -223,23 +206,20 @@ public class PersonDTO {
 		this.userRole = userRole;
 	}
 
-	public static Person toEntity(PersonDTO model){
-		if(model == null)
-			return null;
-
+	public Person toEntity(){
 		Person entity = new Person();
 
-		entity.setId(model.getId());
-		entity.setFirstName(model.getFirstName());
-		entity.setLastName(model.getLastName());
-		entity.setStreet(model.getStreet());
-		entity.setPostalCode(model.getPostalCode());
-		entity.setCity(model.getCity());
-		entity.setTitle(model.getTitle());
+		entity.setId(this.getId());
+		entity.setFirstName(this.getFirstName());
+		entity.setLastName(this.getLastName());
+		entity.setStreet(this.getStreet());
+		entity.setPostalCode(this.getPostalCode());
+		entity.setCity(this.getCity());
+		entity.setTitle(this.getTitle());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         Calendar cal = Calendar.getInstance();
-        String formattedDate = model.getBirthday().toString();
+        String formattedDate = this.getBirthday().toString();
 
         try {
 			cal.setTime(sdf.parse(formattedDate));
@@ -249,46 +229,14 @@ public class PersonDTO {
 		}
 
         entity.setBirthday(cal);
-		entity.setMobile(model.getMobile());
-		entity.setEmail(model.getEmail());
-		entity.setIsActive(model.getIsActive());
-		entity.setPassword(model.getPasswordField());
-		entity.setUserRole(model.getUserRole());
-		entity.setDepartment(DepartmentDTO.toEntity(model.getDepartment()));
+		entity.setMobile(this.getMobile());
+		entity.setEmail(this.getEmail());
+		entity.setIsActive(this.getIsActive());
+		entity.setPassword(this.getPasswordField());
+		entity.setUserRole(this.getUserRole());
+		entity.setDepartment(DepartmentDTO.toEntity(this.getDepartment()));
 		return entity;
 
 	}
-
-	public static PersonDTO toDto(Person entity){
-		if(entity == null)
-			return null;
-		PersonDTO model = new PersonDTO();
-
-		model.setId(entity.getId());
-		model.setFirstName(entity.getFirstName());
-		model.setLastName(entity.getLastName());
-		model.setStreet(entity.getStreet());
-		model.setPostalCode(entity.getPostalCode());
-		model.setCity(entity.getCity());
-		model.setTitle(entity.getTitle());
-
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        String formattedDate = sdf.format(entity.getBirthday().getTime());
-
-		model.setBirthday(DateUtil.parse(formattedDate));
-
-		model.setMobile(entity.getMobile());
-		model.setEmail(entity.getEmail());
-		model.setIsActive(entity.getIsActive());
-		model.setPasswordField(entity.getPassword());
-		model.setUserRole(entity.getUserRole());
-		model.setDepartment(DepartmentDTO.toDto(entity.getDepartment()));
-		return model;
-
-	}
-
-
-
-
 
 }

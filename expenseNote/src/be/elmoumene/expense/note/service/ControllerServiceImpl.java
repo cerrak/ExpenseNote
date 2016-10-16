@@ -3,16 +3,18 @@ package be.elmoumene.expense.note.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.elmoumene.expense.note.dao.FactoryDao;
+import be.elmoumene.expense.note.dao.GenericDao;
+import be.elmoumene.expense.note.entity.Controller;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
 import be.elmoumene.expense.note.model.ControllerDTO;
-import be.elmoumene.expense.note.model.PersonDTO;
 
 
-public class ControllerServiceImpl<T extends ControllerDTO> implements ControllerService<ControllerDTO> {
+public class ControllerServiceImpl implements ControllerService<ControllerDTO> {
 
-	private PersonService<PersonDTO> personService =  FactoryService.getPersonService();
+	private GenericDao<Controller> controllerDao = FactoryDao.getControllerDao();
 	
-	private static ControllerService<ControllerDTO> uniqueInstance = new ControllerServiceImpl<ControllerDTO>();
+	private static ControllerService<ControllerDTO> uniqueInstance = new ControllerServiceImpl();
 
     public static ControllerService<ControllerDTO> getInstance() {
         return uniqueInstance;
@@ -20,30 +22,29 @@ public class ControllerServiceImpl<T extends ControllerDTO> implements Controlle
 
     
 	@Override
-	public ControllerDTO create(ControllerDTO s) throws ExpenseNoteException {
+	public ControllerDTO create(ControllerDTO s) throws Exception {
 		
-		ControllerDTO dto = new ControllerDTO(personService.create(s));
-		
+		ControllerDTO dto = controllerDao.create(s.toEntity()).toDto();
 		
 		return dto;
 	}
 
 	@Override
-	public ControllerDTO update(ControllerDTO s) throws ExpenseNoteException {
+	public ControllerDTO update(ControllerDTO s) throws Exception {
 
-		ControllerDTO dto = new ControllerDTO(personService.update(s));
+		ControllerDTO dto = controllerDao.update(s.toEntity()).toDto();
 		
 		return dto;
 	}
 
 	@Override
 	public void delete(ControllerDTO s) throws ExpenseNoteException {
-		personService.delete(s);
+		controllerDao.delete(s.toEntity());
 	}
 
 	@Override
 	public ControllerDTO getById(Long id) {
-		ControllerDTO dto = new ControllerDTO(personService.getById(id));
+		ControllerDTO dto = controllerDao.getById(id).toDto();
 		
 		return dto;
 	}
@@ -53,7 +54,7 @@ public class ControllerServiceImpl<T extends ControllerDTO> implements Controlle
 		
 		List<ControllerDTO> list = new ArrayList<ControllerDTO>();
 		
-		personService.getList().forEach(dto -> list.add(new ControllerDTO(dto)));;
+		controllerDao.getList().forEach(entity -> list.add(entity.toDto()));;
 		
 		return list;
 	}

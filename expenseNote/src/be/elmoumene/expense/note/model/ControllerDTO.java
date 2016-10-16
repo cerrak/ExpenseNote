@@ -8,14 +8,28 @@ import be.elmoumene.expense.note.entity.Controller;
  */
 public class ControllerDTO extends PersonDTO {
 
-	public ControllerDTO(PersonDTO dto) {
-		super(dto);
-	}
 	
 	public ControllerDTO() {
 		super();
 	}
 	
+	public ControllerDTO(PersonDTO dto) {
+		this.setId(dto.getId());
+		this.setFirstName(dto.getFirstName());
+		this.setLastName(dto.getLastName());
+		this.setStreet(dto.getStreet());
+		this.setPostalCode(dto.getPostalCode());
+		this.setCity(dto.getCity());
+		this.setTitle(dto.getTitle());
+		this.setBirthday(dto.getBirthday());
+		this.setMobile(dto.getMobile());
+		this.setEmail(dto.getEmail());
+		this.setIsActive(dto.getIsActive());
+		this.setPasswordField(dto.getPasswordField());
+		this.setUserRole(dto.getUserRole());
+		this.setDepartment(dto.getDepartment());
+	}
+
 	private EntityDTO entity;
 
 	public EntityDTO getEntity() {
@@ -26,36 +40,12 @@ public class ControllerDTO extends PersonDTO {
 		this.entity = entity;
 	}
 
-	public static Controller toEntity(Controller model){
-		if(model == null)
-			return null;
-
-		Controller entity = new Controller();
-
-		//	TODO implément le reste lol
-		//ce qu'il veut dire c'est qu'il faut implémenter les informations propre au supervisor
-
-
-		return entity;
-
+	
+	public Controller toEntity(){
+		Controller c = new Controller(super.toEntity());
+		c.setEntity(EntityDTO.toEntity(this.entity));
+		return c;
 	}
-
-	public static ControllerDTO toDto(Controller entity){
-		if(entity == null)
-			return null;
-
-		ControllerDTO model = (ControllerDTO) PersonDTO.toDto(entity);
-		if(model == null)
-			return null;
-
-		model.setEntity(EntityDTO.toDto(entity.getEntity()));
-
-		return model;
-
-	}
-
-
-
 
 
 }

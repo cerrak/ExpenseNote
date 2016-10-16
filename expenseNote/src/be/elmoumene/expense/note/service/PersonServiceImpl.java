@@ -23,30 +23,30 @@ public class PersonServiceImpl<T extends PersonDTO>  implements PersonService<Pe
     }
 
     @Override
-	public PersonDTO create(PersonDTO p) throws ExpenseNoteException {
+	public PersonDTO create(PersonDTO p) throws Exception {
 		// Business logic
 
 		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField())); //encrypter
 
-		Person entity = personDao.create(PersonDTO.toEntity(p));
+		Person entity = personDao.create(p.toEntity());
 
-		return PersonDTO.toDto(entity);
+		return entity.toDto();
 	}
 
 	@Override
-	public PersonDTO update(PersonDTO p) throws ExpenseNoteException{
+	public PersonDTO update(PersonDTO p) throws Exception{
 		// Business Logic
 
 		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField())); //encrypter
 
-		Person entity = personDao.update(PersonDTO.toEntity(p));
+		Person entity = personDao.update(p.toEntity());
 
-		return PersonDTO.toDto(entity);
+		return entity.toDto();
 	}
 
 	@Override
 	public void delete(PersonDTO p) throws ExpenseNoteException {
-		personDao.delete(PersonDTO.toEntity(p));
+		personDao.delete(p.toEntity());
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class PersonServiceImpl<T extends PersonDTO>  implements PersonService<Pe
 	public PersonDTO getByEmail(String email) {
 		Person entity = personDao.getByEmail(email);
 
-		return PersonDTO.toDto(entity);
+		return entity.toDto();
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class PersonServiceImpl<T extends PersonDTO>  implements PersonService<Pe
 
 		List<Person> entities = personDao.getList();
 
-		entities.forEach( entity -> personsDto.add(PersonDTO.toDto(entity)));
+		entities.forEach( entity -> personsDto.add(entity.toDto()));
 
 		return personsDto;
 	}
@@ -88,7 +88,7 @@ public class PersonServiceImpl<T extends PersonDTO>  implements PersonService<Pe
 
 		if (entity!=null && entity.getPassword().equals(cryptedPassword)){
 
-				return PersonDTO.toDto(entity);
+				return entity.toDto();
 		}
 
 		return null;

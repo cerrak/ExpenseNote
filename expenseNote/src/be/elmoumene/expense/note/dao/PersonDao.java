@@ -1,7 +1,7 @@
 package be.elmoumene.expense.note.dao;
 
-public interface PersonDao<Person> extends GenericDao<Person>{
+public interface PersonDao<T> extends GenericDao<T>{
 
-	public Person getByEmail(String email);
+	public T getByEmail(String email);
 
 }

@@ -84,7 +84,7 @@ create table department (
 
 
 create table controller (
-	person_id int not null AUTO_INCREMENT,
+	person_id int not null,
 	entity_id int not null,
     constraint fk_controller_entity FOREIGN KEY (entity_id) references entity(id),
 	constraint fk_supervisor_person FOREIGN KEY (person_id) references person(id)
