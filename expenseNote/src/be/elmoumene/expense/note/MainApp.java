@@ -7,12 +7,16 @@ import java.util.concurrent.FutureTask;
 
 import be.elmoumene.expense.note.model.ExpenseNoteDTO;
 import be.elmoumene.expense.note.model.PersonDTO;
+import be.elmoumene.expense.note.view.ControllerExpenseNoteDetailsController;
+import be.elmoumene.expense.note.view.ControllerExpenseNoteOverviewController;
 import be.elmoumene.expense.note.view.ExpenseNoteDetailsController;
 import be.elmoumene.expense.note.view.ExpenseNoteOverviewController;
 import be.elmoumene.expense.note.view.ExpenseOverviewController;
 import be.elmoumene.expense.note.view.LoginController;
 import be.elmoumene.expense.note.view.PersonOverviewController;
 import be.elmoumene.expense.note.view.RootLayoutController;
+import be.elmoumene.expense.note.view.SupervisorExpenseNoteDetailsController;
+import be.elmoumene.expense.note.view.SupervisorExpenseNoteOverviewController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -91,7 +95,7 @@ public class MainApp extends Application {
 	            //System.exit(-1);
 	        }
 	    };
-	    
+
 	private void initApplication() throws IOException {
 
         // Load root layout from fxml file.
@@ -127,13 +131,13 @@ public class MainApp extends Application {
 
 	public void initSupervisorLayout() throws IOException {
 		initRootLayout();
-		showExpenseOverview();
+		showSupervisorExpenseNoteOverview();
 
 	}
 
 	public void initControllerLayout() throws IOException {
 		initRootLayout();
-		showExpenseOverview();
+		showControllerExpenseNoteOverview();
 
 	}
 
@@ -254,6 +258,96 @@ public class MainApp extends Application {
 	        e.printStackTrace();
 	    }
 	}
+
+	public void showSupervisorExpenseNoteOverview(){
+		try {
+	        // Load expense overview.
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(MainApp.class.getResource("view/SupervisorExpenseNoteOverviewController.fxml"));
+	        AnchorPane expenseNoteOverview = (AnchorPane) loader.load();
+
+	        // Set person overview into the center of root layout.
+	        rootLayout.setCenter(expenseNoteOverview);
+
+	        // Give the controller access to the main app.
+	        SupervisorExpenseNoteOverviewController controller = loader.getController();
+
+	        controller.setMainApp(this);
+
+	        controller.showExpenseNote();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	public void showControllerExpenseNoteOverview(){
+		try {
+	        // Load expense overview.
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(MainApp.class.getResource("view/ControllerExpenseNoteOverviewController.fxml"));
+	        AnchorPane expenseNoteOverview = (AnchorPane) loader.load();
+
+	        // Set person overview into the center of root layout.
+	        rootLayout.setCenter(expenseNoteOverview);
+
+	        // Give the controller access to the main app.
+	        ControllerExpenseNoteOverviewController controller = loader.getController();
+
+	        controller.setMainApp(this);
+
+	        controller.showExpenseNote();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	public void showSupervisorExpenseNoteDetails(ExpenseNoteDTO dto){
+		try {
+	        // Load expense overview.
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(MainApp.class.getResource("view/SupervisorExpenseNoteDetails.fxml"));
+	        AnchorPane expenseNoteDetails = (AnchorPane) loader.load();
+
+	        // Set person overview into the center of root layout.
+	        rootLayout.setCenter(expenseNoteDetails);
+
+	        // Give the controller access to the main app.
+	        SupervisorExpenseNoteDetailsController controller = loader.getController();
+	        controller.setExpenseNote(dto);
+	        controller.setMainApp(this);
+	        controller.loadData();
+
+
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	public void showControllerExpenseNoteDetails(ExpenseNoteDTO dto){
+		try {
+	        // Load expense overview.
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(MainApp.class.getResource("view/ControllerExpenseNoteDetails.fxml"));
+	        AnchorPane expenseNoteDetails = (AnchorPane) loader.load();
+
+	        // Set person overview into the center of root layout.
+	        rootLayout.setCenter(expenseNoteDetails);
+
+	        // Give the controller access to the main app.
+	        ControllerExpenseNoteDetailsController controller = loader.getController();
+	        controller.setExpenseNote(dto);
+	        controller.setMainApp(this);
+	        controller.loadData();
+
+
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
 	public PersonDTO getUser() {
 		return user;
 	}
@@ -262,6 +356,8 @@ public class MainApp extends Application {
 	public void setUser(PersonDTO user) {
 		this.user = user;
 	}
+
+
 
 
 

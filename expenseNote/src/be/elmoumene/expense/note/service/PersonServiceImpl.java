@@ -26,7 +26,7 @@ public class PersonServiceImpl<T extends PersonDTO>  implements PersonService<Pe
 	public PersonDTO create(PersonDTO p) throws Exception {
 		// Business logic
 
-		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField())); //encrypter
+		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField())); //Encrypted
 
 		Person entity = personDao.create(p.toEntity());
 
@@ -37,7 +37,7 @@ public class PersonServiceImpl<T extends PersonDTO>  implements PersonService<Pe
 	public PersonDTO update(PersonDTO p) throws Exception{
 		// Business Logic
 
-		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField())); //encrypter
+		p.setPasswordField(DigestUtils.sha1Hex(p.getPasswordField())); //Encrypted
 
 		Person entity = personDao.update(p.toEntity());
 

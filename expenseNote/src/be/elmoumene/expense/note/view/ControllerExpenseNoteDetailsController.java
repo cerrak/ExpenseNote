@@ -34,7 +34,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ExpenseNoteDetailsController extends JavaFXBaseController<ExpenseDTO>{
+public class ControllerExpenseNoteDetailsController extends JavaFXBaseController<ExpenseDTO>{
 	@FXML
     private TableView<ExpenseDTO> expenseTable;
     @FXML
@@ -80,17 +80,17 @@ public class ExpenseNoteDetailsController extends JavaFXBaseController<ExpenseDT
 
     private MainApp mainApp;
 
-    private static ExpenseNoteDetailsController uniqueInstance;
+    private static ControllerExpenseNoteDetailsController uniqueInstance;
 
     /**
      * The constructor.
      * The constructor is called before the initialize() method.
      */
-    public ExpenseNoteDetailsController() {
+    public ControllerExpenseNoteDetailsController() {
     	uniqueInstance = this;
     }
 
-    public static ExpenseNoteDetailsController getInstance() {
+    public static ControllerExpenseNoteDetailsController getInstance() {
         return uniqueInstance;
     }
 
@@ -262,18 +262,18 @@ public class ExpenseNoteDetailsController extends JavaFXBaseController<ExpenseDT
 		}
 	}
 
-	public void handelSendExpenseNote() throws Exception{
+	public void handelValidateExpenseNote() throws Exception{
 
     	Alert alert = new Alert(AlertType.CONFIRMATION, "", ButtonType.YES, ButtonType.CANCEL);
 
         alert.initOwner(getDialogStage());
         alert.setTitle("Question???");
-        alert.setHeaderText("Send Expense Note");
-        alert.setContentText("Do you really want to send this expense note ?");
+        alert.setHeaderText("Approve Expense Note");
+        alert.setContentText("Do you really want to approve this expense note ?");
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.YES) {
-        	expenseNote.setStatus(Status.SUBMITTED);
+        	expenseNote.setStatus(Status.VALIDATED);
     	    expenseNoteService.update(expenseNote);
         }
 

@@ -4,6 +4,13 @@ import java.util.List;
 
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
+/**
+ * 	Generic CRUD interface
+ *
+ * @author Mouaad
+ *
+ * @param <T>
+ */
 public interface GenericDao<T> {
 
 	public T create(T t) throws Exception;
@@ -15,5 +22,6 @@ public interface GenericDao<T> {
 	public T getById(Long id);
 
 	public List<T> getList();
-	
+
+
 }

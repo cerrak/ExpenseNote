@@ -60,6 +60,7 @@ public class ExpenseOverviewController {
 
 	private ExpenseService expenseService = FactoryService.getExpenseService();
 	private MainApp mainApp;
+	private ExpenseNoteDTO expenseNote;
 
 	private static ExpenseOverviewController uniqueInstance;
 

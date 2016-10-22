@@ -17,7 +17,7 @@ import be.elmoumene.expense.note.entity.Entity;
 import be.elmoumene.expense.note.entity.Person;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
-public class ControllerDaoImpl implements GenericDao<Controller>{
+public class SupervisorDaoImpl implements GenericDao<Controller>{
 
 	private final static String TABLE_NAME = "controller";
 	private final static String PERSON = "person_id";
@@ -32,14 +32,14 @@ public class ControllerDaoImpl implements GenericDao<Controller>{
 	private EntityDao entityDao = FactoryDao.getEntityDao();
 	private PersonDao<Person> personDao = FactoryDao.getPersonDao();
 
-	private static GenericDao<Controller> uniqueInstance = new ControllerDaoImpl();
+	private static GenericDao<Controller> uniqueInstance = new SupervisorDaoImpl();
 
 
     public static GenericDao<Controller> getInstance() {
         return uniqueInstance;
     }
 
-    public ControllerDaoImpl(){
+    public SupervisorDaoImpl(){
     	columns = new LinkedHashMap<String, Integer>();
     	columns.put(ENTITY, columns.size()+1);
 

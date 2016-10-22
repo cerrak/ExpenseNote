@@ -12,7 +12,7 @@ public abstract class FactoryDao {
 	public static PersonDao<Person> getPersonDao() {
 		return (PersonDao<Person>) PersonDaoImpl.getInstance();
 	}
-	
+
 	public static GenericDao<Controller> getControllerDao() {
 		return ControllerDaoImpl.getInstance();
 	}
@@ -40,5 +40,6 @@ public abstract class FactoryDao {
 	public static DepartmentDao getDepartmentDao(){
 		return DepartmentDaoImpl.getInstance();
 	}
+
 
 }

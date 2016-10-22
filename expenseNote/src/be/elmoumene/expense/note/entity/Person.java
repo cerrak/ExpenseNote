@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import be.elmoumene.expense.note.model.DepartmentDTO;
 import be.elmoumene.expense.note.model.PersonDTO;
 import be.elmoumene.expense.note.util.DateUtil;
 
@@ -197,7 +198,7 @@ public class Person {
 		model.setIsActive(this.getIsActive());
 		model.setPasswordField(this.getPassword());
 		model.setUserRole(this.getUserRole());
-
+		model.setDepartment(DepartmentDTO.toDto(this.getDepartment()));
 		return model;
 
 	}

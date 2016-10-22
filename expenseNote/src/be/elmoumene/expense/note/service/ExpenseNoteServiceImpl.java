@@ -3,10 +3,17 @@ package be.elmoumene.expense.note.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
+
+import be.elmoumene.expense.note.controller.FactoryController;
 import be.elmoumene.expense.note.dao.ExpenseDao;
 import be.elmoumene.expense.note.dao.ExpenseNoteDao;
 import be.elmoumene.expense.note.dao.FactoryDao;
+import be.elmoumene.expense.note.entity.Department;
 import be.elmoumene.expense.note.entity.ExpenseNote;
+import be.elmoumene.expense.note.model.ControllerDTO;
+import be.elmoumene.expense.note.model.DepartmentDTO;
+import be.elmoumene.expense.note.model.EntityDTO;
 import be.elmoumene.expense.note.model.ExpenseNoteDTO;
 import be.elmoumene.expense.note.model.PersonDTO;
 
@@ -16,6 +23,7 @@ public class ExpenseNoteServiceImpl implements ExpenseNoteService {
 
 	private ExpenseNoteDao expenseNoteDao = FactoryDao.getExpenseNoteDao();
 	private ExpenseDao expenseDao = FactoryDao.getExpenseDao();
+	private ControllerService<ControllerDTO> controllerService = FactoryService.getControllerService();
 
 	public static ExpenseNoteService getInstance() {
 		return uniqueInstance;
@@ -55,11 +63,27 @@ public class ExpenseNoteServiceImpl implements ExpenseNoteService {
 	}
 
 	@Override
-	public List<ExpenseNoteDTO> getExpenseNotesFromPerson(PersonDTO personDto) {
+	public List<ExpenseNoteDTO> getExpenseNotes(PersonDTO personDto) {
 
 		List<ExpenseNoteDTO> ExpenseNotesDto = new ArrayList<ExpenseNoteDTO>();
 
-		List<ExpenseNote> entities = expenseNoteDao.getExpenseNotesFromPerson(personDto.getId());
+		List<ExpenseNote> entities = new ArrayList<ExpenseNote>();
+
+		switch(personDto.getUserRole()){
+
+		case USER : entities = expenseNoteDao.getExpenseNotesFromPerson(personDto.getId());
+
+			break;
+		case SUPERVISOR : entities = expenseNoteDao.getExpenseNotesForSupervisor(DepartmentDTO.toEntity(personDto.getDepartment()));
+
+			break;
+		case CONTROLLER :
+			ControllerDTO controllerDto = controllerService.getById(personDto.getId());
+			entities = expenseNoteDao.getExpenseNotesForController(EntityDTO.toEntity(controllerDto.getEntity()));
+			break;
+		default :
+			break;
+		}
 
 		entities.forEach(entity -> {
 				entity.setExpenses(expenseDao.getExpensesFromExpenseNoteId(entity.getId()));
@@ -70,17 +94,6 @@ public class ExpenseNoteServiceImpl implements ExpenseNoteService {
 		return ExpenseNotesDto;
 	}
 
-
-	@Override
-	public List<ExpenseNoteDTO> getExpenseNotes() {
-		List<ExpenseNoteDTO> expenseNotesDto = new ArrayList<ExpenseNoteDTO>();
-
-		List<ExpenseNote> entities = expenseNoteDao.getExpenseNotes();
-
-		entities.forEach(entity -> expenseNotesDto.add(ExpenseNoteDTO.toDto(entity)));
-
-		return expenseNotesDto;
-	}
 
 
 }

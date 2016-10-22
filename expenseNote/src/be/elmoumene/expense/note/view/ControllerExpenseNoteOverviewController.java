@@ -138,8 +138,8 @@ public class ControllerExpenseNoteOverviewController {
 
 	public void loadData() {
 		// Add observable list data to the table
-		expenseNoteTable.setItems(
-				FXCollections.observableArrayList(expenseNoteService.getExpenseNotesFromPerson(mainApp.getUser())));
+//		expenseNoteTable.setItems(
+//				FXCollections.observableArrayList(expenseNoteService.getExpenseNotesFromPerson(mainApp.getUser())));
 
 	}
 

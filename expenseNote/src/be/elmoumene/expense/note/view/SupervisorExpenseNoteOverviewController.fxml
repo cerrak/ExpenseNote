@@ -39,7 +39,7 @@
                                     </AnchorPane>
                                  </content>
                               </TitledPane>
-                              <TitledPane animated="false" text="Expense notes">
+                              <TitledPane animated="false" onMouseClicked="#showExpenseNote" text="Expense notes">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -76,7 +76,7 @@
             </AnchorPane>
          </items>
       </SplitPane>
-      <Label blendMode="DARKEN" layoutX="185.0" layoutY="107.0" prefWidth="326.0" text="Supervisor view" textFill="#0a0909" underline="true" AnchorPane.leftAnchor="185.0" AnchorPane.topAnchor="107.0">
+      <Label blendMode="DARKEN" layoutX="185.0" layoutY="79.0" prefWidth="326.0" text="Supervisor view" textFill="#0a0909" underline="true" AnchorPane.leftAnchor="185.0" AnchorPane.topAnchor="79.0">
          <font>
             <Font name="Arial" size="29.0" />
          </font>

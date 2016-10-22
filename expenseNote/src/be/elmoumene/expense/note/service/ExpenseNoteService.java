@@ -15,10 +15,5 @@ public interface ExpenseNoteService {
 
 	public ExpenseNoteDTO getExpenseNoteById(Long id);
 
-	public List<ExpenseNoteDTO> getExpenseNotes();
-
-	public List<ExpenseNoteDTO> getExpenseNotesFromPerson(PersonDTO personDto);
-
-
-
+	public List<ExpenseNoteDTO> getExpenseNotes(PersonDTO personDto);
 }

@@ -6,7 +6,7 @@ import be.elmoumene.expense.note.entity.Category;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
 public interface CategoryDao {
-	
+
 	public Category create(Category c) throws ExpenseNoteException;
 
 	public Category update(Category c) throws ExpenseNoteException;
@@ -18,5 +18,5 @@ public interface CategoryDao {
 	public List<Category> getCounties() throws ExpenseNoteException;
 
 	public Category getCategoryByName(String name) throws ExpenseNoteException;
-	
+
 }

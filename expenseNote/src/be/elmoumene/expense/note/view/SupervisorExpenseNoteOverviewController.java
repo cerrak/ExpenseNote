@@ -99,7 +99,7 @@ public class SupervisorExpenseNoteOverviewController {
 			public void handle(MouseEvent event) {
 				if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
 					ExpenseNoteDTO selectedItem = expenseNoteTable.getSelectionModel().getSelectedItem();
-					mainApp.showFormViewExpenseNoteDetails(selectedItem);
+					mainApp.showSupervisorExpenseNoteDetails(selectedItem);
 				}
 			}
 		});
@@ -139,7 +139,7 @@ public class SupervisorExpenseNoteOverviewController {
 	public void loadData() {
 		// Add observable list data to the table
 		expenseNoteTable.setItems(
-				FXCollections.observableArrayList(expenseNoteService.getExpenseNotesFromPerson(mainApp.getUser())));
+				FXCollections.observableArrayList(expenseNoteService.getExpenseNotes(mainApp.getUser())));
 
 	}
 

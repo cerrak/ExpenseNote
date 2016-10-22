@@ -11,8 +11,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import be.elmoumene.expense.note.database.ConnectionHSQL;
+import be.elmoumene.expense.note.entity.Department;
+import be.elmoumene.expense.note.entity.Entity;
 import be.elmoumene.expense.note.entity.Expense;
 import be.elmoumene.expense.note.entity.ExpenseNote;
+import be.elmoumene.expense.note.entity.Person;
 import be.elmoumene.expense.note.entity.Status;
 import be.elmoumene.expense.note.exception.ExpenseNoteException;
 
@@ -22,6 +25,7 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 										+ "en_status " ;
 
 	private final static String COLUMNS_WITH_ID = COLUMNS + ", id";
+	private PersonDao<Person> personDao = FactoryDao.getPersonDao();
 
 	private static ExpenseNoteDaoImpl uniqueInstance = new ExpenseNoteDaoImpl();
     private Connection con = ConnectionHSQL.getInstance().getConn();
@@ -97,12 +101,6 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 		}
 	}
 
-	@Override
-	public List<ExpenseNote> getExpenseNotes(Long expenseNoteId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	@Override
 	public ExpenseNote update(ExpenseNote en) throws Exception {
@@ -174,8 +172,6 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 		}
 	}
 
-
-
 	@Override
 	public ExpenseNote getExpenseNoteById(Long id) {
 		StringBuilder sql = new StringBuilder();
@@ -199,32 +195,6 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 
 	}
 
-
-	@Override
-	public List<ExpenseNote> getExpenseNotes() {
-		List<ExpenseNote> list = new ArrayList<ExpenseNote>();
-
-		StringBuilder sql = new StringBuilder();
-		sql.append("select " + COLUMNS_WITH_ID + " ");
-		sql.append("from expense_note ");
-		sql.append("where person_id = ? ");
-
-		try {
-            stm = con.prepareStatement(sql.toString());
-
-            ResultSet res = stm.executeQuery();
-
-            while(res.next() ){
-            	list.add(mapResult(res));
-            }
-
-            return list;
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        }
-        return null;
-	}
-
 	private ExpenseNote mapResult(ResultSet res) throws SQLException{
 		ExpenseNote en = new ExpenseNote();
 
@@ -239,6 +209,8 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
 		en.setStatus(Status.fromString(res.getString(5)));
 		en.setId(res.getLong(6));
 
+		Person p = personDao.getById(res.getLong(4));
+		en.setPerson(p);
 
 		return en;
 
@@ -288,6 +260,61 @@ public class ExpenseNoteDaoImpl implements ExpenseNoteDao {
             System.out.println(e.toString());
         }
 
+	}
+
+	@Override
+	public List<ExpenseNote> getExpenseNotesForSupervisor(Department dep) {
+		List<ExpenseNote> list = new ArrayList<ExpenseNote>();
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("select " + COLUMNS_WITH_ID + " ");
+		sql.append("from expense_note ");
+		sql.append("where person_id in (select person_id from person where department_id = ? ) ");
+		sql.append("and en_status IN ('SUBMITTED', 'CONTROLLED', 'VALIDATED', 'APPROVED')");
+
+
+		try {
+            stm = con.prepareStatement(sql.toString());
+            stm.setLong(1, dep.getId());
+            ResultSet res = stm.executeQuery();
+
+            while(res.next() ){
+            	list.add(mapResult(res));
+            }
+
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return null;
+	}
+
+	@Override
+	public List<ExpenseNote> getExpenseNotesForController(Entity entity) {
+		List<ExpenseNote> list = new ArrayList<ExpenseNote>();
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("select " + COLUMNS_WITH_ID + " ");
+		sql.append("from expense_note ");
+		sql.append("where person_id in (select person_id from person where department_id in ");
+		sql.append("(select id from department where entity_id = ?) ");
+		sql.append("and en_status IN ('SUBMITTED', 'CONTROLLED', 'VALIDATED', 'APPROVED')");
+
+
+		try {
+            stm = con.prepareStatement(sql.toString());
+            stm.setLong(1, entity.getId());
+            ResultSet res = stm.executeQuery();
+
+            while(res.next() ){
+            	list.add(mapResult(res));
+            }
+
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return null;
 	}
 
 }
